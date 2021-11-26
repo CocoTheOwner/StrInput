@@ -1,0 +1,5 @@
+/.gradle/
+/build/
+/.idea/
+# Do not gitignore /gradle/
+# We need gradle-wrapper.properties!
