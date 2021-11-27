@@ -18,7 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 /**
- * TODO:Description
+ * Spigotmc user example
  *
  * @author Sjoerd van de Goor
  * @since v0.1

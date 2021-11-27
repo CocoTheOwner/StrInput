@@ -19,8 +19,8 @@ package nl.codevs.strinput.system;
 
 import nl.codevs.strinput.system.contexts.StrContextHandler;
 import nl.codevs.strinput.system.parameters.StrParameterHandler;
+import nl.codevs.strinput.system.text.Str;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,14 +79,14 @@ public record StrCenter(
      * @param user the user that sent the command
      */
     public void onCommand(String command, StrUser user) {
-        user.sendMessage(new StrMessage("You sent command: ", command));
+        user.sendMessage(new Str("You sent command: ", command));
     }
 
     /**
      * Send a debug message.
      * @param messages the debug message(s)
      */
-    public void debug(StrMessage... messages) {
+    public void debug(Str... messages) {
         if (messages.length == 1) {
             console.sendMessage(messages[0]);
         } else {

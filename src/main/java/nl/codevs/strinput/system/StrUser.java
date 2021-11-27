@@ -17,7 +17,9 @@
 
 package nl.codevs.strinput.system;
 
-import java.util.ArrayList;
+import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.text.StrClickable;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,11 +35,11 @@ public abstract class StrUser {
      * Send a message to the sender.
      * @param message the message to send
      */
-    public abstract void sendMessage(StrMessage message);
+    public abstract void sendMessage(Str message);
 
     /**
      * Send multiple options when there is something to choose from.<br>
-     * Note that it is required to have an StrMessage.
+     * Note that it is required to have an Str.
      * @param clickables the clickable options to send
      */
     public abstract void sendOptions(List<StrClickable> clickables);
@@ -47,7 +49,7 @@ public abstract class StrUser {
      * Overwrite {@link #sendMessage(List)} instead of this, as this points there.
      * @param messages the messages to send
      */
-    public void sendMessage(StrMessage[] messages) {
+    public void sendMessage(Str[] messages) {
         sendMessage(Arrays.asList(messages));
     }
 
@@ -55,8 +57,8 @@ public abstract class StrUser {
      * Send multiple messages to the sender. Uses a loop of {@link #sendMessage}.
      * @param messages the messages to send
      */
-    public void sendMessage(List<StrMessage> messages) {
-        for (StrMessage message : messages) {
+    public void sendMessage(List<Str> messages) {
+        for (Str message : messages) {
             sendMessage(message);
         }
     }

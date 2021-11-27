@@ -15,15 +15,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.text;
 
-import java.awt.*;
-import java.lang.invoke.VarHandle;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Messages passing through the system.
@@ -32,7 +28,7 @@ import java.util.Locale;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class StrMessage {
+public class Str {
 
     /**
      * Message text.
@@ -43,7 +39,7 @@ public class StrMessage {
      * Create a new message.
      * @param messageText vararg message components forming the text.
      */
-    public StrMessage(Component... messageText) {
+    public Str(Component... messageText) {
         text = List.of(messageText);
     }
 
@@ -51,7 +47,7 @@ public class StrMessage {
      * Create a new message.
      * @param messageText the list of message components forming the text.
      */
-    public StrMessage(List<Component> messageText) {
+    public Str(List<Component> messageText) {
         text = messageText;
     }
 
@@ -59,7 +55,7 @@ public class StrMessage {
      * Create a new message.
      * @param messageText vararg string forming the text. Does not support colors!
      */
-    public StrMessage(String... messageText) {
+    public Str(String... messageText) {
         text = new ArrayList<>();
         for (String s : messageText) {
             text.add(new Component(s, ComponentType.TEXT));
@@ -81,8 +77,11 @@ public class StrMessage {
      * @param newText the next text string
      * @return this
      */
-    public StrMessage add(String newText) {
+    public Str add(String newText) {
         return add(new Component(newText, ComponentType.TEXT));
+    }
+    public Str a(String newText){
+        return add(newText);
     }
 
     /**
@@ -90,9 +89,27 @@ public class StrMessage {
      * @param newText the new text component
      * @return this
      */
-    public StrMessage add(Component newText) {
+    public Str add(Component newText) {
         text.add(newText);
         return this;
+    }
+    public Str a(Component newText){
+        return add(newText);
+    }
+
+    /**
+     * Add a Str to another Str.
+     * @param newText the new text components
+     * @return this
+     */
+    public Str add(Str newText) {
+        for (Component component : newText.text) {
+            add(component);
+        }
+        return this;
+    }
+    public Str a(Str input) {
+        return add(input);
     }
 
     /**
@@ -131,8 +148,13 @@ public class StrMessage {
     /**
      * Component.
      */
-    public record Component(String value, ComponentType type) {
-
+    public static class Component {
+        final String value;
+        final ComponentType type;
+        public Component(String textValue, ComponentType componentType) {
+            value = textValue;
+            type = componentType;
+        }
     }
 
     /**
@@ -141,50 +163,5 @@ public class StrMessage {
     public enum ComponentType {
         TEXT,
         COLOR
-    }
-
-    /**
-     * Colors.
-     */
-    public enum C {
-        R("red"),
-        G("green"),
-        B("blue");
-
-        private final String string;
-
-        C (String full) {
-            string = full;
-        }
-
-        /**
-         * Get a color by name.
-         * @param color the name of the color.
-         * @return the color
-         * @throws InvalidParameterException if the input {@code color} cannot be found
-         */
-        public static C g(String color) throws InvalidParameterException {
-            color = color.toLowerCase(Locale.ROOT);
-            for (C value : values()) {
-                if (value.name().startsWith(color) || value.string.startsWith(color)) {
-                    return value;
-                }
-            }
-            throw new InvalidParameterException("Input color: " + color + " not found.");
-        }
-
-
-        /**
-         * Returns the name of this enum constant, as contained in the
-         * declaration.  This method may be overridden, though it typically
-         * isn't necessary or desirable.  An enum class should override this
-         * method when a more "programmer-friendly" string form exists.
-         *
-         * @return the name of this enum constant
-         */
-        @Override
-        public String toString() {
-            return string;
-        }
     }
 }

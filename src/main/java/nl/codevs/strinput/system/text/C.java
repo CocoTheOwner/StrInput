@@ -15,25 +15,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.examples.discord;
-
-import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.StrUser;
+package nl.codevs.strinput.system.text;
 
 /**
- * Discord Bot integration example.
- *
- * @author Sjoerd van de Goor
- * @since v0.1
+ * Colors.
  */
-public class User extends StrUser {
-    /**
-     * Send a message to the sender.
-     *
-     * @param message the message to send
-     */
-    @Override
-    public void sendMessage(Str message) {
+public class C extends Str.Component {
+    public static final String COLOR_PREFIX = "$";
+    public static final C R = new C("red");
+    public static final C G = new C("green");
+    public static final C B = new C("blue");
+    public static final C GOLD = new C("gold");
 
+    public C(String full) {
+        super(COLOR_PREFIX + full, Str.ComponentType.COLOR);
     }
 }

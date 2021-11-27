@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.text;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Adds the option for a {@link StrMessage} to be clicked on.
+ * Adds the option for a {@link Str} to be clicked on.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class StrClickable extends StrMessage {
+public class StrClickable extends Str {
 
     /**
      * RNG for password generation;
@@ -121,6 +121,11 @@ public class StrClickable extends StrMessage {
      */
     public List<Option> getOptions() {
         return optionsList;
+    }
+
+    /**
+    public void complete(String result) {
+
     }
 
     /**

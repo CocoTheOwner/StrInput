@@ -17,6 +17,14 @@
 
 package nl.codevs.strinput.system.parameters;
 
+import nl.codevs.strinput.system.exceptions.StrParseException;
+import nl.codevs.strinput.system.exceptions.StrWhichException;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
 /**
  * Parameter handler for a certain type.
  *
@@ -24,4 +32,131 @@ package nl.codevs.strinput.system.parameters;
  * @since v0.1
  */
 public interface StrParameterHandler<T> {
+
+    /**
+     * Get all possible values for this type.
+     * @return a list of possibilities
+     */
+    List<T> getPossibilities();
+
+    /**
+     * Get all possible values for this type, filtered with some input string.<br>
+     * @param input the input string to filter by
+     * @return a list of possibilities
+     */
+    default List<T> getPossibilities(String input) {
+        final String fin = input.trim();
+        if (input.isEmpty()) {
+            return getPossibilities();
+        }
+
+        return getPossibilities()
+                .stream()
+                .filter(o -> {
+                    String s = toString(o);
+                    return s.startsWith(fin)
+                        || s.endsWith(fin);
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Whether this handler supports the type or not.
+     * @param type a type
+     * @return true if it supports the type
+     */
+    boolean supports(@NotNull Class<?> type);
+
+    /**
+     * Parse a string to this type.
+     * @param text the string to parse
+     * @return an instance of this type parsed from the string
+     * @throws StrWhichException when there are multiple options in a parser, based on the string
+     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     */
+    @NotNull T parse(@NotNull String text) throws Throwable;
+
+    /**
+     * Safely parse, catching exceptions that are not {@link StrWhichException} or {@link StrParseException}.
+     * @param text the string to parse
+     * @return an instance of this type parsed from the string
+     * @throws StrWhichException when there are multiple options in a parser, based on the string
+     * @throws StrParseException when a parser fails
+     */
+    @NotNull default T parseSafe(@NotNull String text) throws StrWhichException, StrParseException {
+        try {
+            return parse(text);
+        } catch (StrWhichException | StrParseException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new StrParseException(StrParameterHandler.class, text, e);
+        }
+    }
+
+    /**
+     * Parse an instance of this type to a string.
+     * @param input the input string
+     * @return the string representation of an instance of this type
+     */
+    @NotNull default String toString(@NotNull T input) {
+        return input.toString();
+    }
+
+    /**
+     * Get a random default value.
+     * @return the random default
+     */
+    @NotNull String getRandomDefault();
+
+    /**
+     * Get the multiplier for a string.
+     * Sets the value to the original value, except for the multiplier characters at the end.
+     * Returns the total multiplier.
+     * @param value the value string to parse
+     * @return the value, parsed.
+     */
+    default int getMultiplier(@NotNull AtomicReference<String> value) {
+        int total = 1;
+        int multiplier;
+        int i;
+        char[] chars = value.get().toCharArray();
+        StringBuilder res = new StringBuilder();
+        for (i = chars.length - 1; i >= 0; i--) {
+            if ((multiplier = multiplierFor(chars[i])) != 1) {
+                total *= multiplier;
+                continue;
+            }
+            for (; i >= 0; i--) {
+                res.append(chars[i]);
+            }
+            break;
+        }
+        value.set(res.toString());
+        return total;
+    }
+
+    /**
+     * Get the multiplier for some character (so that 10k can become 10000).
+     * Returns 1 for unlisted characters.
+     * <ol>
+     *     <li>c -> 16</li>
+     *     <li>h -> 100</li>
+     *     <li>r -> 512</li>
+     *     <li>k -> 1000</li>
+     *     <li>m -> 1000000</li>
+     *     <li>default -> 1</li>
+     * </ol>
+     * @param character the character to get the multiplier of
+     * @return the multiplier
+     */
+    default int multiplierFor(char character) throws IllegalStateException {
+        return switch (character) {
+            case 'c' | 'C' -> 16;
+            case 'h' | 'H' -> 100;
+            case 'r' | 'R' -> 512;
+            case 'k' | 'K' -> 1000;
+            case 'm' | 'M' -> 1000000;
+            default -> 1;
+        };
+    }
 }

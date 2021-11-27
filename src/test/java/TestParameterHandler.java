@@ -15,25 +15,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.examples.discord;
-
-import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.StrUser;
-
 /**
- * Discord Bot integration example.
+ * Parameter handler testing
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class User extends StrUser {
-    /**
-     * Send a message to the sender.
-     *
-     * @param message the message to send
-     */
-    @Override
-    public void sendMessage(Str message) {
-
-    }
+public class TestParameterHandler {
 }
