@@ -20,7 +20,6 @@ package nl.codevs.strinput.system.parameters;
 import nl.codevs.strinput.system.exceptions.StrParseException;
 import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -85,6 +84,9 @@ public class IntegerHandler implements StrParameterHandler<Integer> {
         return input.toString();
     }
 
+    /**
+     * Defaults.
+     */
     private static final Integer[] DEFAULTS = new Integer[]{
             1,
             10,
