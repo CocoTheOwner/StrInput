@@ -17,21 +17,20 @@
 
 package nl.codevs.strinput.system.parameters;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
 import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Integer parameter handler.
+ * Byte handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class IntegerHandler implements StrParameterHandler<Integer> {
+public class ByteHandler implements StrParameterHandler<Byte> {
+
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -39,7 +38,7 @@ public class IntegerHandler implements StrParameterHandler<Integer> {
      * @return a list of possibilities
      */
     @Override
-    public List<Integer> getPossibilities() {
+    public List<Byte> getPossibilities() {
         return null;
     }
 
@@ -52,57 +51,30 @@ public class IntegerHandler implements StrParameterHandler<Integer> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Integer.class) || type.equals(int.class);
+        return type.equals(Byte.class) || type.equals(byte.class);
     }
 
     /**
-     * Parse a string to this type.<br>
-     * You can throw:
-     * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
-     * </ul>
+     * Parse a string to this type.
+     *
      * @param text the string to parse
+     *
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     *
+     * @throws Throwable         when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Integer parse(@NotNull String text) throws Throwable {
-        AtomicReference<String> r = new AtomicReference<>(text);
-        return (int) (Integer.valueOf(r.get()).doubleValue() * getMultiplier(r));
+    public @NotNull Byte parse(@NotNull String text) throws Throwable {
+        return Byte.parseByte(text);
     }
-
-
-    /**
-     * Parse an instance of this type to a string.
-     *
-     * @param input the input string
-     *
-     * @return the string representation of an instance of this type
-     */
-    @Override
-    public @NotNull String toString(@NotNull Integer input) {
-        return input.toString();
-    }
-
-    /**
-     * Defaults.
-     */
-    private static final Integer[] DEFAULTS = new Integer[]{
-            1,
-            10,
-            42,
-            69,
-            420
-    };
 
     /**
      * Get a random default value.
      *
-     * @return the random default.
+     * @return the random default
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return DEFAULTS[RANDOM.nextInt(0, DEFAULTS.length)].toString();
+        return String.valueOf(RANDOM.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE));
     }
 }

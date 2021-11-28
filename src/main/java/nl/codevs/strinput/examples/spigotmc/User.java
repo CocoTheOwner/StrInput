@@ -17,11 +17,73 @@
 
 package nl.codevs.strinput.examples.spigotmc;
 
+import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.text.StrClickable;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 /**
- * Spigotmc user example
+ * TODO:Description
  *
  * @author Sjoerd van de Goor
- * @since v0.1
+ * @since
  */
-public class User {
+public class User extends StrUser {
+
+    private final Player player;
+
+    public User(Player player) {
+        this.player = player;
+    }
+
+    /**
+     * Send a message to the sender.
+     *
+     * @param message the message to send
+     */
+    @Override
+    public void sendMessage(Str message) {
+
+    }
+
+    /**
+     * Send multiple options when there is something to choose from.<br>
+     * Note that it is required to have an Str.
+     *
+     * @param clickables the clickable options to send
+     */
+    @Override
+    public void sendOptions(List<StrClickable> clickables) {
+
+    }
+
+    /**
+     * Whether this user is a console (all-rights, no properties)
+     *
+     * @return true if the user is a console
+     */
+    @Override
+    public boolean isConsole() {
+        return false;
+    }
+
+    /**
+     * Add additional fields to your users that should be stored
+     *
+     * @param field field name
+     *
+     * @return an object
+     */
+    @Override
+    @Nullable
+    public Object accessField(@NotNull String field) {
+       if (field.equalsIgnoreCase("player")) {
+           return player;
+       }
+       return null;
+    }
 }

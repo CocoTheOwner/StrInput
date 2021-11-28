@@ -57,7 +57,7 @@ public record StrCenter(
     }
 
     /**
-     * Context handlers registry
+     * StrUserContext handlers registry
      */
     public static final List<StrContextHandler<?>> CONTEXT_HANDLERS = new ArrayList<>();
 
@@ -67,10 +67,6 @@ public record StrCenter(
      */
     public static void addContextHandler(StrContextHandler<?> handler) {
         CONTEXT_HANDLERS.add(handler);
-    }
-
-    static {
-        // Context handlers
     }
 
     /**
@@ -93,4 +89,5 @@ public record StrCenter(
             console.sendMessage(messages);
         }
     }
+
 }

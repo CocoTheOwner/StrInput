@@ -17,12 +17,38 @@
 
 package nl.codevs.strinput.system.contexts;
 
+import nl.codevs.strinput.system.StrUser;
+
 /**
- * Context handler
+ * StrUserContext handler
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
 public interface StrContextHandler<T> {
+
+    /**
+     * The type this context handler handles
+     * @return the type
+     */
+    boolean supports(Class<?> type);
+
+    /**
+     * The handler for this context. Can use any data found in the sender object for context derivation.
+     * @param user the user whose data may be used
+     * @return the value in the assigned type
+     */
+    T handle(StrUser user);
+
+    /**
+     * Convert this context to a string.
+     *
+     * @param string result of {@link #handle(StrUser)} which should be parsed to a string
+     *
+     * @return result of conversion
+     */
+    default String toString(T string) {
+        return string.toString();
+    }
 
 }

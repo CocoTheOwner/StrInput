@@ -17,21 +17,19 @@
 
 package nl.codevs.strinput.system.parameters;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
+import nl.codevs.strinput.system.exceptions.*;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Integer parameter handler.
+ * Double handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class IntegerHandler implements StrParameterHandler<Integer> {
+public class DoubleHandler implements StrParameterHandler<Double> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -39,7 +37,7 @@ public class IntegerHandler implements StrParameterHandler<Integer> {
      * @return a list of possibilities
      */
     @Override
-    public List<Integer> getPossibilities() {
+    public List<Double> getPossibilities() {
         return null;
     }
 
@@ -52,7 +50,7 @@ public class IntegerHandler implements StrParameterHandler<Integer> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Integer.class) || type.equals(int.class);
+        return type.equals(Double.class) || type.equals(double.class);
     }
 
     /**
@@ -67,42 +65,17 @@ public class IntegerHandler implements StrParameterHandler<Integer> {
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Integer parse(@NotNull String text) throws Throwable {
-        AtomicReference<String> r = new AtomicReference<>(text);
-        return (int) (Integer.valueOf(r.get()).doubleValue() * getMultiplier(r));
+    public @NotNull Double parse(@NotNull String text) throws Throwable {
+        return Double.parseDouble(text);
     }
-
-
-    /**
-     * Parse an instance of this type to a string.
-     *
-     * @param input the input string
-     *
-     * @return the string representation of an instance of this type
-     */
-    @Override
-    public @NotNull String toString(@NotNull Integer input) {
-        return input.toString();
-    }
-
-    /**
-     * Defaults.
-     */
-    private static final Integer[] DEFAULTS = new Integer[]{
-            1,
-            10,
-            42,
-            69,
-            420
-    };
 
     /**
      * Get a random default value.
      *
-     * @return the random default.
+     * @return the random default
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return DEFAULTS[RANDOM.nextInt(0, DEFAULTS.length)].toString();
+        return String.valueOf(RANDOM.nextDouble());
     }
 }

@@ -22,6 +22,7 @@ import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,11 @@ import java.util.stream.Collectors;
  */
 public interface StrParameterHandler<T> {
 
+    Random RANDOM = new Random();
+
     /**
-     * Get all possible values for this type.
+     * Get all possible values for this type.<br>
+     * Do not specify lists of very high length (10^6)
      * @return a list of possibilities
      */
     List<T> getPossibilities();
@@ -68,10 +72,14 @@ public interface StrParameterHandler<T> {
     boolean supports(@NotNull Class<?> type);
 
     /**
-     * Parse a string to this type.
+     * Parse a string to this type.<br>
+     * You can throw:
+     * <ul>
+     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     * </ul>
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws StrWhichException when there are multiple options in a parser, based on the string
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @NotNull T parse(@NotNull String text) throws Throwable;

@@ -31,7 +31,8 @@ import java.util.*;
  */
 public class BooleanHandler implements StrParameterHandler<Boolean> {
     /**
-     * Get all possible values for this type.
+     * Get all possible values for this type.<br>
+     * Do not specify lists of very high length (10^6)
      *
      * @return a list of possibilities
      */
@@ -53,11 +54,15 @@ public class BooleanHandler implements StrParameterHandler<Boolean> {
     }
 
     /**
-     * Parse a string to this type.
-     *
-     * @param text  the string to parse
-     *
+     * Parse a string to this type.<br>
+     * You can throw:
+     * <ul>
+     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     * </ul>
+     * @param text the string to parse
      * @return an instance of this type parsed from the string
+     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
     public @NotNull Boolean parse(@NotNull String text) throws StrParseException, StrWhichException {
@@ -75,6 +80,9 @@ public class BooleanHandler implements StrParameterHandler<Boolean> {
         throw new StrParseException(Boolean.class, text, "Cannot map to true or false");
     }
 
+    /**
+     * True options.
+     */
     public static final String[] TRUES = new String[]{
             "true",
             "t",
@@ -83,7 +91,7 @@ public class BooleanHandler implements StrParameterHandler<Boolean> {
     };
 
     /**
-     * False options
+     * False options.
      */
     public static final String[] FALSES = new String[]{
             "false",
@@ -99,6 +107,6 @@ public class BooleanHandler implements StrParameterHandler<Boolean> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return new Random().nextBoolean() ? "true" : "false";
+        return RANDOM.nextBoolean() ? "true" : "false";
     }
 }

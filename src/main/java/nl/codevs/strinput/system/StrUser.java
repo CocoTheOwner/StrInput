@@ -19,6 +19,8 @@ package nl.codevs.strinput.system;
 
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -62,4 +64,20 @@ public abstract class StrUser {
             sendMessage(message);
         }
     }
+
+    /**
+     * Whether this user is a console (all-rights, no properties)
+     * @return true if the user is a console
+     */
+    public abstract boolean isConsole();
+
+    /**
+     * Add additional fields to your users that should be stored
+     *
+     * @param field field name
+     *
+     * @return an object
+     */
+    @Nullable
+    public abstract Object accessField(@NotNull String field);
 }
