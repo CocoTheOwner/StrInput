@@ -66,12 +66,6 @@ public abstract class StrUser {
     }
 
     /**
-     * Whether this user is a console (all-rights, no properties)
-     * @return true if the user is a console
-     */
-    public abstract boolean isConsole();
-
-    /**
      * Add additional fields to your users that should be stored
      *
      * @param field field name

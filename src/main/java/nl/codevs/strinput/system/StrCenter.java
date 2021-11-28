@@ -18,7 +18,7 @@
 package nl.codevs.strinput.system;
 
 import nl.codevs.strinput.system.contexts.StrContextHandler;
-import nl.codevs.strinput.system.parameters.StrParameterHandler;
+import nl.codevs.strinput.system.parameters.*;
 import nl.codevs.strinput.system.text.Str;
 
 import java.util.ArrayList;
@@ -26,18 +26,31 @@ import java.util.List;
 
 /**
  * Input center. The main class for interacting with Strinput.
- * @param prefix command prefix that can be passed with your commands (and should be ignored)
- * @param commands array of root commands (usually only 1, your main command)
- * @param console the console user ({@link StrUser})
+
  * @see nl.codevs.strinput.examples
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public record StrCenter(
-        String prefix,
-        StrCommand[] commands,
-        StrUser console
-) {
+public abstract class StrCenter {
+    final String prefix;
+    final StrCommand[] commands;
+    final StrUser console;
+
+    /**
+     * Create a new command center.
+     * @param systemPrefix command prefix that can be passed with your commands (and should be ignored)
+     * @param rootCommands array of root commands (usually only 1, your main command)
+     * @param consoleUser the console ({@link StrUser})
+     */
+    public StrCenter(
+            final String systemPrefix,
+            final StrCommand[] rootCommands,
+            final StrUser consoleUser
+    ) {
+        prefix = systemPrefix;
+        commands = rootCommands;
+        console = consoleUser;
+    }
 
     /**
      * Parameter handlers registry.
@@ -53,7 +66,14 @@ public record StrCenter(
     }
 
     static {
-        // Parameter handlers
+        addParameterHandler(new BooleanHandler());
+        addParameterHandler(new ByteHandler());
+        addParameterHandler(new DoubleHandler());
+        addParameterHandler(new FloatHandler());
+        addParameterHandler(new IntegerHandler());
+        addParameterHandler(new LongHandler());
+        addParameterHandler(new ShortHandler());
+        addParameterHandler(new StringHandler());
     }
 
     /**

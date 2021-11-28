@@ -27,10 +27,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * TODO:Description
+ * Spigot user implementation
  *
  * @author Sjoerd van de Goor
- * @since
+ * @since v0.1
  */
 public class User extends StrUser {
 
@@ -59,16 +59,6 @@ public class User extends StrUser {
     @Override
     public void sendOptions(List<StrClickable> clickables) {
 
-    }
-
-    /**
-     * Whether this user is a console (all-rights, no properties)
-     *
-     * @return true if the user is a console
-     */
-    @Override
-    public boolean isConsole() {
-        return false;
     }
 
     /**
