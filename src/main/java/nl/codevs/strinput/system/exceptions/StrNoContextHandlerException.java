@@ -18,7 +18,7 @@
 package nl.codevs.strinput.system.exceptions;
 
 /**
- * TODO:Description
+ * Exception for when no context handlers exist.
  *
  * @author Sjoerd van de Goor
  * @since v0.1

@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import nl.codevs.strinput.system.exceptions.*;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Double handler.
@@ -29,7 +28,7 @@ import java.util.Random;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class DoubleHandler implements StrParameterHandler<Double> {
+public final class DoubleHandler implements StrParameterHandler<Double> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)

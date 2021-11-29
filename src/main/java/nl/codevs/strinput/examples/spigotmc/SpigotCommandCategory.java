@@ -22,7 +22,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 /**
- * TODO:Description
+ * Spigot command category with auxiliary commands.
  *
  * @author Sjoerd van de Goor
  * @since v0.1

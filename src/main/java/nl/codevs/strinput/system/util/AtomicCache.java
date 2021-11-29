@@ -1,4 +1,4 @@
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.util;
 
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * @author Cyberpwn
  * @since v0.1
  */
-public class AtomicCache<T> {
+public final class AtomicCache<T> {
     private transient volatile T t;
     private transient volatile long a;
     private transient volatile int validations;

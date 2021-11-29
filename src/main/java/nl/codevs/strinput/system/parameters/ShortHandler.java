@@ -22,7 +22,6 @@ import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Short handler.
@@ -30,7 +29,7 @@ import java.util.Random;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class ShortHandler implements StrParameterHandler<Short> {
+public final class ShortHandler implements StrParameterHandler<Short> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)

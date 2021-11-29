@@ -17,11 +17,9 @@
 
 package nl.codevs.strinput.system.parameters;
 
-import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Byte handler.
@@ -29,7 +27,7 @@ import java.util.Random;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class ByteHandler implements StrParameterHandler<Byte> {
+public final class ByteHandler implements StrParameterHandler<Byte> {
 
     /**
      * Get all possible values for this type.<br>

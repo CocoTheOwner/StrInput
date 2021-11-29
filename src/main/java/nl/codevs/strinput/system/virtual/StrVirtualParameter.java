@@ -17,7 +17,7 @@
 
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.AtomicCache;
+import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.exceptions.StrNoParameterHandlerException;
