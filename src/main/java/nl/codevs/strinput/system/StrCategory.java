@@ -15,20 +15,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.text;
+package nl.codevs.strinput.system;
+
+
+import nl.codevs.strinput.system.contexts.StrUserContext;
 
 /**
- * Colors.
+ * Command and/or command category interface.
+ * Register commands in your
  */
-public class C extends Str.Component {
-    public static final String COLOR_PREFIX = "$";
-    public static final C R = new C("red");
-    public static final C G = new C("green");
-    public static final C B = new C("blue");
-    public static final C GOLD = new C("gold");
-    public static final C RESET = new C("reset");
+public interface StrCategory {
 
-    public C(String full) {
-        super(COLOR_PREFIX + full, Str.ComponentType.COLOR);
+    /**
+     * @return The sender of the command, the user.
+     */
+    default StrUser user() {
+        return StrUserContext.get();
     }
+
 }

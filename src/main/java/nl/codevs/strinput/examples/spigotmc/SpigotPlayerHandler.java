@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.examples.spigotmc.extensions;
+package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.exceptions.StrParseException;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class PlayerHandler implements StrParameterHandler<Player> {
+public class SpigotPlayerHandler implements StrParameterHandler<Player> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)

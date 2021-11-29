@@ -1,5 +1,7 @@
-package nl.codevs.strinput.examples.spigotmc.extensions;
+package nl.codevs.strinput.examples.spigotmc;
 
+import nl.codevs.strinput.examples.spigotmc.SpigotUser;
+import nl.codevs.strinput.system.contexts.StrUserContext;
 import nl.codevs.strinput.system.exceptions.StrParseException;
 import nl.codevs.strinput.system.exceptions.StrWhichException;
 import nl.codevs.strinput.system.parameters.StrParameterHandler;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class WorldHandler implements StrParameterHandler<World> {
+public class SpigotWorldHandler implements StrParameterHandler<World> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -48,6 +50,9 @@ public class WorldHandler implements StrParameterHandler<World> {
      */
     @Override
     public @NotNull World parse(@NotNull String text) throws Throwable {
+        if (!((SpigotUser) StrUserContext.get()).isPlayer()) {
+            throw new StrParseException(World.class, text, "User is not a player");
+        }
         List<World> options = getPossibilities(text);
         if (options.size() == 0) {
             throw new StrParseException(World.class, text, "No options found for input");

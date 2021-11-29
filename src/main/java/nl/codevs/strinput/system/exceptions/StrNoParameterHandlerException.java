@@ -15,14 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.exceptions;
 
 /**
- * Command and/or command category interface.
- * Register commands in your
+ * Exception thrown when no parameter handler could be found.
+ *
+ * @author Sjoerd van de Goor
+ * @since v0.1
  */
-public interface StrCommand {
-
-
-
+public class StrNoParameterHandlerException extends Exception {
+    public StrNoParameterHandlerException(Class<?> type) {
+        super("Could not find parameter handler for: " + type.getSimpleName());
+    }
 }

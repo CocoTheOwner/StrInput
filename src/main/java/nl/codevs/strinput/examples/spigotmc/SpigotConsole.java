@@ -20,26 +20,17 @@ package nl.codevs.strinput.examples.spigotmc;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 
 /**
- * Spigot user implementation
+ * Spigot console user.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class User extends StrUser {
-
-    private final Player player;
-
-    public User(Player player) {
-        this.player = player;
-    }
-
+public class SpigotConsole implements StrUser {
     /**
      * Send a message to the sender.
      *
@@ -47,7 +38,7 @@ public class User extends StrUser {
      */
     @Override
     public void sendMessage(Str message) {
-
+        Bukkit.getConsoleSender().sendMessage(message.toString());
     }
 
     /**
@@ -62,18 +53,10 @@ public class User extends StrUser {
     }
 
     /**
-     * Add additional fields to your users that should be stored
-     *
-     * @param field field name
-     *
-     * @return an object
+     * @return whether this user supports {@link StrClickable}s.
      */
     @Override
-    @Nullable
-    public Object accessField(@NotNull String field) {
-       if (field.equalsIgnoreCase("player")) {
-           return player;
-       }
-       return null;
+    public boolean supportsClickables() {
+        return false;
     }
 }

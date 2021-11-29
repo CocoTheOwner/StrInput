@@ -18,6 +18,7 @@
 package nl.codevs.strinput.system;
 
 import nl.codevs.strinput.system.contexts.StrContextHandler;
+import nl.codevs.strinput.system.exceptions.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.parameters.*;
 import nl.codevs.strinput.system.text.Str;
 
@@ -33,23 +34,57 @@ import java.util.List;
  */
 public abstract class StrCenter {
     final String prefix;
-    final StrCommand[] commands;
+    final StrCategory[] commands;
     final StrUser console;
 
     /**
-     * Create a new command center.
+     * Create a new command center.<br>
+     * Make sure to point command calls to {@link #onCommand(String, StrUser)}
+     * @param systemPrefix command prefix that can be passed with your commands (and should be ignored)
+     * @param rootCommands array of root commands (usually only 1, your main command)
+     * @param consoleUser the console ({@link StrUser})
+     * @param parameterHandlers additional parameter handlers
+     * @param contextHandlers additional context handlers
+     */
+    public StrCenter(
+            final String systemPrefix,
+            final StrCategory[] rootCommands,
+            final StrUser consoleUser,
+            final StrParameterHandler<?>[] parameterHandlers,
+            final StrContextHandler<?>[] contextHandlers
+    ) {
+        prefix = systemPrefix;
+        commands = rootCommands;
+        console = consoleUser;
+
+        for (StrParameterHandler<?> parameterHandler : parameterHandlers) {
+            addParameterHandler(parameterHandler);
+        }
+
+        for (StrContextHandler<?> contextHandler : contextHandlers) {
+            addContextHandler(contextHandler);
+        }
+    }
+
+    /**
+     * Create a new command center.<br>
+     * Make sure to point command calls to {@link #onCommand(String, StrUser)}
      * @param systemPrefix command prefix that can be passed with your commands (and should be ignored)
      * @param rootCommands array of root commands (usually only 1, your main command)
      * @param consoleUser the console ({@link StrUser})
      */
     public StrCenter(
             final String systemPrefix,
-            final StrCommand[] rootCommands,
+            final StrCategory[] rootCommands,
             final StrUser consoleUser
     ) {
-        prefix = systemPrefix;
-        commands = rootCommands;
-        console = consoleUser;
+        this(
+                systemPrefix,
+                rootCommands,
+                consoleUser,
+                new StrParameterHandler<?>[0],
+                new StrContextHandler<?>[0]
+        );
     }
 
     /**
@@ -63,6 +98,21 @@ public abstract class StrCenter {
      */
     public static void addParameterHandler(StrParameterHandler<?> handler) {
         PARAMETER_HANDLERS.add(handler);
+    }
+
+    /**
+     * Get handler for a type.
+     * @param type the type to get the handler for
+     * @return the parameter handler for the type
+     * @throws StrNoParameterHandlerException if no parameter handler could be found
+     */
+    public static StrParameterHandler<?> getHandler(Class<?> type) throws StrNoParameterHandlerException {
+        for (StrParameterHandler<?> parameterHandler : PARAMETER_HANDLERS) {
+            if (parameterHandler.supports(type)) {
+                return parameterHandler;
+            }
+        }
+        throw new StrNoParameterHandlerException(type);
     }
 
     static {
@@ -110,4 +160,11 @@ public abstract class StrCenter {
         }
     }
 
+    /**
+     * Debug a string.
+     * @param message the debug string
+     */
+    public void debug(String message) {
+        debug(new Str(message));
+    }
 }

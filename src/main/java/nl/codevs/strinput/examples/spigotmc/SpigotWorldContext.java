@@ -15,43 +15,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.contexts;
+package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.contexts.StrContextHandler;
+import org.bukkit.World;
 
 /**
- * StrUserContext handler.
+ * World context.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public interface StrContextHandler<T> {
-
+public class SpigotWorldContext implements StrContextHandler<World> {
     /**
-     * The type this context handler handles.
+     * The type this context handler handles
      *
-     * @param type The type to check for support
+     * @param type
      *
      * @return the type
      */
-    boolean supports(Class<?> type);
+    @Override
+    public boolean supports(Class<?> type) {
+        return type.equals(World.class);
+    }
 
     /**
      * The handler for this context. Can use any data found in the sender object for context derivation.
+     *
      * @param user the user whose data may be used
+     *
      * @return the value in the assigned type
      */
-    T handle(StrUser user);
-
-    /**
-     * Convert this context to a string.
-     *
-     * @param string result of {@link #handle(StrUser)} which should be parsed to a string
-     *
-     * @return result of conversion
-     */
-    default String toString(T string) {
-        return string.toString();
+    @Override
+    public World handle(StrUser user) {
+        return ((SpigotUser) user).getPlayer().getWorld();
     }
-
 }

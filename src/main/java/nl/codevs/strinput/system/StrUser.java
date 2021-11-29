@@ -19,8 +19,6 @@ package nl.codevs.strinput.system;
 
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,27 +29,32 @@ import java.util.List;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public abstract class StrUser {
-
+public interface StrUser {
     /**
      * Send a message to the sender.
      * @param message the message to send
      */
-    public abstract void sendMessage(Str message);
+    void sendMessage(Str message);
 
     /**
      * Send multiple options when there is something to choose from.<br>
-     * Note that it is required to have an Str.
+     * Note that it is required to have a Str.<br>
+     * Return {@code null} if an option choice should be forced.
      * @param clickables the clickable options to send
      */
-    public abstract void sendOptions(List<StrClickable> clickables);
+    void sendOptions(List<StrClickable> clickables);
+
+    /**
+     * @return whether this user supports {@link StrClickable}s.
+     */
+    boolean supportsClickables();
 
     /**
      * Send multiple messages to the sender.<br>
      * Overwrite {@link #sendMessage(List)} instead of this, as this points there.
      * @param messages the messages to send
      */
-    public void sendMessage(Str[] messages) {
+    default void sendMessage(Str[] messages) {
         sendMessage(Arrays.asList(messages));
     }
 
@@ -59,19 +62,9 @@ public abstract class StrUser {
      * Send multiple messages to the sender. Uses a loop of {@link #sendMessage}.
      * @param messages the messages to send
      */
-    public void sendMessage(List<Str> messages) {
+    default void sendMessage(List<Str> messages) {
         for (Str message : messages) {
             sendMessage(message);
         }
     }
-
-    /**
-     * Add additional fields to your users that should be stored
-     *
-     * @param field field name
-     *
-     * @return an object
-     */
-    @Nullable
-    public abstract Object accessField(@NotNull String field);
 }
