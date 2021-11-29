@@ -17,7 +17,6 @@
 
 package nl.codevs.strinput.examples.spigotmc.command;
 
-import nl.codevs.strinput.examples.spigotmc.SpigotCommandCategory;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
 import org.bukkit.entity.Player;
