@@ -30,6 +30,7 @@ import java.util.List;
  * @since v0.1
  */
 public final class StringHandler implements StrParameterHandler<String> {
+
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
