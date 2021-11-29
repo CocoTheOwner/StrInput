@@ -111,6 +111,15 @@ public interface StrParameterHandler<T> {
     }
 
     /**
+     * Force convert input to a string using this handler.
+     * @param input the input string
+     * @return the string representation of this type
+     */
+    @NotNull default String toStringForce(@NotNull Object input) {
+        return toString((T) input);
+    }
+
+    /**
      * Get a random default value.
      * @return the random default
      */

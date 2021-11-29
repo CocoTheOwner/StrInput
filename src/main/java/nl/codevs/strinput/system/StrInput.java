@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for commands (methods) and categories (classes).
+ * Annotation for commands (methods) and categories (classes).<br>
+ * Note that while all settings are optional, {@link #name()} should be specified on a category.
  *
  * @author Sjoerd van de Goor
  * @since v0.1

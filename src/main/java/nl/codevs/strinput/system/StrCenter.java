@@ -26,34 +26,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Input center. The main class for interacting with Strinput.
+ * Input center. The main class for interacting with Strinput.<br>
+ * Make sure to point command calls to {@link #onCommand(List, StrUser)}
 
- * @see nl.codevs.strinput.examples
+ * @see nl.codevs.strinput.examples.spigotmc
  * @author Sjoerd van de Goor
  * @since v0.1
  */
 public abstract class StrCenter {
-    final String prefix;
     final StrCategory[] commands;
     final StrUser console;
 
     /**
      * Create a new command center.<br>
-     * Make sure to point command calls to {@link #onCommand(String, StrUser)}
-     * @param systemPrefix command prefix that can be passed with your commands (and should be ignored)
-     * @param rootCommands array of root commands (usually only 1, your main command)
+     * Make sure to point command calls to {@link #onCommand(List, StrUser)}
      * @param consoleUser the console ({@link StrUser})
      * @param parameterHandlers additional parameter handlers
      * @param contextHandlers additional context handlers
+     * @param rootCommands array of root commands (usually only 1, your main command)
      */
     public StrCenter(
-            final String systemPrefix,
-            final StrCategory[] rootCommands,
             final StrUser consoleUser,
             final StrParameterHandler<?>[] parameterHandlers,
-            final StrContextHandler<?>[] contextHandlers
+            final StrContextHandler<?>[] contextHandlers,
+            final StrCategory... rootCommands
     ) {
-        prefix = systemPrefix;
         commands = rootCommands;
         console = consoleUser;
 
@@ -68,22 +65,19 @@ public abstract class StrCenter {
 
     /**
      * Create a new command center.<br>
-     * Make sure to point command calls to {@link #onCommand(String, StrUser)}
-     * @param systemPrefix command prefix that can be passed with your commands (and should be ignored)
+     * Make sure to point command calls to {@link #onCommand(List, StrUser)}
      * @param rootCommands array of root commands (usually only 1, your main command)
      * @param consoleUser the console ({@link StrUser})
      */
     public StrCenter(
-            final String systemPrefix,
             final StrCategory[] rootCommands,
             final StrUser consoleUser
     ) {
         this(
-                systemPrefix,
-                rootCommands,
                 consoleUser,
                 new StrParameterHandler<?>[0],
-                new StrContextHandler<?>[0]
+                new StrContextHandler<?>[0],
+                rootCommands
         );
     }
 
@@ -143,9 +137,12 @@ public abstract class StrCenter {
      * Command receiver.
      * @param command the command to parse
      * @param user the user that sent the command
+     *
+     * @return true if successful
      */
-    public void onCommand(String command, StrUser user) {
-        user.sendMessage(new Str("You sent command: ", command));
+    public boolean onCommand(List<String> command, StrUser user) {
+        user.sendMessage(new Str("You sent command: ", command.toString()));
+        return true;
     }
 
     /**

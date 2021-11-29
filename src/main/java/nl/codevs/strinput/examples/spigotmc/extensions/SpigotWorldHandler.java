@@ -1,45 +1,19 @@
-/*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
- * Copyright (c) 2021 Sjoerd van de Goor.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+package nl.codevs.strinput.examples.spigotmc.extensions;
 
-package nl.codevs.strinput.examples.spigotmc;
-
-import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.examples.spigotmc.SpigotUser;
+import nl.codevs.strinput.system.contexts.StrUserContext;
 import nl.codevs.strinput.system.exceptions.StrParseException;
 import nl.codevs.strinput.system.exceptions.StrWhichException;
 import nl.codevs.strinput.system.parameters.StrParameterHandler;
-import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.text.StrClickable;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-/**
- * Spigot user implementation
- *
- * @author Sjoerd van de Goor
- * @since v0.1
- */
-public class SpigotPlayerHandler implements StrParameterHandler<Player> {
+public class SpigotWorldHandler implements StrParameterHandler<World> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -47,8 +21,8 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      * @return a list of possibilities
      */
     @Override
-    public List<Player> getPossibilities() {
-        return new ArrayList<>(Bukkit.getOnlinePlayers());
+    public List<World> getPossibilities() {
+        return Bukkit.getWorlds();
     }
 
     /**
@@ -59,7 +33,7 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Player.class);
+        return type.equals(World.class);
     }
 
     /**
@@ -75,14 +49,17 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Player parse(@NotNull String text) throws Throwable {
-        List<Player> options = getPossibilities(text);
+    public @NotNull World parse(@NotNull String text) throws Throwable {
+        if (!((SpigotUser) StrUserContext.get()).isPlayer()) {
+            throw new StrParseException(World.class, text, "User is not a player");
+        }
+        List<World> options = getPossibilities(text);
         if (options.size() == 0) {
-            throw new StrParseException(Player.class, text, "No options found for input");
+            throw new StrParseException(World.class, text, "No options found for input");
         } else if (options.size() == 1) {
             return options.get(0);
         } else {
-            throw new StrWhichException(Player.class, text, options);
+            throw new StrWhichException(World.class, text, options);
         }
     }
 
@@ -103,8 +80,8 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      * @return a list of possibilities
      */
     @Override
-    public List<Player> getPossibilities(String input) {
+    public List<World> getPossibilities(String input) {
         final String i = input.toLowerCase(Locale.ROOT);
-        return getPossibilities().stream().filter(player -> player.getName().toLowerCase(Locale.ROOT).startsWith(i)).collect(Collectors.toList());
+        return getPossibilities().stream().filter(w -> w.getName().toLowerCase(Locale.ROOT).startsWith(i)).collect(Collectors.toList());
     }
 }

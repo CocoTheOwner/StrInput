@@ -15,8 +15,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.examples.spigotmc;
+package nl.codevs.strinput.examples.spigotmc.extensions;
 
+import nl.codevs.strinput.examples.spigotmc.SpigotUser;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.contexts.StrContextHandler;
 import org.bukkit.entity.Player;
