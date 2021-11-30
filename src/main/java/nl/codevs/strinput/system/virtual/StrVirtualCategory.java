@@ -23,6 +23,7 @@ import nl.codevs.strinput.system.api.StrCategory;
 import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +39,7 @@ import java.util.List;
  * @since v0.1
  */
 @Getter
-public final class StrVirtualCategory {
+public final class StrVirtualCategory implements StrVirtual {
 
     /**
      * Newline.
@@ -94,8 +95,19 @@ public final class StrVirtualCategory {
      * Get category name.
      * @return the category name
      */
-    public String getName() {
-        return annotation.name().trim().equals(StrInput.METHOD_NAME) ? instance.getClass().getSimpleName() : annotation.name();
+    @Override
+    public @NotNull String getName() {
+        return capitalToLine(annotation.name().trim().equals(StrInput.METHOD_NAME) ? instance.getClass().getSimpleName() : annotation.name());
+    }
+
+    /**
+     * Get aliases.
+     *
+     * @return the aliases
+     */
+    @Override
+    public @NotNull List<String> getAliases() {
+        ;
     }
 
     /**

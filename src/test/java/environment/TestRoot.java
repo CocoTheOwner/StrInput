@@ -16,12 +16,44 @@
  */
 package environment;
 
+import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrCategory;
+import nl.codevs.strinput.system.api.StrInput;
 
 /**
  * StrCategory test implementation.
  * @author Sjoerd van de Goor
  * @since v0.1
  */
+@StrInput(name = "test", description = "Test category")
 public class TestRoot implements StrCategory {
+
+    public static String stringAddResult;
+    public static int multResult;
+
+    @StrInput(name = "add", description = "Add two strings")
+    public void stringAddition(
+            @Param(
+                    description = "First string"
+            ) String stringOne,
+            @Param(
+                    description = "Second string",
+                    defaultValue = "Yeet"
+            ) String stringTwo
+    ) {
+        stringAddResult = stringOne + stringTwo;
+    }
+
+    @StrInput(name = "mult", description = "Multiply two integers")
+    public void multiplication(
+            @Param(
+                    description = "The first integer"
+            ) Integer i1,
+            @Param(
+                    description = "The second integer"
+            ) Integer i2
+    ) {
+        multResult = i1 * i2;
+    }
+
 }

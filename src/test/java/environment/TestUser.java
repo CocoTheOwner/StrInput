@@ -30,7 +30,19 @@ import java.util.List;
  */
 public class TestUser implements StrUser {
 
-    List<String> messages = new ArrayList<>();
+    public static TestUser SUT = new TestUser();
+
+    public List<String> messages = new ArrayList<>();
+
+    /**
+     * The name of the user (something to identify them by).
+     *
+     * @return the name of the user
+     */
+    @Override
+    public String getName() {
+        return "testUser";
+    }
 
     /**
      * Send a message to the sender.

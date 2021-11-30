@@ -64,18 +64,18 @@ public class StrSettings implements StrCategory {
     }
     public boolean debug = false;
 
-    @StrInput(description = "Whether to send debug messages on startup or not")
-    public void debugStartup(
+    @StrInput(description = "Whether to send debug messages on the time command running took")
+    public void setDebugTime(
             @Param(
                     description = "Whether to set this setting to true or false",
                     defaultValue = "toggle"
             )
                     Boolean enable
     ){
-        StrCenter.settings.debugStartup = enable == null ? !StrCenter.settings.debugStartup : enable;
-        user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("debugRuntime ").a(C.G).a("to: ").a(String.valueOf(StrCenter.settings.debugStartup)));
+        StrCenter.settings.debugTime = enable == null ? !StrCenter.settings.debugTime : enable;
+        user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("debugTime ").a(C.G).a("to: ").a(String.valueOf(StrCenter.settings.debugTime)));
     }
-    public boolean debugStartup;
+    public boolean debugTime;
 
     @StrInput(description = "Whether to debug matching or not. This is also ran on tab completion.")
     public void debugMatching(

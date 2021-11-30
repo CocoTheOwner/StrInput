@@ -19,10 +19,12 @@ package nl.codevs.strinput.system.api;
 
 import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.context.StrContextHandler;
+import nl.codevs.strinput.system.context.StrUserContext;
 import nl.codevs.strinput.system.parameter.*;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
+import org.apache.commons.lang.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -43,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class StrCenter {
     public static StrSettings settings;
     final StrUser console;
-    final StrRoots commandMap;
+    final StrRoots roots;
     public final StrParameter parameter;
     public final StrContext context;
 
@@ -90,7 +92,7 @@ public abstract class StrCenter {
         context = new StrContext(contextHandlers);
 
         // Command map (roots)
-        commandMap = new StrRoots(enableSettingsCommands, rootCommands, this);
+        roots = new StrRoots(enableSettingsCommands, rootCommands, this);
     }
 
     /**
@@ -125,8 +127,39 @@ public abstract class StrCenter {
      * @return true if successful
      */
     public boolean onCommand(List<String> command, StrUser user) {
-        user.sendMessage(new Str("You sent command: ", command.toString()));
-        user.sendMessage(new Str("And most likely category is: ").a(C.Y).a(commandMap.get(command.get(0)).getName()));
+        Thread async = new Thread(() -> {
+            StopWatch s = new StopWatch();
+
+            if (settings.debugTime) {
+                s.start();
+            }
+            settings = settings.hotload(console);
+
+            List<String> arguments = new ArrayList<>();
+            command.forEach(c -> {
+                if (!c.isBlank()) {
+                    arguments.add(c);
+                }
+            });
+            String mainCommand = arguments.remove(0);
+
+            StrUserContext.touch(user);
+
+            StrVirtualCategory root = roots.get(mainCommand);
+
+            if (root == null) {
+                user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.Y).a(mainCommand));
+                user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
+                debug(new Str(C.G).a("Command sent by ").a(C.Y).a(user.getName()).a(C.G).a(" took ").a(C.Y).a(String.valueOf(s.getTime())));
+                return;
+            }
+
+            root
+
+
+        });
+        user.sendMessage(new Str("You sent command: ").a(C.Y).a(command.toString()));
+        user.sendMessage(new Str("And most likely category is: ").a(C.Y).a(roots.get(command.get(0)).getName()));
         return true;
     }
 
@@ -200,7 +233,7 @@ public abstract class StrCenter {
             });
 
             // Debug startup
-            if (StrCenter.settings.debugStartup) {
+            if (StrCenter.settings.debugTime) {
                 if (rootInstancesSuccess.isEmpty()) {
                     center.debug(new Str(C.R).a("No successful root instances registered. Did you register all commands in the creator? Are they all annotated?"));
                 } else {

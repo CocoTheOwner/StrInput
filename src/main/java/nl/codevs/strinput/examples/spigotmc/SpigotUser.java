@@ -17,7 +17,6 @@
 
 package nl.codevs.strinput.examples.spigotmc;
 
-import nl.codevs.strinput.system.StrSoundEffect;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
@@ -46,6 +45,16 @@ public class SpigotUser implements StrUser {
 
     public SpigotUser(Player player) {
         this.player = player;
+    }
+
+    /**
+     * The name of the user (something to identify them by).
+     *
+     * @return the name of the user
+     */
+    @Override
+    public String getName() {
+        return player.getName();
     }
 
     /**

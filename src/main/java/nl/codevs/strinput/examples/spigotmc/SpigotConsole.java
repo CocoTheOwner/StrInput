@@ -17,7 +17,6 @@
 
 package nl.codevs.strinput.examples.spigotmc;
 
-import nl.codevs.strinput.system.StrSoundEffect;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;

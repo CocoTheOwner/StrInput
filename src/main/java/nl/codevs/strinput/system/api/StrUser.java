@@ -30,6 +30,13 @@ import java.util.List;
  * @since v0.1
  */
 public interface StrUser {
+
+    /**
+     * The name of the user (something to identify them by).
+     * @return the name of the user
+     */
+    String getName();
+
     /**
      * Send a message to the sender.
      * @param message the message to send
