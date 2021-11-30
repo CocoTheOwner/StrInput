@@ -23,6 +23,8 @@ import nl.codevs.strinput.system.context.StrUserContext;
 /**
  * Command and/or command category interface.
  * Register commands in your
+ * @author Sjoerd van de Goor
+ * @since v0.1
  */
 public interface StrCategory {
 

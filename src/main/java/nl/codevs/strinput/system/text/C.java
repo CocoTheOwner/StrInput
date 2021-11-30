@@ -19,6 +19,8 @@ package nl.codevs.strinput.system.text;
 
 /**
  * Colors.
+ * @author Sjoerd van de Goor
+ * @since v0.1
  */
 public class C extends Str.Component {
     public static final String COLOR_PREFIX = "$";

@@ -1,0 +1,1 @@
+package nl.codevs.strinput.examples.spigotmc.extensions;

@@ -1,14 +1,34 @@
+/*
+ * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * Copyright (c) 2021 Sjoerd van de Goor.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package tests;
 
 import environment.TestCenter;
 import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.exception.StrParseException;
 import nl.codevs.strinput.system.exception.StrWhichException;
-import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Handler test cases.
+ * @author Sjoerd van de Goor
+ * @since v0.1
+ */
 public class TestHandlers {
     private static final TestCenter SUT = TestCenter.SUT;
 
@@ -16,7 +36,7 @@ public class TestHandlers {
     public void testHandlerBoolean() {
         Boolean value = null;
         try {
-            value = (Boolean) SUT.parameter.getHandler(boolean.class).parseSafe("true");
+            value = (Boolean) SUT.parameter.getHandler(Boolean.class).parseSafe("true");
         } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
             e.printStackTrace();
         }
