@@ -17,6 +17,7 @@
 
 package nl.codevs.strinput.examples.spigotmc;
 
+import nl.codevs.strinput.system.StrSoundEffect;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
@@ -58,5 +59,15 @@ public class SpigotConsole implements StrUser {
     @Override
     public boolean supportsClickables() {
         return false;
+    }
+
+    /**
+     * Play a sound effect
+     *
+     * @param sfx the sound effect type
+     */
+    @Override
+    public void playSound(StrSoundEffect sfx) {
+
     }
 }

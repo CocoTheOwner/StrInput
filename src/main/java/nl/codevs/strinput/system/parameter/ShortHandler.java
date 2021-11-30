@@ -15,21 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.List;
 
 /**
- * Boolean handler.
+ * Short handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class BooleanHandler implements StrParameterHandler<Boolean> {
+public final class ShortHandler implements StrParameterHandler<Short> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -37,8 +37,8 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      * @return a list of possibilities
      */
     @Override
-    public List<Boolean> getPossibilities() {
-        return Arrays.asList(true, false);
+    public List<Short> getPossibilities() {
+        return null;
     }
 
     /**
@@ -50,7 +50,7 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Boolean.class) || type.equals(boolean.class);
+        return type.equals(Short.class) || type.equals(short.class);
     }
 
     /**
@@ -60,45 +60,17 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
      *     <li>{@link StrParseException} to indicate parsing problems</li>
      * </ul>
+     *
      * @param text the string to parse
+     *
      * @return an instance of this type parsed from the string
+     *
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Boolean parse(@NotNull String text) throws StrParseException, StrWhichException {
-        text = text.toLowerCase(Locale.ROOT);
-        for (String fls : FALSES) {
-            if (text.equals(fls)) {
-                return false;
-            }
-        }
-        for (String fls : TRUES) {
-            if (text.equals(fls)) {
-                return true;
-            }
-        }
-        throw new StrParseException(Boolean.class, text, "Cannot map to true or false");
+    public @NotNull Short parse(@NotNull String text) throws Throwable {
+        return Short.parseShort(text);
     }
-
-    /**
-     * True options.
-     */
-    public static final String[] TRUES = new String[]{
-            "true",
-            "t",
-            "yes",
-            "+"
-    };
-
-    /**
-     * False options.
-     */
-    public static final String[] FALSES = new String[]{
-            "false",
-            "f",
-            "no",
-            "-"
-    };
 
     /**
      * Get a random default value.
@@ -107,6 +79,6 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return RANDOM.nextBoolean() ? "true" : "false";
+        return String.valueOf((short) RANDOM.nextInt(Short.MAX_VALUE * 2) - Short.MIN_VALUE);
     }
 }

@@ -19,7 +19,7 @@ package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.contexts.StrContextHandler;
+import nl.codevs.strinput.system.context.StrContextHandler;
 import org.bukkit.entity.Player;
 
 /**

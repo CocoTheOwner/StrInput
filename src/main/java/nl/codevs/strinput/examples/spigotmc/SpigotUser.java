@@ -18,9 +18,11 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 import lombok.Getter;
+import nl.codevs.strinput.system.StrSoundEffect;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -33,8 +35,15 @@ import java.util.List;
  */
 public class SpigotUser implements StrUser {
 
-    @Getter
     private final Player player;
+
+    /**
+     * Get the player.
+     * @return the player
+     */
+    public Player getPlayer() {
+        return player;
+    }
 
     public SpigotUser(Player player) {
         this.player = player;
@@ -69,6 +78,35 @@ public class SpigotUser implements StrUser {
     @Override
     public boolean supportsClickables() {
         return true;
+    }
+
+    /**
+     * Play a sound effect
+     *
+     * @param sfx the sound effect type
+     */
+    @Override
+    public void playSound(StrSoundEffect sfx) {
+        switch (sfx) {
+//.         case SUCCESSFUL_TAB ->
+//.             player.playSound(Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.25f, Maths.frand(0.125f, 1.95f));
+//.         case FAILED_TAB ->
+//.             player.playSound(Sound.BLOCK_AMETHYST_BLOCK_BREAK, 0.25f, Maths.frand(0.125f, 1.95f));
+            case SUCCESSFUL_COMMAND -> {
+                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_CLUSTER_BREAK, 0.77f, 1.65f);
+                player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 0.125f, 2.99f);
+            }
+            case FAILED_COMMAND -> {
+                player.playSound(player.getLocation(), Sound.BLOCK_ANCIENT_DEBRIS_BREAK, 1f, 0.25f);
+                player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE, 0.2f, 1.95f);
+            }
+            case SUCCESSFUL_PICKED ->
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.125f, 1.99f);
+            case FAILED_PICKED -> {
+                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_CLUSTER_BREAK, 0.77f, 0.65f);
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.125f, 1.99f);
+            }
+        }
     }
 
     /**

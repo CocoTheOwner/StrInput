@@ -19,7 +19,7 @@ package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrCenter;
-import  nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 
@@ -84,7 +84,7 @@ public final class StrVirtualCommand {
      */
     private List<StrVirtualParameter> setupParameters() {
         List<StrVirtualParameter> parameters = new ArrayList<>();
-        Arrays.stream(method.getParameters()).filter(p -> p.isAnnotationPresent(Param.class)).forEach(p -> parameters.add(new StrVirtualParameter(p)));
+        Arrays.stream(method.getParameters()).filter(p -> p.isAnnotationPresent(Param.class)).forEach(p -> parameters.add(new StrVirtualParameter(p, center)));
         return parameters;
     }
 }

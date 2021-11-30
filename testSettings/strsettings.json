@@ -1,0 +1,40 @@
+{
+  "allowNullInput": false,
+  "debug": false,
+  "debugStartup": false,
+  "debugMatching": true,
+  "nullOnFailure": false,
+  "pickFirstOnMultiple": false,
+  "prefix": {
+    "text": [
+      {
+        "value": "$red",
+        "type": "COLOR"
+      },
+      {
+        "value": "[",
+        "type": "TEXT"
+      },
+      {
+        "value": "$green",
+        "type": "COLOR"
+      },
+      {
+        "value": "Decree",
+        "type": "TEXT"
+      },
+      {
+        "value": "$red",
+        "type": "COLOR"
+      },
+      {
+        "value": "]",
+        "type": "TEXT"
+      },
+      {
+        "value": "$reset",
+        "type": "COLOR"
+      }
+    ]
+  }
+}

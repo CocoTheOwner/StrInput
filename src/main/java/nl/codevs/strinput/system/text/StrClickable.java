@@ -79,7 +79,7 @@ public class StrClickable extends Str {
      */
     public StrClickable(List<String> options, CompletableFuture<String> toComplete, Component... messageText) {
         super(messageText);
-        long password = random.nextLong(Long.MAX_VALUE / 2, Long.MAX_VALUE);
+        long password = (Long.MAX_VALUE - 1) / 2 + random.nextInt(Integer.MAX_VALUE);
         options.forEach(o -> optionsList.add(new Option(o, password)));
         FUTURES.put(password, toComplete);
     }
@@ -92,7 +92,7 @@ public class StrClickable extends Str {
      */
     public StrClickable(List<String> options, CompletableFuture<String> toComplete, List<Component> messageText) {
         super(messageText);
-        long password = random.nextLong(Long.MAX_VALUE / 2, Long.MAX_VALUE);
+        long password = (Long.MAX_VALUE - 1) / 2 + random.nextInt(Integer.MAX_VALUE);
         options.forEach(o -> optionsList.add(new Option(o, password)));
         FUTURES.put(password, toComplete);
     }
@@ -105,7 +105,7 @@ public class StrClickable extends Str {
      */
     public StrClickable(List<String> options, CompletableFuture<String> toComplete, String... messageText) {
         super(messageText);
-        long password = random.nextLong(Long.MAX_VALUE / 2, Long.MAX_VALUE);
+        long password = (Long.MAX_VALUE - 1) / 2 + random.nextInt(Integer.MAX_VALUE);
         options.forEach(o -> optionsList.add(new Option(o, password)));
         FUTURES.put(password, toComplete);
     }

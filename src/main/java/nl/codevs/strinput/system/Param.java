@@ -67,7 +67,7 @@ public @interface Param {
 
     /**
      * Attempts to dynamically pull context from the user, default data or something else for supported types.</br>
-     * Requires a context handler in {@link nl.codevs.strinput.system.contexts}
+     * Requires a context handler in {@link nl.codevs.strinput.system.context}
      */
     boolean contextual() default false;
 }

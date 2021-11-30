@@ -17,16 +17,12 @@
 
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
-import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
-import nl.codevs.strinput.system.parameters.StrParameterHandler;
-import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.text.StrClickable;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +89,7 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return getPossibilities().get(RANDOM.nextInt(getPossibilities().size() - 1)).getName();
+        return getPossibilities().get(RANDOM.nextInt(getPossibilities().size())).getName();
     }
 
     /**

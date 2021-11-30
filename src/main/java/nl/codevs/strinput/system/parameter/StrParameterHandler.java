@@ -15,10 +15,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -115,6 +115,7 @@ public interface StrParameterHandler<T> {
      * @param input the input string
      * @return the string representation of this type
      */
+    @SuppressWarnings("unchecked")
     @NotNull default String toStringForce(@NotNull Object input) {
         return toString((T) input);
     }

@@ -18,7 +18,7 @@
 package nl.codevs.strinput.system;
 
 
-import nl.codevs.strinput.system.contexts.StrUserContext;
+import nl.codevs.strinput.system.context.StrUserContext;
 
 /**
  * Command and/or command category interface.

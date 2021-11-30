@@ -1,7 +1,7 @@
-package nl.codevs.strinput.system.exceptions;
+package nl.codevs.strinput.system.exception;
 
 import lombok.Getter;
-import nl.codevs.strinput.system.contexts.StrContextHandler;
+import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 

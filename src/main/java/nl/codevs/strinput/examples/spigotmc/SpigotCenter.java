@@ -24,12 +24,14 @@ import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldHandler;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.contexts.StrContextHandler;
-import nl.codevs.strinput.system.parameters.StrParameterHandler;
+import nl.codevs.strinput.system.context.StrContextHandler;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import javax.management.InstanceAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +45,18 @@ public class SpigotCenter extends StrCenter {
     /**
      * Create a new spigot command center.
      *
+     * @param plugin the plugin running this command system ({@code this})
      * @param consoleUser  the console ({@link StrUser})
+     * @param enableSettingsCommands if set to true, enables commands for the system's settings
      * @param rootCommands array of root commands (usually only 1, your main command)
      */
-    public SpigotCenter(StrUser consoleUser, StrCategory... rootCommands) {
+    public SpigotCenter(
+            final Plugin plugin,
+            final StrUser consoleUser,
+            final boolean enableSettingsCommands,
+            final StrCategory... rootCommands) throws InstanceAlreadyExistsException {
         super(
+                plugin.getDataFolder(),
                 consoleUser,
                 new StrParameterHandler<?>[]{
                         new SpigotPlayerHandler(),
@@ -57,6 +66,7 @@ public class SpigotCenter extends StrCenter {
                         new SpigotPlayerContext(),
                         new SpigotWorldContext()
                 },
+                enableSettingsCommands,
                 rootCommands
         );
     }

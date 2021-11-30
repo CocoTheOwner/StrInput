@@ -15,20 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
-import nl.codevs.strinput.system.exceptions.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
- * Double handler.
+ * Boolean handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class DoubleHandler implements StrParameterHandler<Double> {
+public final class BooleanHandler implements StrParameterHandler<Boolean> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -36,8 +37,8 @@ public final class DoubleHandler implements StrParameterHandler<Double> {
      * @return a list of possibilities
      */
     @Override
-    public List<Double> getPossibilities() {
-        return null;
+    public List<Boolean> getPossibilities() {
+        return Arrays.asList(true, false);
     }
 
     /**
@@ -49,7 +50,7 @@ public final class DoubleHandler implements StrParameterHandler<Double> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Double.class) || type.equals(double.class);
+        return type.equals(Boolean.class) || type.equals(boolean.class);
     }
 
     /**
@@ -64,9 +65,40 @@ public final class DoubleHandler implements StrParameterHandler<Double> {
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Double parse(@NotNull String text) throws Throwable {
-        return Double.parseDouble(text);
+    public @NotNull Boolean parse(@NotNull String text) throws StrParseException, StrWhichException {
+        text = text.toLowerCase(Locale.ROOT);
+        for (String fls : FALSES) {
+            if (text.equals(fls)) {
+                return false;
+            }
+        }
+        for (String fls : TRUES) {
+            if (text.equals(fls)) {
+                return true;
+            }
+        }
+        throw new StrParseException(Boolean.class, text, "Cannot map to true or false");
     }
+
+    /**
+     * True options.
+     */
+    public static final String[] TRUES = new String[]{
+            "true",
+            "t",
+            "yes",
+            "+"
+    };
+
+    /**
+     * False options.
+     */
+    public static final String[] FALSES = new String[]{
+            "false",
+            "f",
+            "no",
+            "-"
+    };
 
     /**
      * Get a random default value.
@@ -75,6 +107,6 @@ public final class DoubleHandler implements StrParameterHandler<Double> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return String.valueOf(RANDOM.nextDouble());
+        return RANDOM.nextBoolean() ? "true" : "false";
     }
 }

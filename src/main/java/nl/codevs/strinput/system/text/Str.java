@@ -20,6 +20,7 @@ package nl.codevs.strinput.system.text;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Messages passing through the system.
@@ -40,7 +41,7 @@ public class Str {
      * @param messageText vararg message components forming the text.
      */
     public Str(Component... messageText) {
-        text = List.of(messageText);
+        text = new ArrayList<>(List.of(messageText));
     }
 
     /**
@@ -68,8 +69,8 @@ public class Str {
      * @return ordered text components of a type in {@code types}
      */
     public List<Component> getText(ComponentType... types) {
-        List<ComponentType> typesList = Arrays.asList(types);
-        return text.stream().filter(c -> typesList.contains(c.type)).toList();
+        List<ComponentType> typesList = new ArrayList<>(List.of(types));
+        return text.stream().filter(c -> typesList.contains(c.type)).collect(Collectors.toList());
     }
 
     /**

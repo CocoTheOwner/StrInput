@@ -15,20 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exceptions.*;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * Float handler.
+ * Long handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class FloatHandler implements StrParameterHandler<Float> {
+public final class LongHandler implements StrParameterHandler<Long> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -36,7 +37,7 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      * @return a list of possibilities
      */
     @Override
-    public List<Float> getPossibilities() {
+    public List<Long> getPossibilities() {
         return null;
     }
 
@@ -49,7 +50,7 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Float.class) || type.equals(float.class);
+        return type.equals(Long.class) || type.equals(long.class);
     }
 
     /**
@@ -67,8 +68,8 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Float parse(@NotNull String text) throws Throwable {
-        return Float.parseFloat(text);
+    public @NotNull Long parse(@NotNull String text) throws Throwable {
+        return Long.parseLong(text);
     }
 
     /**
@@ -78,6 +79,6 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return String.valueOf(RANDOM.nextFloat());
+        return String.valueOf(RANDOM.nextLong());
     }
 }

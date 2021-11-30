@@ -20,10 +20,10 @@ package nl.codevs.strinput.system.virtual;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrCenter;
-import nl.codevs.strinput.system.exceptions.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
-import nl.codevs.strinput.system.parameters.StrParameterHandler;
+import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -53,13 +53,19 @@ public final class StrVirtualParameter {
      * Example cache.
      */
     private final AtomicCache<List<String>> exampleCache = new AtomicCache<>();
+    /**
+     * Command center.
+     */
+    private final StrCenter center;
 
     /**
      * Create a virtual parameter.<br>
      * Assumes {@code parameter} is annotated by @{@link Param}.
      * @param parameter the parameter
+     * @param center the command center
      */
-    public StrVirtualParameter(Parameter parameter) {
+    public StrVirtualParameter(Parameter parameter, StrCenter center) {
+        this.center = center;
         this.parameter = parameter;
         this.param = parameter.getDeclaredAnnotation(Param.class);
     }
@@ -71,7 +77,7 @@ public final class StrVirtualParameter {
     public StrParameterHandler<?> getHandler() {
         return handlerCache.acquire(() -> {
             try {
-                return StrCenter.getHandler(parameter.getType());
+                return center.parameter.getHandler(parameter.getType());
             } catch (StrNoParameterHandlerException e) {
                 e.printStackTrace();
             }
@@ -184,7 +190,7 @@ public final class StrVirtualParameter {
 
     /**
      * Get if the parameter is contextual.
-     * Make sure there is a {@link nl.codevs.strinput.system.contexts.StrContextHandler} available for this type.
+     * Make sure there is a {@link nl.codevs.strinput.system.context.StrContextHandler} available for this type.
      * @return true if the parameter is contextual
      */
     public boolean isContextual() {

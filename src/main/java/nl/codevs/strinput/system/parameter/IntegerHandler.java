@@ -15,21 +15,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Long handler.
+ * Integer parameter handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class LongHandler implements StrParameterHandler<Long> {
+public final class IntegerHandler implements StrParameterHandler<Integer> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -37,7 +38,7 @@ public final class LongHandler implements StrParameterHandler<Long> {
      * @return a list of possibilities
      */
     @Override
-    public List<Long> getPossibilities() {
+    public List<Integer> getPossibilities() {
         return null;
     }
 
@@ -50,7 +51,7 @@ public final class LongHandler implements StrParameterHandler<Long> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Long.class) || type.equals(long.class);
+        return type.equals(Integer.class) || type.equals(int.class);
     }
 
     /**
@@ -60,25 +61,47 @@ public final class LongHandler implements StrParameterHandler<Long> {
      *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
      *     <li>{@link StrParseException} to indicate parsing problems</li>
      * </ul>
-     *
      * @param text the string to parse
-     *
      * @return an instance of this type parsed from the string
-     *
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Long parse(@NotNull String text) throws Throwable {
-        return Long.parseLong(text);
+    public @NotNull Integer parse(@NotNull String text) throws Throwable {
+        AtomicReference<String> r = new AtomicReference<>(text);
+        return (int) (Integer.valueOf(r.get()).doubleValue() * getMultiplier(r));
     }
+
+
+    /**
+     * Parse an instance of this type to a string.
+     *
+     * @param input the input string
+     *
+     * @return the string representation of an instance of this type
+     */
+    @Override
+    public @NotNull String toString(@NotNull Integer input) {
+        return input.toString();
+    }
+
+    /**
+     * Defaults.
+     */
+    private static final Integer[] DEFAULTS = new Integer[]{
+            1,
+            10,
+            42,
+            69,
+            420
+    };
 
     /**
      * Get a random default value.
      *
-     * @return the random default
+     * @return the random default.
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return String.valueOf(RANDOM.nextLong());
+        return DEFAULTS[RANDOM.nextInt(DEFAULTS.length)].toString();
     }
 }

@@ -15,21 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * Short handler.
+ * Byte handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class ShortHandler implements StrParameterHandler<Short> {
+public final class ByteHandler implements StrParameterHandler<Byte> {
+
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -37,7 +36,7 @@ public final class ShortHandler implements StrParameterHandler<Short> {
      * @return a list of possibilities
      */
     @Override
-    public List<Short> getPossibilities() {
+    public List<Byte> getPossibilities() {
         return null;
     }
 
@@ -50,26 +49,21 @@ public final class ShortHandler implements StrParameterHandler<Short> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Short.class) || type.equals(short.class);
+        return type.equals(Byte.class) || type.equals(byte.class);
     }
 
     /**
-     * Parse a string to this type.<br>
-     * You can throw:
-     * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
-     * </ul>
+     * Parse a string to this type.
      *
      * @param text the string to parse
      *
      * @return an instance of this type parsed from the string
      *
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable         when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Short parse(@NotNull String text) throws Throwable {
-        return Short.parseShort(text);
+    public @NotNull Byte parse(@NotNull String text) throws Throwable {
+        return Byte.parseByte(text);
     }
 
     /**
@@ -79,6 +73,6 @@ public final class ShortHandler implements StrParameterHandler<Short> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return String.valueOf((short) RANDOM.nextInt(Short.MIN_VALUE, Short.MAX_VALUE));
+        return String.valueOf(RANDOM.nextInt(Byte.MAX_VALUE * 2) - Byte.MIN_VALUE);
     }
 }

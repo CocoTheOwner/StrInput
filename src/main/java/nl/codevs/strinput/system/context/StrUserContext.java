@@ -15,14 +15,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.contexts;
+package nl.codevs.strinput.system.context;
 
-import lombok.Getter;
-import lombok.Setter;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.exceptions.StrNoContextHandlerException;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 

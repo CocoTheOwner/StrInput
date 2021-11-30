@@ -25,6 +25,7 @@ public class C extends Str.Component {
     public static final C R = new C("red");
     public static final C G = new C("green");
     public static final C B = new C("blue");
+    public static final C Y = new C("yellow");
     public static final C GOLD = new C("gold");
     public static final C RESET = new C("reset");
 

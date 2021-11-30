@@ -15,22 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
+import nl.codevs.strinput.system.exception.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * String handler.
+ * Float handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class StringHandler implements StrParameterHandler<String> {
-
+public final class FloatHandler implements StrParameterHandler<Float> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -38,7 +36,7 @@ public final class StringHandler implements StrParameterHandler<String> {
      * @return a list of possibilities
      */
     @Override
-    public List<String> getPossibilities() {
+    public List<Float> getPossibilities() {
         return null;
     }
 
@@ -51,7 +49,7 @@ public final class StringHandler implements StrParameterHandler<String> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(String.class);
+        return type.equals(Float.class) || type.equals(float.class);
     }
 
     /**
@@ -69,16 +67,9 @@ public final class StringHandler implements StrParameterHandler<String> {
      * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull String parse(@NotNull String text) throws Throwable {
-        return text;
+    public @NotNull Float parse(@NotNull String text) throws Throwable {
+        return Float.parseFloat(text);
     }
-
-    private static final String[] DEFAULTS = new String[]{
-            "text",
-            "something",
-            "hello!",
-            "option"
-    };
 
     /**
      * Get a random default value.
@@ -87,6 +78,6 @@ public final class StringHandler implements StrParameterHandler<String> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return DEFAULTS[RANDOM.nextInt(0, DEFAULTS.length - 1)];
+        return String.valueOf(RANDOM.nextFloat());
     }
 }

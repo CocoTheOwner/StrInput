@@ -15,16 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.exceptions;
+package nl.codevs.strinput.system.exception;
 
 /**
- * Exception for when no context handlers exist.
+ * Exception thrown when no parameter handler could be found.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class StrNoContextHandlerException extends Exception {
-    public StrNoContextHandlerException(String message) {
-        super(message);
+public class StrNoParameterHandlerException extends Exception {
+    public StrNoParameterHandlerException(Class<?> type) {
+        super("Could not find parameter handler for: " + type.getSimpleName());
     }
 }

@@ -1,10 +1,10 @@
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.contexts.StrUserContext;
-import nl.codevs.strinput.system.exceptions.StrParseException;
-import nl.codevs.strinput.system.exceptions.StrWhichException;
-import nl.codevs.strinput.system.parameters.StrParameterHandler;
+import nl.codevs.strinput.system.context.StrUserContext;
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +70,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return getPossibilities().get(RANDOM.nextInt(getPossibilities().size() - 1)).getName();
+        return getPossibilities().get(RANDOM.nextInt(getPossibilities().size())).getName();
     }
 
     /**

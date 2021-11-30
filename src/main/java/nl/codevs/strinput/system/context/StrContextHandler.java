@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.contexts;
+package nl.codevs.strinput.system.context;
 
 import nl.codevs.strinput.system.StrUser;
 

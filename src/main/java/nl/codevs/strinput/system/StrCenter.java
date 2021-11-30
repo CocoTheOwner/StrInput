@@ -17,12 +17,14 @@
 
 package nl.codevs.strinput.system;
 
-import nl.codevs.strinput.system.contexts.StrContextHandler;
-import nl.codevs.strinput.system.exceptions.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.parameters.*;
+import nl.codevs.strinput.system.context.StrContextHandler;
+import nl.codevs.strinput.system.parameter.*;
+import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import javax.management.InstanceAlreadyExistsException;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -34,103 +36,80 @@ import java.util.List;
  * @since v0.1
  */
 public abstract class StrCenter {
-    final StrCategory[] commands;
+    public static StrSettings settings;
     final StrUser console;
+    final StrRoots commandMap;
+    public final StrParameter parameter;
+    public final StrContext context;
 
     /**
      * Create a new command center.<br>
      * Make sure to point command calls to {@link #onCommand(List, StrUser)}
+     * @param settingsFolder the settings folder for this system (settings file stored as {@code strconfig.json})
      * @param consoleUser the console ({@link StrUser})
      * @param parameterHandlers additional parameter handlers
      * @param contextHandlers additional context handlers
+     * @param enableSettingsCommands if set to true, enables commands for the system's settings
      * @param rootCommands array of root commands (usually only 1, your main command)
+     *
+     * @throws InstanceAlreadyExistsException when this command system is already running
      */
     public StrCenter(
-            final StrUser consoleUser,
-            final StrParameterHandler<?>[] parameterHandlers,
-            final StrContextHandler<?>[] contextHandlers,
-            final StrCategory... rootCommands
-    ) {
-        commands = rootCommands;
+            @NotNull final File settingsFolder,
+            @NotNull final StrUser consoleUser,
+            @NotNull final StrParameterHandler<?>[] parameterHandlers,
+            @NotNull final StrContextHandler<?>[] contextHandlers,
+                     final boolean enableSettingsCommands,
+            @NotNull final StrCategory... rootCommands
+    ) throws InstanceAlreadyExistsException {
+        if (settings != null) {
+            throw new InstanceAlreadyExistsException();
+        }
+
+        // Fields
+        settings = StrSettings.fromConfigJson(new File(settingsFolder.getAbsolutePath() + "/strsettings.json"), consoleUser);
         console = consoleUser;
 
-        for (StrParameterHandler<?> parameterHandler : parameterHandlers) {
-            addParameterHandler(parameterHandler);
-        }
+        // Handlers
+        parameter = new StrParameter(parameterHandlers);
+        parameter.addAll(List.of(
+                new BooleanHandler(),
+                new ByteHandler(),
+                new DoubleHandler(),
+                new FloatHandler(),
+                new IntegerHandler(),
+                new LongHandler(),
+                new ShortHandler(),
+                new StringHandler()
+        ));
+        context = new StrContext(contextHandlers);
 
-        for (StrContextHandler<?> contextHandler : contextHandlers) {
-            addContextHandler(contextHandler);
-        }
+        // Command map (roots)
+        commandMap = new StrRoots(enableSettingsCommands, rootCommands, this);
     }
 
     /**
      * Create a new command center.<br>
      * Make sure to point command calls to {@link #onCommand(List, StrUser)}
-     * @param rootCommands array of root commands (usually only 1, your main command)
+     * @param settingsFolder the settings folder for this system (settings file stored as {@code strconfig.json})
      * @param consoleUser the console ({@link StrUser})
+     * @param rootCommands array of root commands (usually only 1, your main command)
+     *
+     * @throws InstanceAlreadyExistsException when this command system is already running
      */
     public StrCenter(
-            final StrCategory[] rootCommands,
-            final StrUser consoleUser
-    ) {
+            @NotNull final File settingsFolder,
+            @NotNull final StrUser consoleUser,
+            @NotNull final StrCategory... rootCommands
+    ) throws InstanceAlreadyExistsException {
         this(
+                settingsFolder,
                 consoleUser,
                 new StrParameterHandler<?>[0],
                 new StrContextHandler<?>[0],
+                true,
                 rootCommands
         );
-    }
-
-    /**
-     * Parameter handlers registry.
-     */
-    public static final List<StrParameterHandler<?>> PARAMETER_HANDLERS = new ArrayList<>();
-
-    /**
-     * Add a parameter handler.
-     * @param handler the handler to add
-     */
-    public static void addParameterHandler(StrParameterHandler<?> handler) {
-        PARAMETER_HANDLERS.add(handler);
-    }
-
-    /**
-     * Get handler for a type.
-     * @param type the type to get the handler for
-     * @return the parameter handler for the type
-     * @throws StrNoParameterHandlerException if no parameter handler could be found
-     */
-    public static StrParameterHandler<?> getHandler(Class<?> type) throws StrNoParameterHandlerException {
-        for (StrParameterHandler<?> parameterHandler : PARAMETER_HANDLERS) {
-            if (parameterHandler.supports(type)) {
-                return parameterHandler;
-            }
-        }
-        throw new StrNoParameterHandlerException(type);
-    }
-
-    static {
-        addParameterHandler(new BooleanHandler());
-        addParameterHandler(new ByteHandler());
-        addParameterHandler(new DoubleHandler());
-        addParameterHandler(new FloatHandler());
-        addParameterHandler(new IntegerHandler());
-        addParameterHandler(new LongHandler());
-        addParameterHandler(new ShortHandler());
-        addParameterHandler(new StringHandler());
-    }
-
-    /**
-     * StrUserContext handlers registry
-     */
-    public static final List<StrContextHandler<?>> CONTEXT_HANDLERS = new ArrayList<>();
-
-    /**
-     * Add a parameter handler.
-     * @param handler the handler to add
-     */
-    public static void addContextHandler(StrContextHandler<?> handler) {
-        CONTEXT_HANDLERS.add(handler);
     }
 
     /**
@@ -142,6 +121,7 @@ public abstract class StrCenter {
      */
     public boolean onCommand(List<String> command, StrUser user) {
         user.sendMessage(new Str("You sent command: ", command.toString()));
+        user.sendMessage(new Str("And most likely category is: ").a(C.Y).a(commandMap.get(command.get(0)).getName()));
         return true;
     }
 
@@ -150,11 +130,7 @@ public abstract class StrCenter {
      * @param messages the debug message(s)
      */
     public void debug(Str... messages) {
-        if (messages.length == 1) {
-            console.sendMessage(messages[0]);
-        } else {
-            console.sendMessage(messages);
-        }
+        console.sendMessage(messages);
     }
 
     /**
@@ -164,4 +140,5 @@ public abstract class StrCenter {
     public void debug(String message) {
         debug(new Str(message));
     }
+
 }

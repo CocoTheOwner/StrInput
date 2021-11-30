@@ -1,4 +1,4 @@
-package nl.codevs.strinput.system.exceptions;
+package nl.codevs.strinput.system.exception;
 
 import lombok.Getter;
 

@@ -15,19 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.parameters;
+package nl.codevs.strinput.system.parameter;
 
+import nl.codevs.strinput.system.exception.StrParseException;
+import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * Byte handler.
+ * String handler.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class ByteHandler implements StrParameterHandler<Byte> {
+public final class StringHandler implements StrParameterHandler<String> {
 
     /**
      * Get all possible values for this type.<br>
@@ -36,7 +38,7 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      * @return a list of possibilities
      */
     @Override
-    public List<Byte> getPossibilities() {
+    public List<String> getPossibilities() {
         return null;
     }
 
@@ -49,22 +51,34 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      */
     @Override
     public boolean supports(@NotNull Class<?> type) {
-        return type.equals(Byte.class) || type.equals(byte.class);
+        return type.equals(String.class);
     }
 
     /**
-     * Parse a string to this type.
+     * Parse a string to this type.<br>
+     * You can throw:
+     * <ul>
+     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     * </ul>
      *
      * @param text the string to parse
      *
      * @return an instance of this type parsed from the string
      *
-     * @throws Throwable         when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Byte parse(@NotNull String text) throws Throwable {
-        return Byte.parseByte(text);
+    public @NotNull String parse(@NotNull String text) throws Throwable {
+        return text;
     }
+
+    private static final String[] DEFAULTS = new String[]{
+            "text",
+            "something",
+            "hello!",
+            "option"
+    };
 
     /**
      * Get a random default value.
@@ -73,6 +87,6 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return String.valueOf(RANDOM.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE));
+        return DEFAULTS[RANDOM.nextInt(DEFAULTS.length)];
     }
 }

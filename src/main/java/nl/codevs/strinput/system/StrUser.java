@@ -67,4 +67,10 @@ public interface StrUser {
             sendMessage(message);
         }
     }
+
+    /**
+     * Play a sound effect
+     * @param sfx the sound effect type
+     */
+    void playSound(StrSoundEffect sfx);
 }

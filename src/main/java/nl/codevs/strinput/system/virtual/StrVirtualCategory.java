@@ -21,7 +21,6 @@ import lombok.Getter;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.StrInput;
-import nl.codevs.strinput.system.exceptions.StrNoAnnotationException;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 
@@ -91,6 +90,24 @@ public final class StrVirtualCategory {
         this.subCats = setupSubCats();
     }
 
+    /**
+     * Get category name.
+     * @return the category name
+     */
+    public String getName() {
+        return annotation.name().trim().equals(StrInput.METHOD_NAME) ? instance.getClass().getSimpleName() : annotation.name();
+    }
+
+    /**
+     * Get category names (including aliases).
+     * @return the category names
+     */
+    public List<String> getNames() {
+        List<String> names = new ArrayList<>();
+        names.add(getName());
+        names.addAll(List.of(annotation.aliases()));
+        return names;
+    }
 
     /**
      * Calculate {@link StrVirtualCommand}s in this category
@@ -98,7 +115,7 @@ public final class StrVirtualCategory {
     private List<StrVirtualCommand> setupCommands() {
         List<StrVirtualCommand> commands = new ArrayList<>();
 
-        for (Method command : getInstance().getClass().getDeclaredMethods()) {
+        for (Method command : instance.getClass().getDeclaredMethods()) {
             if (Modifier.isStatic(command.getModifiers()) || Modifier.isFinal(command.getModifiers()) || Modifier.isPrivate(command.getModifiers())) {
                 continue;
             }
@@ -107,7 +124,7 @@ public final class StrVirtualCategory {
                 continue;
             }
 
-            commands.add(new StrVirtualCommand(this, command, getCenter()));
+            commands.add(new StrVirtualCommand(this, command, center));
         }
 
         return commands;
@@ -120,7 +137,7 @@ public final class StrVirtualCategory {
     private List<StrVirtualCategory> setupSubCats() {
         List<StrVirtualCategory> subCats = new ArrayList<>();
 
-        for (Field subCat : getInstance().getClass().getDeclaredFields()) {
+        for (Field subCat : instance.getClass().getDeclaredFields()) {
             if (Modifier.isStatic(subCat.getModifiers())
                     || Modifier.isFinal(subCat.getModifiers())
                     || Modifier.isTransient(subCat.getModifiers())
@@ -136,27 +153,27 @@ public final class StrVirtualCategory {
             subCat.setAccessible(true);
             Object childRoot;
             try {
-                childRoot = subCat.get(getInstance());
+                childRoot = subCat.get(instance);
             } catch (IllegalAccessException e) {
-                getCenter().debug("Could not get child \"" + subCat.getName() + "\" from instance: \"" + getInstance().getClass().getSimpleName() + "\"");
-                getCenter().debug("Because of: " + e.getMessage());
+                center.debug("Could not get child \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
+                center.debug("Because of: " + e.getMessage());
                 continue;
             }
             if (childRoot == null) {
                 try {
                     childRoot = subCat.getType().getConstructor().newInstance();
-                    subCat.set(getInstance(), childRoot);
+                    subCat.set(instance, childRoot);
                 } catch (NoSuchMethodException e) {
-                    center.debug("Method \"" + subCat.getName() + "\" does not exist in instance: \"" + getInstance().getClass().getSimpleName() + "\"");
+                    center.debug("Method \"" + subCat.getName() + "\" does not exist in instance: \"" + instance.getClass().getSimpleName() + "\"");
                     center.debug("Because of: " + e.getMessage());
                 } catch (IllegalAccessException e) {
-                    center.debug("Could get, but not access child \"" + subCat.getName() + "\" from instance: \"" + getInstance().getClass().getSimpleName() + "\"");
+                    center.debug("Could get, but not access child \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
                     center.debug("Because of: " + e.getMessage());
                 } catch (InstantiationException e) {
-                    center.debug("Could not instantiate \"" + subCat.getName() + "\" from instance: \"" + getInstance().getClass().getSimpleName() + "\"");
+                    center.debug("Could not instantiate \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
                     center.debug("Because of: " + e.getMessage());
                 } catch (InvocationTargetException e) {
-                    center.debug("Invocation exception on \"" + subCat.getName() + "\" from instance: \"" + getInstance().getClass().getSimpleName() + "\"");
+                    center.debug("Invocation exception on \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
                     center.debug("Because of: " + e.getMessage());
                     center.debug("Underlying exception: " + e.getTargetException().getMessage());
                 }

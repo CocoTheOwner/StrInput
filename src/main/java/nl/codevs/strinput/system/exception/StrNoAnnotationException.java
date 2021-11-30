@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.exceptions;
+package nl.codevs.strinput.system.exception;
 
 import java.lang.reflect.Method;
 
