@@ -1,4 +1,4 @@
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.parameter;
 
 import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;

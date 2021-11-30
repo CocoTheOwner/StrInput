@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.api;
 
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
@@ -73,4 +73,37 @@ public interface StrUser {
      * @param sfx the sound effect type
      */
     void playSound(StrSoundEffect sfx);
+
+    /**
+     * Sound effects.
+     */
+    enum StrSoundEffect {
+        /**
+         * Successful tab.
+         * TODO: Implement tab
+         */
+        SUCCESSFUL_TAB,
+        /**
+         * Failed tab.
+         * TODO: Implement tab
+         */
+        FAILED_TAB,
+        /**
+         * Successful command.
+         */
+        SUCCESSFUL_COMMAND,
+        /**
+         * Failed command.
+         */
+        FAILED_COMMAND,
+        /**
+         * Successfully picked an option.
+         */
+        SUCCESSFUL_PICKED,
+        /**
+         * Failed to pick an option.
+         */
+        FAILED_PICKED
+    }
+
 }

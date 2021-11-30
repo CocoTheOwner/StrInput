@@ -17,9 +17,9 @@
 
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.Param;
-import nl.codevs.strinput.system.StrCenter;
-import nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.api.Param;
+import nl.codevs.strinput.system.api.StrCenter;
+import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 

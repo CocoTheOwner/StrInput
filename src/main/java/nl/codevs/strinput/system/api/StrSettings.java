@@ -1,4 +1,4 @@
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

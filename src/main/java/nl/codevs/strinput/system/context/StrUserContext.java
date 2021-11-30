@@ -17,7 +17,7 @@
 
 package nl.codevs.strinput.system.context;
 
-import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.api.StrUser;
 
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;

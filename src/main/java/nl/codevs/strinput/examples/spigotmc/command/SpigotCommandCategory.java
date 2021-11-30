@@ -18,7 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc.command;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.StrCategory;
+import nl.codevs.strinput.system.api.StrCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 

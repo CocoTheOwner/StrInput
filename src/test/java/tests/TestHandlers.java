@@ -4,6 +4,7 @@ import environment.TestCenter;
 import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.exception.StrParseException;
 import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

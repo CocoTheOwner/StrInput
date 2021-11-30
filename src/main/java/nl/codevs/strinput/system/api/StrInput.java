@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system;
+package nl.codevs.strinput.system.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
