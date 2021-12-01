@@ -31,6 +31,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A {@link StrInput} annotated method's virtual representation.
@@ -70,6 +71,10 @@ public final class StrVirtualCategory implements StrVirtual {
      * Command center.
      */
     private final StrCenter center;
+    /**
+     * Command mapping for input to command.
+     */
+    private final ConcurrentHashMap<String, StrVirtual> commandMap = new ConcurrentHashMap<>();
 
     /**
      * Create a new virtual category.<br>
@@ -92,37 +97,8 @@ public final class StrVirtualCategory implements StrVirtual {
     }
 
     /**
-     * Get category name.
-     * @return the category name
-     */
-    @Override
-    public @NotNull String getName() {
-        return capitalToLine(annotation.name().trim().equals(StrInput.METHOD_NAME) ? instance.getClass().getSimpleName() : annotation.name());
-    }
-
-    /**
-     * Get aliases.
-     *
-     * @return the aliases
-     */
-    @Override
-    public @NotNull List<String> getAliases() {
-        ;
-    }
-
-    /**
-     * Get category names (including aliases).
-     * @return the category names
-     */
-    public List<String> getNames() {
-        List<String> names = new ArrayList<>();
-        names.add(getName());
-        names.addAll(List.of(annotation.aliases()));
-        return names;
-    }
-
-    /**
-     * Calculate {@link StrVirtualCommand}s in this category
+     * Calculate {@link StrVirtualCommand}s in this category.
+     * @return the list of setup virtual commands
      */
     private List<StrVirtualCommand> setupCommands() {
         List<StrVirtualCommand> commands = new ArrayList<>();
@@ -142,9 +118,9 @@ public final class StrVirtualCategory implements StrVirtual {
         return commands;
     }
 
-
     /**
-     * Calculate all {@link StrVirtualCategory}s in this category
+     * Calculate all {@link StrVirtualCategory}s in this category.
+     * @return the list of setup virtual categories
      */
     private List<StrVirtualCategory> setupSubCats() {
         List<StrVirtualCategory> subCats = new ArrayList<>();
@@ -203,4 +179,28 @@ public final class StrVirtualCategory implements StrVirtual {
 
         return subCats;
     }
+
+    /**
+     * Get the default virtual name (when the annotation was not given a specific name)
+     *
+     * @return the name
+     */
+    @Override
+    public @NotNull String getDefaultName() {
+        return instance.getClass().getSimpleName();
+    }
+
+    /**
+     * Run the virtual.
+     *
+     * @param arguments the remaining arguments.
+     * @param center    the command center running this.
+     * @return true if successfully ran
+     */
+    @Override
+    public boolean run(List<String> arguments, StrCenter center) {
+        return false;
+    }
+
+
 }

@@ -47,13 +47,13 @@ public @interface StrInput {
     /**
      * The default name.
      */
-    String METHOD_NAME = "";
+    String DEFAULT_NAME = "";
 
     /**
      * The name of this command, which is the Method's name by default
      * @return the name of the command / category
      */
-    String name() default METHOD_NAME;
+    String name() default DEFAULT_NAME;
 
     /**
      * The aliases of this parameter (instead of just the {@link #name() name} (if specified) or Method Name (name of method))<br>

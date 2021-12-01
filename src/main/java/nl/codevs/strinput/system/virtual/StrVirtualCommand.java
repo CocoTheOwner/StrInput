@@ -22,6 +22,8 @@ import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import java.util.List;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class StrVirtualCommand {
+public final class StrVirtualCommand implements StrVirtual {
 
     /**
      * Newline.
@@ -78,13 +80,55 @@ public final class StrVirtualCommand {
     }
 
     /**
-     * Calculate the parameters in this method<br>
-     * Sorted by required & contextuality
+     * Calculate the parameters in this method.<br>
+     * Sorted by required & contextuality.
      * @return {@link List} of {@link StrVirtualParameter}s
      */
     private List<StrVirtualParameter> setupParameters() {
         List<StrVirtualParameter> parameters = new ArrayList<>();
         Arrays.stream(method.getParameters()).filter(p -> p.isAnnotationPresent(Param.class)).forEach(p -> parameters.add(new StrVirtualParameter(p, center)));
         return parameters;
+    }
+
+    /**
+     * Get the parent virtual.
+     *
+     * @return the parent virtual
+     */
+    @Override
+    public @Nullable StrVirtual getParent() {
+        return parent;
+    }
+
+    /**
+     * Get the default virtual name (when the annotation was not given a specific name)
+     *
+     * @return the name
+     */
+    @Override
+    public @NotNull String getDefaultName() {
+        return method.getName();
+    }
+
+    /**
+     * Get the annotation on the class/method.
+     *
+     * @return the annotation
+     */
+    @Override
+    public @NotNull StrInput getAnnotation() {
+        return annotation;
+    }
+
+    /**
+     * Run the virtual.
+     *
+     * @param arguments the remaining arguments.
+     * @param center    the command center running this.
+     * @return true if successfully ran
+     */
+    @Override
+    public boolean run(List<String> arguments, StrCenter center) {
+        return false;
     }
 }

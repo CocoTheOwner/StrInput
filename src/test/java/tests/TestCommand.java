@@ -21,7 +21,6 @@ import environment.TestRoot;
 import environment.TestUser;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 

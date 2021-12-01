@@ -123,10 +123,8 @@ public abstract class StrCenter {
      * Command receiver.
      * @param command the command to parse
      * @param user the user that sent the command
-     *
-     * @return true if successful
      */
-    public boolean onCommand(List<String> command, StrUser user) {
+    public void onCommand(List<String> command, StrUser user) {
         Thread async = new Thread(() -> {
             StopWatch s = new StopWatch();
 
@@ -151,16 +149,12 @@ public abstract class StrCenter {
                 user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.Y).a(mainCommand));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
                 debug(new Str(C.G).a("Command sent by ").a(C.Y).a(user.getName()).a(C.G).a(" took ").a(C.Y).a(String.valueOf(s.getTime())));
-                return;
             }
-
-            root
 
 
         });
         user.sendMessage(new Str("You sent command: ").a(C.Y).a(command.toString()));
         user.sendMessage(new Str("And most likely category is: ").a(C.Y).a(roots.get(command.get(0)).getName()));
-        return true;
     }
 
     /**

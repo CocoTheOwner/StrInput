@@ -16,10 +16,14 @@
  */
 package nl.codevs.strinput.system.virtual;
 
+import nl.codevs.strinput.system.api.StrCenter;
+import nl.codevs.strinput.system.api.StrInput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility functions for StrVirtual classes.
@@ -35,16 +39,46 @@ public interface StrVirtual {
     @Nullable StrVirtual getParent();
 
     /**
-     * Get the primary name of the virtual.
-     * @return the primary name
+     * Get the default virtual name (when the annotation was not given a specific name)
+     * @return the name
      */
-    @NotNull String getName();
+    @NotNull String getDefaultName();
+
+    /**
+     * Get the annotation on the class/method.
+     * @return the annotation
+     */
+    @NotNull StrInput getAnnotation();
+
+    /**
+     * Run the virtual.
+     * @param arguments the remaining arguments.
+     * @param center the command center running this.
+     * @return true if successfully ran
+     */
+    boolean run(List<String> arguments, StrCenter center);
+
+    /**
+     * Get category name.
+     * @return the category name
+     */
+    @NotNull default String getName() {
+        return capitalToLine(getAnnotation().name().trim().equals(StrInput.DEFAULT_NAME) ? getDefaultName() : getAnnotation().name());
+    }
 
     /**
      * Get aliases.
      * @return the aliases
      */
-    @NotNull List<String> getAliases();
+    @NotNull default List<String> getAliases() {
+        List<String> aliases = new ArrayList<>();
+        for (String alias : getAnnotation().aliases()) {
+            if (!alias.isBlank()) {
+                aliases.add(alias);
+            }
+        }
+        return aliases;
+    }
 
     /**
      * Get the command path to this virtual.
@@ -53,6 +87,19 @@ public interface StrVirtual {
     @NotNull default String getPath() {
         return getParent() == null ? getName() : getParent().getPath() + " " + getName();
     }
+
+    /**
+     * Get names (including aliases).
+     * @return the category names
+     */
+    @NotNull default List<String> getNames() {
+        List<String> names = new ArrayList<>();
+        names.add(getName());
+        names.addAll(getAliases());
+        return names;
+    }
+
+    // TODO: Implement matching using Lucene Apache {@link https://lucene.apache.org/core/8_11_0/demo/overview-summary.html}
 
     /**
      * Replace all capital letters in a string with a '-' and lowercase representation
