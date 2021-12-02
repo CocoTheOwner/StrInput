@@ -21,9 +21,11 @@ import lombok.Getter;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrCategory;
 import nl.codevs.strinput.system.api.StrInput;
+import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -39,7 +41,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-@Getter
 public final class StrVirtualCategory implements StrVirtual {
 
     /**
@@ -94,6 +95,68 @@ public final class StrVirtualCategory implements StrVirtual {
         this.center = center;
         this.commands = setupCommands();
         this.subCats = setupSubCats();
+    }
+
+    /**
+     * Get the parent virtual.
+     *
+     * @return the parent virtual
+     */
+    @Override
+    public @Nullable StrVirtual getParent() {
+        return parent;
+    }
+
+    /**
+     * Get the default virtual name (when the annotation was not given a specific name)
+     *
+     * @return the name
+     */
+    @Override
+    public @NotNull String getDefaultName() {
+        return instance.getClass().getSimpleName();
+    }
+
+    /**
+     * Get the annotation on the class/method.
+     *
+     * @return the annotation
+     */
+    @Override
+    public @NotNull StrInput getAnnotation() {
+        return annotation;
+    }
+
+    /**
+     * Run the virtual.
+     *
+     * @param arguments the remaining arguments
+     * @param user      the user that sent the command
+     * @param center    the command system
+     * @return true if this virtual ran successfully
+     */
+    @Override
+    public boolean run(List<String> arguments, StrUser user, StrCenter center) {
+        List<StrVirtual> options = new ArrayList<>();
+        options.addAll(subCats);
+        options.addAll(commands);
+
+        String next = arguments.remove(0);
+
+        center.debug(new Str(C.G).a("Virtual " + getName() + " attempting to find a match in " + options.size() + " options with input: " + next));
+        for (StrVirtual option : options) {
+            if (option.doesMatch(next, user)) {
+                if (option.run(new ArrayList<>(arguments), user, center)) {
+                    return true;
+                } else {
+                    center.debug(new Str(C.R).a("Virtual " + option.getName() + " matched with " + next + " but failed to run!"));
+                }
+            } else {
+                center.debug(new Str(C.R).a("Virtual " + option.getName() + " did not match with " + next));
+            }
+        }
+        center.debug(new Str(C.R).a("Virtual " + getName() + " failed to find a matching option for " + next + " and returns false"));
+        return false;
     }
 
     /**
@@ -179,28 +242,4 @@ public final class StrVirtualCategory implements StrVirtual {
 
         return subCats;
     }
-
-    /**
-     * Get the default virtual name (when the annotation was not given a specific name)
-     *
-     * @return the name
-     */
-    @Override
-    public @NotNull String getDefaultName() {
-        return instance.getClass().getSimpleName();
-    }
-
-    /**
-     * Run the virtual.
-     *
-     * @param arguments the remaining arguments.
-     * @param center    the command center running this.
-     * @return true if successfully ran
-     */
-    @Override
-    public boolean run(List<String> arguments, StrCenter center) {
-        return false;
-    }
-
-
 }

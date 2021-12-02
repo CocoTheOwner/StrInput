@@ -32,7 +32,17 @@ import java.util.List;
  */
 public class SpigotConsole implements StrUser {
     /**
-     * Send a message to the sender.
+     * The name of the user (something to identify them by).
+     *
+     * @return the name of the user
+     */
+    @Override
+    public String getName() {
+        return "StrInput console sender";
+    }
+
+    /**
+     * Send a message to the user.
      *
      * @param message the message to send
      */

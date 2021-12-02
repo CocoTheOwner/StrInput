@@ -57,5 +57,8 @@ public class TestCenter extends StrCenter {
                 true,
                 new TestRoot()
         );
+
+        // Set async to false so we can run tests sync
+        settings.async = false;
     }
 }

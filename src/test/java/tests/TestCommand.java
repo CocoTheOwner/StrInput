@@ -36,7 +36,7 @@ public class TestCommand {
     @Test
     public void testCommandInvocation() {
         TestCenter.SUT.onCommand(new ArrayList<>(List.of("test")), TestUser.SUT);
-        assertEquals("You sent command: [test]", TestUser.SUT.messages.get(0));
+        assertEquals("You sent command: [test]", TestUser.SUT.getLastMessage());
     }
 
     @Test

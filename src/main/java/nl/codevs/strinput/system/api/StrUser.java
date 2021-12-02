@@ -38,7 +38,7 @@ public interface StrUser {
     String getName();
 
     /**
-     * Send a message to the sender.
+     * Send a message to the user.
      * @param message the message to send
      */
     void sendMessage(Str message);
@@ -57,7 +57,7 @@ public interface StrUser {
     boolean supportsClickables();
 
     /**
-     * Send multiple messages to the sender.<br>
+     * Send multiple messages to the user.<br>
      * Overwrite {@link #sendMessage(List)} instead of this, as this points there.
      * @param messages the messages to send
      */
@@ -66,7 +66,7 @@ public interface StrUser {
     }
 
     /**
-     * Send multiple messages to the sender. Uses a loop of {@link #sendMessage}.
+     * Send multiple messages to the user. Uses a loop of {@link #sendMessage}.
      * @param messages the messages to send
      */
     default void sendMessage(List<Str> messages) {

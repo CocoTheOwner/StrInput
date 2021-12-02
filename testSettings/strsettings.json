@@ -1,7 +1,8 @@
 {
+  "async": false,
   "allowNullInput": false,
   "debug": false,
-  "debugStartup": false,
+  "debugTime": false,
   "debugMatching": true,
   "nullOnFailure": false,
   "pickFirstOnMultiple": false,

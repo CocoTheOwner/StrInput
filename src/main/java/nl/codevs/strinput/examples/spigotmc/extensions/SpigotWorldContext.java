@@ -42,7 +42,7 @@ public class SpigotWorldContext implements StrContextHandler<World> {
     }
 
     /**
-     * The handler for this context. Can use any data found in the sender object for context derivation.
+     * The handler for this context. Can use any data found in the user object for context derivation.
      *
      * @param user the user whose data may be used
      *

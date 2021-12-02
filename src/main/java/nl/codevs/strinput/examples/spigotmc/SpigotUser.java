@@ -58,7 +58,7 @@ public class SpigotUser implements StrUser {
     }
 
     /**
-     * Send a message to the sender.
+     * Send a message to the user.
      *
      * @param message the message to send
      */

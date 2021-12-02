@@ -18,12 +18,12 @@ package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrInput;
+import nl.codevs.strinput.system.api.StrUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility functions for StrVirtual classes.
@@ -52,11 +52,12 @@ public interface StrVirtual {
 
     /**
      * Run the virtual.
-     * @param arguments the remaining arguments.
-     * @param center the command center running this.
-     * @return true if successfully ran
+     * @param arguments the remaining arguments
+     * @param user the user that sent the command
+     * @param center the command system
+     * @return true if this virtual ran successfully
      */
-    boolean run(List<String> arguments, StrCenter center);
+    boolean run(List<String> arguments, StrUser user, StrCenter center);
 
     /**
      * Get category name.
@@ -99,7 +100,35 @@ public interface StrVirtual {
         return names;
     }
 
-    // TODO: Implement matching using Lucene Apache {@link https://lucene.apache.org/core/8_11_0/demo/overview-summary.html}
+    /**
+     * Get whether this virtual matches an input string and user.
+     * @param input the input string to match
+     * @return true if the user and input string match this virtual
+     */
+    default boolean doesMatch(String input, StrUser user) {
+        return doesMatchString(input) && doesMatchUser(user);
+    }
+
+    /**
+     * Get whether this virtual matches an input string.
+     * @param input the input string to match with
+     * @return true if it matches the string
+     */
+    default boolean doesMatchString(String input) {
+        // TODO: Implement matching using Lucene Apache {@link https://lucene.apache.org/core/8_11_0/demo/overview-summary.html}
+        return true;
+    }
+
+    /**
+     * Get whether this virtual matches an input user.
+     * @param user the user to match with
+     * @return true if it matches the user
+     */
+    default boolean doesMatchUser(StrUser user) {
+        // TODO: Implement permissions check (abstract upstream of StrUser)
+        // TODO: Perhaps something with sender origin (non-console sender in the usecase of spigot)
+        return true;
+    }
 
     /**
      * Replace all capital letters in a string with a '-' and lowercase representation

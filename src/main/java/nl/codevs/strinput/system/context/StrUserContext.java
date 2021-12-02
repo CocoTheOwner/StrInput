@@ -23,7 +23,7 @@ import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Context handling (user sender handling).
+ * Context handling (user handling).
  *
  * This system REQUIRES:
  * <ul>

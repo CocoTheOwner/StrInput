@@ -20,6 +20,7 @@ package nl.codevs.strinput.system.virtual;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrInput;
+import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
@@ -123,12 +124,15 @@ public final class StrVirtualCommand implements StrVirtual {
     /**
      * Run the virtual.
      *
-     * @param arguments the remaining arguments.
-     * @param center    the command center running this.
-     * @return true if successfully ran
+     * @param arguments the remaining arguments
+     * @param user      the user that sent the command
+     * @param center    the command system
+     * @return true if this virtual ran successfully
      */
     @Override
-    public boolean run(List<String> arguments, StrCenter center) {
+    public boolean run(List<String> arguments, StrUser user, StrCenter center) {
+        center.debug(new Str(C.Y).a("Reached virtual " + getName() + " and intentionally failing to debug"));
+        // TODO: Implement running commands (yey)
         return false;
     }
 }

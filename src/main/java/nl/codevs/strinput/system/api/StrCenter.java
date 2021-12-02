@@ -125,7 +125,8 @@ public abstract class StrCenter {
      * @param user the user that sent the command
      */
     public void onCommand(List<String> command, StrUser user) {
-        Thread async = new Thread(() -> {
+
+        Runnable cmd = () -> {
             StopWatch s = new StopWatch();
 
             if (settings.debugTime) {
@@ -151,8 +152,15 @@ public abstract class StrCenter {
                 debug(new Str(C.G).a("Command sent by ").a(C.Y).a(user.getName()).a(C.G).a(" took ").a(C.Y).a(String.valueOf(s.getTime())));
             }
 
+        };
 
-        });
+        if (settings.async) {
+            new Thread(cmd, "StrInput command by " + user.getName()).start();
+        } else {
+            cmd.run();
+        }
+
+
         user.sendMessage(new Str("You sent command: ").a(C.Y).a(command.toString()));
         user.sendMessage(new Str("And most likely category is: ").a(C.Y).a(roots.get(command.get(0)).getName()));
     }

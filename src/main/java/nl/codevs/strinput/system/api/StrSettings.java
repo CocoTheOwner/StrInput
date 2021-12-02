@@ -38,6 +38,19 @@ public class StrSettings implements StrCategory {
     private static long lastChanged;
     private static File file;
 
+    @StrInput(description = "Should commands be ran in async or sync (does not overwrite the 'sync' setting in individual StrInputs)")
+    public void setAsync(
+            @Param(
+                    description = "Whether to set this setting to true or false",
+                    defaultValue = "toggle"
+            )
+                    Boolean enable
+    ){
+        StrCenter.settings.async = enable == null ? !StrCenter.settings.async : enable;
+        user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("async ").a(C.G).a("to: ").a(C.GOLD).a(String.valueOf(StrCenter.settings.async)));
+    }
+    public boolean async;
+
     @StrInput(description = "When entering arguments, should people be allowed to enter 'null'?")
     public void allowNullInput(
             @Param(
@@ -132,7 +145,7 @@ public class StrSettings implements StrCategory {
     /**
      * Load a new decree Decrees file from json
      * @param file the file to read json from
-     * @param console the console sender
+     * @param console the console user
      * @return the new {@link StrSettings}
      */
     public static StrSettings fromConfigJson(File file, StrUser console) {
@@ -165,7 +178,7 @@ public class StrSettings implements StrCategory {
             FileWriter f = new FileWriter(file);
             gson.toJson(this, StrSettings.class, f);
             f.close();
-            console.sendMessage(new Str(C.G + "Saved Decree Decrees"));
+            console.sendMessage(new Str(C.G).a("Saved StrInput Settings"));
             lastChanged = file.lastModified();
         } catch (IOException e) {
             e.printStackTrace();

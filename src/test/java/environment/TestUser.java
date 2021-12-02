@@ -45,7 +45,7 @@ public class TestUser implements StrUser {
     }
 
     /**
-     * Send a message to the sender.
+     * Send a message to the user.
      *
      * @param message the message to send
      */
@@ -85,5 +85,13 @@ public class TestUser implements StrUser {
     @Override
     public void playSound(StrSoundEffect sfx) {
 
+    }
+
+    /**
+     * Get the last message this sender received.
+     * @return the last message this sender received
+     */
+    public String getLastMessage() {
+        return messages.get(messages.size() - 1);
     }
 }
