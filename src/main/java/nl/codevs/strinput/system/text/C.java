@@ -23,7 +23,7 @@ package nl.codevs.strinput.system.text;
  * @since v0.1
  */
 public class C extends Str.Component {
-    public static final String COLOR_PREFIX = "$";
+    public static final String COLOR_PREFIX = "$2^@#%&#%$&$&$&%";
     public static final C R = new C("red");
     public static final C G = new C("green");
     public static final C B = new C("blue");

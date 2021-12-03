@@ -55,5 +55,4 @@ public class TestRoot implements StrCategory {
     ) {
         multResult = i1 * i2;
     }
-
 }

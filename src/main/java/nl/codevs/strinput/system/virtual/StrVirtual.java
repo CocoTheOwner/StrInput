@@ -101,25 +101,6 @@ public interface StrVirtual {
     }
 
     /**
-     * Get whether this virtual matches an input string and user.
-     * @param input the input string to match
-     * @return true if the user and input string match this virtual
-     */
-    default boolean doesMatch(String input, StrUser user) {
-        return doesMatchString(input) && doesMatchUser(user);
-    }
-
-    /**
-     * Get whether this virtual matches an input string.
-     * @param input the input string to match with
-     * @return true if it matches the string
-     */
-    default boolean doesMatchString(String input) {
-        // TODO: Implement matching using Lucene Apache {@link https://lucene.apache.org/core/8_11_0/demo/overview-summary.html}
-        return true;
-    }
-
-    /**
      * Get whether this virtual matches an input user.
      * @param user the user to match with
      * @return true if it matches the user
