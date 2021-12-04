@@ -131,8 +131,21 @@ public final class StrVirtualCommand implements StrVirtual {
      */
     @Override
     public boolean run(List<String> arguments, StrUser user, StrCenter center) {
-        center.debug(new Str(C.Y).a("Reached virtual " + getName() + " and intentionally failing to debug"));
-        // TODO: Implement running commands (yey)
+        center.debug(new Str(C.Y).a("Reached virtual command " + getName()));
+        if (arguments.size() == parameters.size()) {
+            center.debug(new Str(C.G).a("Running: " + getName()));
+            return true;
+        }
         return false;
+    }
+
+    /**
+     * Send help for this virtual to a user.
+     *
+     * @param user the user to send help to
+     */
+    @Override
+    public void help(StrUser user) {
+        user.sendMessage(new Str(C.G).a(getName() + " " + parameters.size()));
     }
 }

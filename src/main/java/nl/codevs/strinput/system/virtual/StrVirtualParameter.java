@@ -191,6 +191,7 @@ public final class StrVirtualParameter {
     /**
      * Get if the parameter is contextual.
      * Make sure there is a {@link nl.codevs.strinput.system.context.StrContextHandler} available for this type.
+     * These are to be registered with the constructor on the command center.
      * @return true if the parameter is contextual
      */
     public boolean isContextual() {

@@ -76,6 +76,12 @@ public interface StrUser {
     }
 
     /**
+     * Send multiple messages to the user, clickable ones.
+     * @param messages the clickable messages to send
+     */
+    void sendClickableMessage(List<StrClickable> messages);
+
+    /**
      * Play a sound effect
      * @param sfx the sound effect type
      */

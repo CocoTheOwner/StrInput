@@ -150,6 +150,13 @@ public abstract class StrCenter {
                 user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.Y).a(mainCommand));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
                 debug(new Str(C.G).a("Command sent by ").a(C.Y).a(user.getName()).a(C.G).a(" took ").a(C.Y).a(String.valueOf(s.getTime())));
+                return;
+            }
+
+            if (root.run(arguments, user, this)) {
+                user.sendMessage(new Str(C.G).a("Successfully ran your command!"));
+            } else {
+                user.sendMessage(new Str(C.R).a("Failed to run your command!"));
             }
 
         };

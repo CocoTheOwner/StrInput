@@ -23,6 +23,7 @@ import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.text.StrClickable;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -76,6 +77,22 @@ public final class StrVirtualCategory implements StrVirtual {
      * Command mapping for input to command.
      */
     private final ConcurrentHashMap<String, StrVirtual> commandMap = new ConcurrentHashMap<>();
+
+    /**
+     * Get commands.
+     * @return the commands
+     */
+    public List<StrVirtualCommand> getCommands() {
+        return new ArrayList<>(commands);
+    }
+
+    /**
+     * Get subcats.
+     * @return the subcats
+     */
+    public List<StrVirtualCategory> getSubCats() {
+        return new ArrayList<>(subCats);
+    }
 
     /**
      * Create a new virtual category.<br>
@@ -137,6 +154,10 @@ public final class StrVirtualCategory implements StrVirtual {
      */
     @Override
     public boolean run(List<String> arguments, StrUser user, StrCenter center) {
+        if (arguments.size() == 0) {
+            help(user);
+            return false; // TODO: Consider false
+        }
         List<StrVirtual> options = new ArrayList<>();
         options.addAll(subCats);
         options.addAll(commands);
@@ -148,8 +169,18 @@ public final class StrVirtualCategory implements StrVirtual {
 
         String next = arguments.remove(0);
 
+        List<StrVirtual> opt = NGram.sortByNGram(next, options);
+
+        for (StrVirtual option : options) {
+            center.debug(new Str(C.Y).a(option.getName()));
+
+        }
+        for (StrVirtual strVirtual : opt) {
+            center.debug(new Str(C.Y).a(strVirtual.getName()));
+        }
+
         center.debug(new Str(C.G).a("Virtual " + getName() + " attempting to find a match in " + options.size() + " options with input: " + next));
-        for (StrVirtual option : sortByNGram(next, options)) {
+        for (StrVirtual option : opt) {
             if (option.run(new ArrayList<>(arguments), user, center)) {
                 return true;
             } else {
@@ -158,6 +189,18 @@ public final class StrVirtualCategory implements StrVirtual {
         }
         center.debug(new Str(C.R).a("Virtual " + getName() + " failed to find a matching option for " + next + " and returns false"));
         return false;
+    }
+
+    /**
+     * Send help for this virtual to a user.
+     *
+     * @param user the user to send help to
+     */
+    @Override
+    public void help(StrUser user) {
+        List<StrClickable> helpMessage = new ArrayList<>();
+
+        user.sendClickableMessage(helpMessage);
     }
 
     /**
@@ -242,42 +285,5 @@ public final class StrVirtualCategory implements StrVirtual {
         }
 
         return subCats;
-    }
-
-    /**
-     * Sort a list of virtual nodes by n-gram match to a string input.<br>
-     * {@code strVirtualList} is sorted & returned.
-     * @param strVirtualList the list of virtual nodes to sort through. <em>Not modified.</em>
-     * @return an array with the elements of {@code strVirtualList}, in sorted order.
-     */
-    @Contract(mutates = "param2")
-    private @NotNull List<StrVirtual> sortByNGram(String input, List<StrVirtual> strVirtualList) {
-
-        // Get names and virtuals
-        List<String> names = new ArrayList<>();
-        List<StrVirtual> virtuals = new ArrayList<>();
-        ConcurrentHashMap<String, Double> scores = new ConcurrentHashMap<>();
-        for (StrVirtual strVirtual : strVirtualList) {
-            for (String name : strVirtual.getNames()) {
-                names.add(name);
-                virtuals.add(strVirtual);
-                scores.put(strVirtual.getName(), 0d);
-            }
-        }
-
-        // Results array, 1:1 with names
-        double[] results = NGram.ngramMatching(input, names);
-
-        // Ordered list of virtual nodes
-        for (int i = 0; i < results.length; i++) {
-            StrVirtual virtual = virtuals.get(i);
-            if (scores.get(virtual.getName()) < results[i]) {
-                scores.put(virtual.getName(), results[i]);
-            }
-        }
-
-        // Get & sort
-        strVirtualList.sort(Comparator.comparingDouble(v -> scores.get(v.getName())));
-        return strVirtualList;
     }
 }

@@ -1,14 +1,16 @@
 package nl.codevs.strinput.system.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import nl.codevs.strinput.system.virtual.StrVirtual;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility class for n-gram-based string comparison.
  * {@link #nGramMatch(String, String)} for single string comparisons.
- * {@link #ngramMatching(String, String[])} for input-to-options mapping.
+ * {@link #ngramMatching(String, List)} for input-to-options mapping.
  * @author Sjoerd van de Goor
  * @since v0.1
  */
@@ -65,5 +67,43 @@ public class NGram {
         }
 
         return nGramScore;
+    }
+
+    /**
+     * Sort a list of virtual nodes by n-gram match to a string input.<br>
+     * {@code strVirtualList} is sorted & returned.<br>
+     * The best match (highest n-gram score) is first, and the lowest last.
+     * @param strVirtualList the list of virtual nodes to sort through. <em>Not modified.</em>
+     * @return an array with the elements of {@code strVirtualList}, in sorted order.
+     */
+    @Contract(mutates = "param2")
+    public static @NotNull List<StrVirtual> sortByNGram(String input, List<StrVirtual> strVirtualList) {
+
+        // Get names and virtuals
+        List<String> names = new ArrayList<>();
+        List<StrVirtual> virtuals = new ArrayList<>();
+        ConcurrentHashMap<String, Double> scores = new ConcurrentHashMap<>();
+        for (StrVirtual strVirtual : strVirtualList) {
+            for (String name : strVirtual.getNames()) {
+                names.add(name);
+                virtuals.add(strVirtual);
+                scores.put(strVirtual.getName(), 0d);
+            }
+        }
+
+        // Results array, 1:1 with names
+        double[] results = NGram.ngramMatching(input, names);
+
+        // Ordered list of virtual nodes
+        for (int i = 0; i < results.length; i++) {
+            StrVirtual virtual = virtuals.get(i);
+            if (scores.get(virtual.getName()) < results[i]) {
+                scores.put(virtual.getName(), results[i]);
+            }
+        }
+
+        // Get & sort
+        strVirtualList.sort(Comparator.comparingDouble(v -> -scores.get(v.getName())));
+        return strVirtualList;
     }
 }

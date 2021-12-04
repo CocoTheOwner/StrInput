@@ -16,12 +16,19 @@
  */
 package tests;
 
+import environment.TestCenter;
+import environment.TestRoot;
 import nl.codevs.strinput.system.util.NGram;
+import nl.codevs.strinput.system.virtual.StrVirtual;
+import nl.codevs.strinput.system.virtual.StrVirtualCategory;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * NGram string matching tests.
@@ -59,6 +66,17 @@ public class TestNGram {
         double sj = (double) NGram.nGramMatch(i, j) / NGram.nGramMatch(i, i);
         System.out.println(j + " (" + sj + ") should be over 0.5");
         assertTrue(sj > 0.5);
+    }
+
+    @Test
+    public void sortVirtuals() {
+        StrVirtualCategory t = new StrVirtualCategory(null, new TestRoot(), TestCenter.SUT);
+        List<StrVirtual> o = new ArrayList<>();
+        o.addAll(t.getCommands());
+        o.addAll(t.getSubCats());
+        o = NGram.sortByNGram("mult", o);
+        assertEquals("mult", o.get(0).getName());
+        assertEquals("add", o.get(1).getName());
     }
 
     /**

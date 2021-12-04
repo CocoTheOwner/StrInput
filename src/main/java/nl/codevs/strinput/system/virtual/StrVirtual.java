@@ -60,6 +60,12 @@ public interface StrVirtual {
     boolean run(List<String> arguments, StrUser user, StrCenter center);
 
     /**
+     * Send help for this virtual to a user.
+     * @param user the user to send help to
+     */
+    void help(StrUser user);
+
+    /**
      * Get category name.
      * @return the category name
      */
