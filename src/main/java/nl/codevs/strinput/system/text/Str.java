@@ -17,153 +17,268 @@
 
 package nl.codevs.strinput.system.text;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import nl.codevs.strinput.system.api.StrUser;
+
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
 /**
- * Messages passing through the system.
- * Has additional properties such as colors, on-click events and more.
+ * Messages passing through the system.<br>
+ * Has additional properties such as colors, on-click events and hovering.<br><br>
+ *
+ * Note that the actual text of this component is stored in {@link #content}.<br>
+ * The way to read-out strings is by looping over {@link #stringList},<br>
+ * which contains other related string components (in order) with potentially different values and properties.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
 public class Str {
 
-    /**
-     * Message text.
-     */
-    private final List<Component> text;
+    private final Consumer<StrUser> onClick;
+    private final Str onHover;
+    private String content;
+    private final C mainColor;
+    private final C gradientColor;
+    private final List<Str> stringList;
 
-    /**
-     * Create a new message.
-     * @param messageText vararg message components forming the text.
-     */
-    public Str(Component... messageText) {
-        text = new ArrayList<>(List.of(messageText));
+    public Consumer<StrUser> getOnClick() {
+        return onClick;
     }
 
     /**
-     * Create a new message.
-     * @param messageText the list of message components forming the text.
+     * This is the end color of the gradient. The first color is found in {@link #mainColor}.
+     * @return the end color of the gradient
      */
-    public Str(List<Component> messageText) {
-        text = messageText;
+    public C getGradientColor() {
+        return gradientColor;
+    }
+
+    public C getMainColor() {
+        return mainColor;
+    }
+
+    public Str getOnHover() {
+        return onHover;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public List<Str> getStringList() {
+        return stringList;
+    }
+
+    //    public Str setOnClick(Consumer<StrUser> runOnClick) {
+//        onClick = runOnClick;
+//        return this;
+//    }
+//    public Str resetOnClick() {
+//        onClick = null;
+//        return this;
+//    }
+//
+//    public Str setOnHover(Str showOnHover) {
+//        onHover = showOnHover;
+//        return this;
+//    }
+//    public Str resetOnHover() {
+//        onHover = null;
+//        return this;
+//    }
+//
+//    public Str setText(String newText) {
+//        content = newText;
+//        return this;
+//    }
+//
+//    public Str setColor(C color) {
+//        mainColor = color;
+//        return this;
+//    }
+//
+//    public Str setGradientColor(C startColor, C endColor) {
+//        mainColor = startColor;
+//        gradientColor = endColor;
+//        return this;
+//    }
+
+    public Str(String text) {
+        this(text, C.RESET);
+    }
+
+    public Str(C color) {
+        this("", color);
+    }
+    public Str(String text, C color) {
+        this(text, color, C.RESET);
+    }
+
+    public Str(C startColor, C endColor) {
+        this("", startColor, endColor);
+    }
+
+    public Str(String text, C startColor, C endColor) {
+        this(text, startColor, endColor, (Consumer<StrUser>) null);
+    }
+
+    public Str(Consumer<StrUser> runOnclick) {
+        this("", runOnclick);
+    }
+
+    public Str(String text, Consumer<StrUser> runOnClick) {
+        this(text, C.RESET, runOnClick);
+    }
+
+    public Str(C color, Consumer<StrUser> runOnClick) {
+        this("", color, C.RESET, runOnClick);
+    }
+
+    public Str(C startColor, C endColor, Consumer<StrUser> onClick, Str onHover) {
+        this("", startColor, endColor, onClick, onHover);
+    }
+
+    public Str(String text, C color, Consumer<StrUser> runOnClick) {
+        this(text, color, C.RESET, runOnClick);
+    }
+
+    public Str(C startColor, C endColor, Consumer<StrUser> runOnClick) {
+        this("", startColor, endColor, runOnClick, null);
+    }
+
+    public Str(String text, C startColor, C endColor, Consumer<StrUser> runOnClick) {
+        this(text, startColor, endColor, runOnClick, null);
+    }
+
+    public Str(Str showOnHover) {
+        this("", C.RESET, showOnHover);
+    }
+
+    public Str(String text, Str showOnHover) {
+        this(text, C.RESET, showOnHover);
+    }
+
+    public Str(String text, C color, Str showOnHover) {
+        this(text, color, C.RESET, showOnHover);
+    }
+
+    public Str(C color, Str showOnHover) {
+        this("", color, C.RESET, showOnHover);
+    }
+
+    public Str(C color, Consumer<StrUser> runOnClick, Str showOnHover) {
+        this("", color, C.RESET, runOnClick, showOnHover);
+    }
+
+    public Str(String text, C startColor, C endColor, Str showOnHover) {
+        this(text, startColor, endColor, null, showOnHover);
+    }
+
+    public Str(C startColor, C endColor, Str showOnHover) {
+        this("", startColor, endColor, null, showOnHover);
+    }
+
+    public Str(C color, Consumer<StrUser> onClick, Str onHover, List<Str> previous) {
+        this("", color, C.RESET, onClick, onHover, previous);
+    }
+
+    public Str(C startColor, C endColor, Consumer<StrUser> runOnClick, Str showOnHover, List<Str> previous) {
+        this("", startColor, endColor, runOnClick, showOnHover, previous);
+    }
+
+    public Str(String text, C startColor, C endColor, Consumer<StrUser> runOnClick, Str showOnHover) {
+        this(text, startColor, endColor, runOnClick, showOnHover, null);
+    }
+
+    public Str(String text, C startColor, C endColor, Consumer<StrUser> runOnClick, Str showOnHover, List<Str> strings) {
+        content = text;
+        mainColor = startColor;
+        gradientColor = endColor;
+        onClick = runOnClick;
+        onHover = showOnHover;
+        stringList = strings;
     }
 
     /**
-     * Create a new message.
-     * @param messageText vararg string forming the text. Does not support colors!
-     */
-    public Str(String... messageText) {
-        text = new ArrayList<>();
-        for (String s : messageText) {
-            text.add(new Component(s, ComponentType.TEXT));
-        }
-    }
-
-    /**
-     * Return the ordered text components with the specified types.
-     * @param types the list of types which components to get
-     * @return ordered text components of a type in {@code types}
-     */
-    public List<Component> getText(ComponentType... types) {
-        List<ComponentType> typesList = new ArrayList<>(List.of(types));
-        return text.stream().filter(c -> typesList.contains(c.type)).collect(Collectors.toList());
-    }
-
-    /**
-     * Add a string
-     * @param newText the next text string
+     * Add a new string / new strings.
+     * @param newText the next text string(s)
      * @return this
      */
-    public Str add(String newText) {
-        return add(new Component(newText, ComponentType.TEXT));
+    public Str add(String... newText) {
+        content += " " + String.join(" ", newText);
+        return this;
     }
-    public Str a(String newText){
+
+    /**
+     * Add a new string / new strings.
+     * @param newText the next text string(s)
+     * @return this
+     */
+    public Str a(String... newText){
         return add(newText);
     }
 
     /**
-     * Add a component
-     * @param newText the new text component
+     * Add a new {@link Str} / new {@link Str}s.
+     * @param newText the new text component(s)
      * @return this
      */
-    public Str add(Component newText) {
-        text.add(newText);
+    public Str add(Str... newText) {
+        stringList.addAll(List.of(newText));
         return this;
     }
-    public Str a(Component newText){
+
+    /**
+     * Add a new {@link Str} / new {@link Str}s.
+     * @param newText the new text component(s)
+     * @return this
+     */
+    public Str a(Str... newText) {
         return add(newText);
     }
 
     /**
-     * Add a Str to another Str.
-     * @param newText the new text components
-     * @return this
+     * Add a new color, which will affect text added from here on out.<br>
+     * This keeps any hover or on-click effect the previous node may have.
+     * @param color the color to add
+     * @return the {@link Str}
      */
-    public Str add(Str newText) {
-        for (Component component : newText.text) {
-            add(component);
-        }
-        return this;
+    public Str add(C color) {
+        Str newColored = new Str(color, onClick, onHover, stringList);
+        stringList.add(newColored);
+        return newColored; // because new text should be of the new color
     }
-    public Str a(Str input) {
-        return add(input);
+    /**
+     * Add a new color, which will affect text added from here on out.<br>
+     * This keeps any hover or on-click effect the previous node may have.
+     * @param color the color to add
+     * @return the {@link Str}
+     */
+    public Str a(C color) {
+        return add(color);
     }
 
     /**
-     * Returns a string representation of the object.
+     * Add a new color gradient, which will affect text added from here on out.<br>
+     * This keeps any hover or on-click effect the previous node may have.
+     * @param startColor the start of the gradient color
+     * @param endColor the end of the gradient color
+     * @return the {@link Str}
+     */
+    public Str add(C startColor, C endColor) {
+        Str newGradient = new Str(startColor, endColor, onClick, onHover, stringList);
+        stringList.add(newGradient);
+        return newGradient;
+    }
+
+    /**
+     * Returns a string representation of the object.<br>
+     * Note that this removes any non-text component from the {@link Str}.
      *
      * @return a string representation of the object.
-     *
-     * @apiNote In general, the
-     * {@code toString} method returns a string that
-     * "textually represents" this object. The result should
-     * be a concise but informative representation that is easy for a
-     * person to read.
-     * It is recommended that all subclasses override this method.
-     * The string output is not necessarily stable over time or across
-     * JVM invocations.
-     * @implSpec The {@code toString} method for class {@code Object}
-     * returns a string consisting of the name of the class of which the
-     * object is an instance, the at-sign character `{@code @}', and
-     * the unsigned hexadecimal representation of the hash code of the
-     * object. In other words, this method returns a string equal to the
-     * value of:
-     * <blockquote>
-     * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre></blockquote>
      */
-    @Override
-    public String toString() {
-        StringBuilder res = new StringBuilder();
-        for (Component component : getText(ComponentType.TEXT)) {
-            res.append(component.value);
-        }
-        return res.toString();
-    }
-
-    /**
-     * Component.
-     */
-    public static class Component {
-        final String value;
-        final ComponentType type;
-        public Component(String textValue, ComponentType componentType) {
-            value = textValue;
-            type = componentType;
-        }
-    }
-
-    /**
-     * Component type.
-     */
-    public enum ComponentType {
-        TEXT,
-        COLOR,
-        GRADIENT
+    public String toHumanReadable() {
+        return String.join(" ", stringList.stream().map(s -> s.content).toList());
     }
 }

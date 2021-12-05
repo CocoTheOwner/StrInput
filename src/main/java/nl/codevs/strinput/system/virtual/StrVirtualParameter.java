@@ -17,11 +17,13 @@
 
 package nl.codevs.strinput.system.virtual;
 
+import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.parameter.StrParameter;
+import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
+import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.exception.StrParseException;
 import nl.codevs.strinput.system.exception.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -197,5 +199,14 @@ public final class StrVirtualParameter {
      */
     public boolean isContextual() {
         return param.contextual();
+    }
+
+    /**
+     * Get help for a user.
+     * @param user the user to get help for
+     * @return the help
+     */
+    public Str help(StrUser user) {
+        return new Str("Node help of " + getName() + " for " + user.getName());
     }
 }

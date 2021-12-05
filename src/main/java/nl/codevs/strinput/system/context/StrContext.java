@@ -17,7 +17,7 @@
 
 package nl.codevs.strinput.system.context;
 
-import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
+import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
 
 import java.util.ArrayList;
 import java.util.List;

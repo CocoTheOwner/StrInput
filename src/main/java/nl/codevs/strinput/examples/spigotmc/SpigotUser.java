@@ -131,7 +131,7 @@ public class SpigotUser implements StrUser {
      * TODO: Implement colors
      */
     private String strToString(Str message) {
-        return message.toString();
+        return message.toHumanReadable();
     }
 
     /**

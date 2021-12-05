@@ -15,29 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.text;
+package nl.codevs.strinput.system.parameter;
 
 /**
- * Colors.
+ * Exception thrown when no parameter handler could be found.
+ *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class C {
-    public static final String COLOR_PREFIX = "$2^@#%&#%$&$&$&%";
-    public static final C R = new C("red");
-    public static final C G = new C("green");
-    public static final C B = new C("blue");
-    public static final C Y = new C("yellow");
-    public static final C GOLD = new C("gold");
-    public static final C RESET = new C("reset");
-
-    private final String name;
-
-    public C(String colorName) {
-        name = colorName;
-    }
-
-    public String getName() {
-        return name;
+public class StrNoParameterHandlerException extends Exception {
+    public StrNoParameterHandlerException(Class<?> type) {
+        super("Could not find parameter handler for: " + type.getSimpleName());
     }
 }

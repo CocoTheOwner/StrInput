@@ -51,8 +51,8 @@ public class TestUser implements StrUser {
      */
     @Override
     public void sendMessage(Str message) {
-        System.out.println(message.toString());
-        messages.add(message.toString());
+        System.out.println(message.toHumanReadable());
+        messages.add(message.toHumanReadable());
     }
 
     /**

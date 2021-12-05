@@ -18,6 +18,7 @@
 package nl.codevs.strinput.system.context;
 
 import nl.codevs.strinput.system.api.StrUser;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * StrUserContext handler.
@@ -41,7 +42,7 @@ public interface StrContextHandler<T> {
      * @param user the user whose data may be used
      * @return the value in the assigned type
      */
-    T handle(StrUser user);
+    @NotNull T handle(StrUser user);
 
     /**
      * Convert this context to a string.
@@ -50,7 +51,7 @@ public interface StrContextHandler<T> {
      *
      * @return result of conversion
      */
-    default String toString(T string) {
+    @NotNull default String toString(T string) {
         return string.toString();
     }
 

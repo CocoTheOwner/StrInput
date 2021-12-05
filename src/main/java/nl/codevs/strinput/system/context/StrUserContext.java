@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * This system REQUIRES:
  * <ul>
- *     <li>each command must be handled in a new thread</li>
+ *     <li>each command to be be handled in a new thread</li>
  *     <li>a call to {@link #touch(StrUser)} asap after a command call</li>
  * </ul>
  *

@@ -17,7 +17,7 @@
 package tests;
 
 import environment.TestCenter;
-import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
+import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.exception.StrParseException;
 import nl.codevs.strinput.system.exception.StrWhichException;
 import org.junit.jupiter.api.Test;

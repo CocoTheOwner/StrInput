@@ -21,6 +21,7 @@ import nl.codevs.strinput.examples.spigotmc.SpigotUser;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * World context.
@@ -49,7 +50,7 @@ public class SpigotWorldContext implements StrContextHandler<World> {
      * @return the value in the assigned type
      */
     @Override
-    public World handle(StrUser user) {
+    public @NotNull World handle(StrUser user) {
         return ((SpigotUser) user).getPlayer().getWorld();
     }
 }

@@ -15,16 +15,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package nl.codevs.strinput.system.exception;
+package nl.codevs.strinput.system.text;
 
 /**
- * Exception thrown when no parameter handler could be found.
+ * TODO:Description
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class StrNoParameterHandlerException extends Exception {
-    public StrNoParameterHandlerException(Class<?> type) {
-        super("Could not find parameter handler for: " + type.getSimpleName());
-    }
+public class StrClickable {
 }

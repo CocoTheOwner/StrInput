@@ -21,6 +21,7 @@ import nl.codevs.strinput.examples.spigotmc.SpigotUser;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Player context.
@@ -49,7 +50,7 @@ public class SpigotPlayerContext implements StrContextHandler<Player> {
      * @return the value in the assigned type
      */
     @Override
-    public Player handle(StrUser user) {
+    public @NotNull Player handle(StrUser user) {
         return ((SpigotUser) user).getPlayer();
     }
 }

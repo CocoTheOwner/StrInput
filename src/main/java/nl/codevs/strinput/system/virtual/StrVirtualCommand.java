@@ -20,11 +20,10 @@ package nl.codevs.strinput.system.virtual;
 import nl.codevs.strinput.system.api.*;
 import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.context.StrContextHandler;
-import nl.codevs.strinput.system.exception.StrNoContextHandlerException;
-import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
+import nl.codevs.strinput.system.context.StrNoContextHandlerException;
+import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.exception.StrParseException;
 import nl.codevs.strinput.system.exception.StrWhichException;
-import nl.codevs.strinput.system.parameter.StrParameter;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
@@ -582,15 +581,15 @@ public final class StrVirtualCommand implements StrVirtual {
         String result = null;
 
         user.sendMessage(new Str("Pick a " + parameter.getName() + " (" + parameter.getType().getSimpleName() + ")"));
-        user.sendMessage(new Str(new C.Gradient(C.G, C.GOLD)).a("This query will expire in 15 seconds."));
+        user.sendMessage(new Str("This query will expire in 15 seconds.", C.G, C.GOLD));
 
         while (tries-- > 0 && (result == null || !options.contains(result))) {
-            user.sendMessage(new Str(new C.Gradient(C.G, C.GOLD)).a("Please pick a valid option."));
+            user.sendMessage(new Str("Please pick a valid option.", C.G, C.GOLD));
             String password = UUID.randomUUID().toString().replaceAll("\\Q-\\E", "");
             int m = 0;
 
             for (String i : options) {
-                user.sendMessage("<hover:show_text:'" + gradients[m % gradients.length] + i + "</gradient>'><click:run_command:/Str-future " + password + " " + i + ">" + "- " + gradients[m % gradients.length] + i + "</gradient></click></hover>");
+                user.sendMessage(new Str("<hover:show_text:'" + gradients[m % gradients.length] + i + "</gradient>'><click:run_command:/Str-future " + password + " " + i + ">" + "- " + gradients[m % gradients.length] + i + "</gradient></click></hover>");
                 m++;
             }
 
@@ -630,7 +629,7 @@ public final class StrVirtualCommand implements StrVirtual {
         for (StrVirtualParameter parameter : getParameters()) {
             if (!parameters.containsKey(parameter)) {
                 center.debug(new Str(C.R).a("Parameter: ").a(C.GOLD).a(parameter.getName()).a(C.R).a(" not in mapping."));
-                Str message = new Str(C.R).a("Parameter: ").a(C.GOLD).a(parameter.getHelp(user, true)).a(C.R);
+                Str message = new Str(C.R).a("Parameter: ").a(C.GOLD).a(parameter.help(user));
                 if (parseExceptions.containsKey(parameter)) {
                     StrParseException e = parseExceptions.get(parameter);
                     message.a(" (").a(C.GOLD).a(e.getType().getSimpleName()).a(C.R).a(") failed for ").a(C.GOLD).a(e.getInput()).a(C.R).a(". Reason: ").a(C.GOLD).a(e.getReason());
@@ -661,29 +660,26 @@ public final class StrVirtualCommand implements StrVirtual {
             StrUser sender
     ) {
         try {
-            Object val = option.getHandler().parseSafe(value);
-
-
-            parameters.put(option, val == null ? nullParam : val);
+            parameters.put(option, value.equalsIgnoreCase("null") ? nullParam : option.getHandler().parseSafe(value));
             return true;
         } catch (StrWhichException e) {
-            debug("Value " + C.GOLD + value + C.RED + " returned multiple options", C.RED);
-            if (StrSystem.settings.pickFirstOnMultiple) {
-                debug("Adding: " + C.GOLD + e.getOptions().get(0), C.GREEN);
+            center.debug(new Str(C.R).a("Value ").a(C.GOLD).a(value).a(C.R).a(" returned multiple options"));
+            if (StrCenter.settings.pickFirstOnMultiple) {
+                center.debug(new Str(C.G).a("Adding: ").a(C.GOLD).a(e.getOptions().get(0).toString()));
                 parameters.put(option, e.getOptions().get(0));
             } else {
                 Object result = pickValidOption(sender, e.getOptions(), option);
                 if (result == null) {
-                    badArgs.add(option.getDefaultRaw());
+                    badArgs.add(option.getDefault());
                 } else {
                     parameters.put(option, result);
                 }
             }
             return true;
-        } catch (StrParsingException e) {
+        } catch (StrParseException e) {
             parseExceptionArgs.put(option, e);
         } catch (Throwable e) {
-            system.debug("Failed to parse into: '" + option.getName() + "' value '" + value + "'");
+            center.debug(new Str("Failed to parse into: '" + option.getName() + "' value '" + value + "'"));
             e.printStackTrace();
         }
         return false;
