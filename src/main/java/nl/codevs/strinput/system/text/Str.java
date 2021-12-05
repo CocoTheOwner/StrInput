@@ -163,6 +163,7 @@ public class Str {
      */
     public enum ComponentType {
         TEXT,
-        COLOR
+        COLOR,
+        GRADIENT
     }
 }

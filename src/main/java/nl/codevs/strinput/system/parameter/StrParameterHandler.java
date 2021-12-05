@@ -19,6 +19,8 @@ package nl.codevs.strinput.system.parameter;
 
 import nl.codevs.strinput.system.exception.StrParseException;
 import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.virtual.StrVirtualCommand;
+import nl.codevs.strinput.system.virtual.StrVirtualParameter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

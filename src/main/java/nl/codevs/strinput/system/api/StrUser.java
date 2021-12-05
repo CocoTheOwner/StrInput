@@ -88,6 +88,13 @@ public interface StrUser {
     void playSound(StrSoundEffect sfx);
 
     /**
+     * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
+     * See {@link nl.codevs.strinput.system.context.StrContext}.
+     * @return
+     */
+    boolean supportsContext();
+
+    /**
      * Sound effects.
      */
     enum StrSoundEffect {
@@ -116,7 +123,11 @@ public interface StrUser {
         /**
          * Failed to pick an option.
          */
-        FAILED_PICKED
+        FAILED_PICKED,
+        /**
+         * When a user has to pick an option.
+         */
+        PICK_OPTION;
     }
 
 }

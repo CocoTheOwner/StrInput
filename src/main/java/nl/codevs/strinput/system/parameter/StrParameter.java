@@ -19,6 +19,7 @@ package nl.codevs.strinput.system.parameter;
 import nl.codevs.strinput.system.exception.StrNoParameterHandlerException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,11 +27,9 @@ import java.util.List;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class StrParameter extends ArrayList<StrParameterHandler<?>> {
+public class StrParameter {
 
-    public StrParameter(StrParameterHandler<?>[] handlers) {
-        addAll(List.of(handlers));
-    }
+    private static List<StrParameterHandler<?>> parameterHandlers = new ArrayList<>();
 
     /**
      * Get handler for a type.
@@ -38,8 +37,8 @@ public class StrParameter extends ArrayList<StrParameterHandler<?>> {
      * @return the parameter handler for the type
      * @throws StrNoParameterHandlerException if no parameter handler could be found
      */
-    public StrParameterHandler<?> getHandler(Class<?> type) throws StrNoParameterHandlerException {
-        for (StrParameterHandler<?> parameterHandler : this) {
+    public static StrParameterHandler<?> getHandler(Class<?> type) throws StrNoParameterHandlerException {
+        for (StrParameterHandler<?> parameterHandler : parameterHandlers) {
             if (parameterHandler.supports(type)) {
                 return parameterHandler;
             }
@@ -47,5 +46,11 @@ public class StrParameter extends ArrayList<StrParameterHandler<?>> {
         throw new StrNoParameterHandlerException(type);
     }
 
-
+    /**
+     * Register new parameter handlers.
+     * @param handlers the parameter handlers
+     */
+    public static void register(StrParameterHandler<?>... handlers) {
+        parameterHandlers.addAll(List.of(handlers));
+    }
 }

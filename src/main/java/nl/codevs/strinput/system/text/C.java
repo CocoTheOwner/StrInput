@@ -34,4 +34,27 @@ public class C extends Str.Component {
     public C(String full) {
         super(COLOR_PREFIX + full, Str.ComponentType.COLOR);
     }
+
+    /**
+     * Gradient color.
+     *
+     * @author Sjoerd van de Goor
+     * @since v0.1
+     */
+    public static class Gradient extends Str.Component {
+
+        final C start;
+        final C end;
+
+        /**
+         * Constructs a gradient color. Calls {@link Str.Component#Component(String, Str.ComponentType)} with {@code start.}{@link Str.Component#value} {@code + end.}{@link Str.Component#value}{@code , }{@link Str.ComponentType#GRADIENT}
+         * @param start the start color.
+         * @param end
+         */
+        public Gradient(C start, C end) {
+            super(start.value + end.value, Str.ComponentType.GRADIENT);
+            this.start = start;
+            this.end = end;
+        }
+    }
 }

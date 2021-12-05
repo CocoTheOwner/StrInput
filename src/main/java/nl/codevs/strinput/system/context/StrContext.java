@@ -27,15 +27,12 @@ import java.util.List;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class StrContext extends ArrayList<StrContextHandler<?>> {
+public class StrContext {
 
     /**
-     * Setup context handlers.
-     * @param contextHandlers the context handlers
+     * Context handler list.
      */
-    public StrContext(StrContextHandler<?>[] contextHandlers) {
-        addAll(List.of(contextHandlers));
-    }
+    private static final List<StrContextHandler<?>> contextHandlers = new ArrayList<>();
 
     /**
      * Get context handler for a type.
@@ -43,12 +40,20 @@ public class StrContext extends ArrayList<StrContextHandler<?>> {
      * @return the context handler for the type
      * @throws StrNoParameterHandlerException if no context handler could be found
      */
-    public StrContextHandler<?> getContextHandler(Class<?> type) throws StrNoParameterHandlerException {
-        for (StrContextHandler<?> parameterHandler : this) {
+    public static StrContextHandler<?> getContextHandler(Class<?> type) throws StrNoParameterHandlerException {
+        for (StrContextHandler<?> parameterHandler : contextHandlers) {
             if (parameterHandler.supports(type)) {
                 return parameterHandler;
             }
         }
         throw new StrNoParameterHandlerException(type);
+    }
+
+    /**
+     * Register new context handlers.
+     * @param handlers the context handlers
+     */
+    public static void register(StrContextHandler<?>... handlers) {
+        contextHandlers.addAll(List.of(handlers));
     }
 }

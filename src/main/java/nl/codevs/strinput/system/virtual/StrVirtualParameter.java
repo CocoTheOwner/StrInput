@@ -17,6 +17,7 @@
 
 package nl.codevs.strinput.system.virtual;
 
+import nl.codevs.strinput.system.parameter.StrParameter;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrCenter;
@@ -77,7 +78,7 @@ public final class StrVirtualParameter {
     public StrParameterHandler<?> getHandler() {
         return handlerCache.acquire(() -> {
             try {
-                return center.parameter.getHandler(parameter.getType());
+                return StrParameter.getHandler(parameter.getType());
             } catch (StrNoParameterHandlerException e) {
                 e.printStackTrace();
             }

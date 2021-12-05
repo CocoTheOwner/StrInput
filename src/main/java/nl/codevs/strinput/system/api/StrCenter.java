@@ -46,8 +46,6 @@ public abstract class StrCenter {
     public static StrSettings settings;
     final StrUser console;
     final StrRoots roots;
-    public final StrParameter parameter;
-    public final StrContext context;
 
     /**
      * Create a new command center.<br>
@@ -78,8 +76,8 @@ public abstract class StrCenter {
         console = consoleUser;
 
         // Handlers
-        parameter = new StrParameter(parameterHandlers);
-        parameter.addAll(List.of(
+        StrParameter.register(parameterHandlers);
+        StrParameter.register(
                 new BooleanHandler(),
                 new ByteHandler(),
                 new DoubleHandler(),
@@ -88,8 +86,8 @@ public abstract class StrCenter {
                 new LongHandler(),
                 new ShortHandler(),
                 new StringHandler()
-        ));
-        context = new StrContext(contextHandlers);
+        );
+        StrContext.register(contextHandlers);
 
         // Command map (roots)
         roots = new StrRoots(enableSettingsCommands, rootCommands, this);
@@ -178,6 +176,14 @@ public abstract class StrCenter {
      */
     public void debug(Str... messages) {
         console.sendMessage(messages);
+    }
+
+    /**
+     * Send a debug message.
+     * @param messages the debug message(s)
+     */
+    public void debug(List<Str> messages) {
+        debug(messages.toArray(new Str[]{}));
     }
 
     /**
