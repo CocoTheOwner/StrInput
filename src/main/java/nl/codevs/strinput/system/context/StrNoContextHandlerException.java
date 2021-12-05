@@ -24,7 +24,7 @@ package nl.codevs.strinput.system.context;
  * @since v0.1
  */
 public class StrNoContextHandlerException extends Exception {
-    public StrNoContextHandlerException(String message) {
-        super(message);
+    public StrNoContextHandlerException(Class<?> type) {
+        super("Could not find parameter handler for: " + type.getSimpleName());
     }
 }

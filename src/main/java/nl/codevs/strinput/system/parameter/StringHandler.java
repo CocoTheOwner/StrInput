@@ -17,8 +17,6 @@
 
 package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.exception.StrParseException;
-import nl.codevs.strinput.system.exception.StrWhichException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

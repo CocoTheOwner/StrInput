@@ -44,14 +44,6 @@ public interface StrUser {
     void sendMessage(Str message);
 
     /**
-     * Send multiple options when there is something to choose from.<br>
-     * Note that it is required to have a Str.<br>
-     * Return {@code null} if an option choice should be forced.
-     * @param clickables the clickable options to send
-     */
-    void sendOptions(List<StrClickable> clickables);
-
-    /**
      * @return whether this user supports {@link StrClickable}s.
      */
     boolean supportsClickables();
@@ -76,12 +68,6 @@ public interface StrUser {
     }
 
     /**
-     * Send multiple messages to the user, clickable ones.
-     * @param messages the clickable messages to send
-     */
-    void sendClickableMessage(List<StrClickable> messages);
-
-    /**
      * Play a sound effect
      * @param sfx the sound effect type
      */
@@ -90,7 +76,7 @@ public interface StrUser {
     /**
      * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
      * See {@link nl.codevs.strinput.system.context.StrContext}.
-     * @return
+     * @return true if the user supports context
      */
     boolean supportsContext();
 

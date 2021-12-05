@@ -18,6 +18,9 @@
 package nl.codevs.strinput.system.util;
 
 import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.parameter.StrWhichException;
+import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
 
 import java.security.InvalidParameterException;
@@ -30,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * Handle {@link java.util.concurrent.CompletableFuture}s such as when a {@link nl.codevs.strinput.system.exception.StrWhichException} happens, and there are hence multiple options to pick from.
+ * Handle {@link java.util.concurrent.CompletableFuture}s such as when a {@link StrWhichException} happens, and there are hence multiple options to pick from.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
@@ -79,7 +82,7 @@ public class Completables {
      * @param toComplete the to-complete future.
      * @return a list of StrClickables with the text of options and on-click events to complete the right future.
      */
-    public static List<StrClickable> postAndClickable(List<String> options, CompletableFuture<String> toComplete) {
+    public static List<Str> postAndClickable(List<String> options, CompletableFuture<String> toComplete) {
 
         // Generate password
         long password;
@@ -88,9 +91,9 @@ public class Completables {
         }
         while (FUTURES.containsKey(password));
 
-        // Generate clickables
-        List<StrClickable> optionsList = new ArrayList<>();
-        options.forEach(o -> optionsList.add(new StrClickable((Consumer<StrUser>) strUser -> Completables.complete(o), o)));
+        // Generate Strs
+        List<Str> optionsList = new ArrayList<>();
+        options.forEach(o -> optionsList.add(new Str(C.RESET, C.RESET, strUser -> Completables.complete(o))));
 
         // Post future
         FUTURES.put(password, toComplete);

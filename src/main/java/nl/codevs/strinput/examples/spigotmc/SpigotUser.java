@@ -18,12 +18,11 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-
-import java.util.List;
 
 /**
  * Spigot user implementation
@@ -31,20 +30,15 @@ import java.util.List;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class SpigotUser implements StrUser {
-
-    private final Player player;
+public record SpigotUser(Player player) implements StrUser {
 
     /**
      * Get the player.
+     *
      * @return the player
      */
     public Player getPlayer() {
         return player;
-    }
-
-    public SpigotUser(Player player) {
-        this.player = player;
     }
 
     /**
@@ -65,19 +59,6 @@ public class SpigotUser implements StrUser {
     @Override
     public void sendMessage(Str message) {
         player.sendMessage(strToString(message));
-    }
-
-    /**
-     * Send multiple options when there is something to choose from.<br>
-     * Note that it is required to have an Str.
-     *
-     * @param clickables the clickable options to send
-     */
-    @Override
-    public void sendOptions(List<StrClickable> clickables) {
-        for (StrClickable clickable : clickables) {
-            player.sendMessage(clickableToString(clickable));
-        }
     }
 
     /**
@@ -108,13 +89,23 @@ public class SpigotUser implements StrUser {
                 player.playSound(player.getLocation(), Sound.BLOCK_ANCIENT_DEBRIS_BREAK, 1f, 0.25f);
                 player.playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE, 0.2f, 1.95f);
             }
-            case SUCCESSFUL_PICKED ->
-                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.125f, 1.99f);
+            case SUCCESSFUL_PICKED -> player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.125f, 1.99f);
             case FAILED_PICKED -> {
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_CLUSTER_BREAK, 0.77f, 0.65f);
                 player.playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.125f, 1.99f);
             }
         }
+    }
+
+    /**
+     * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
+     * See {@link StrContext}.
+     *
+     * @return true if the user supports context
+     */
+    @Override
+    public boolean supportsContext() {
+        return true;
     }
 
     /**
@@ -126,21 +117,12 @@ public class SpigotUser implements StrUser {
 
     /**
      * Turn a {@link Str} to a string.
+     *
      * @param message the Str message to convert
      * @return the string
      * TODO: Implement colors
      */
     private String strToString(Str message) {
         return message.toHumanReadable();
-    }
-
-    /**
-     * Turn a {@link StrClickable} to a clickable string.
-     * @param clickable the StrClickable to convert
-     * @return the string
-     * TODO: Implement clickable
-     */
-    private String clickableToString(StrClickable clickable) {
-        return strToString(clickable);
     }
 }

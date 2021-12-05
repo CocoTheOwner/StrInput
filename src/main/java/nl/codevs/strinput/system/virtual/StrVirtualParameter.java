@@ -24,8 +24,8 @@ import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.exception.StrParseException;
-import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParseException;
+import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 
 import java.lang.reflect.Parameter;

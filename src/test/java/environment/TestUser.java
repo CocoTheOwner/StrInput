@@ -17,6 +17,7 @@
 package environment;
 
 import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
 
@@ -56,20 +57,6 @@ public class TestUser implements StrUser {
     }
 
     /**
-     * Send multiple options when there is something to choose from.<br>
-     * Note that it is required to have a Str.<br>
-     * Return {@code null} if an option choice should be forced.
-     *
-     * @param clickables the clickable options to send
-     */
-    @Override
-    public void sendOptions(List<StrClickable> clickables) {
-        for (StrClickable clickable : clickables) {
-            sendMessage(clickable);
-        }
-    }
-
-    /**
      * @return whether this user supports {@link StrClickable}s.
      */
     @Override
@@ -85,6 +72,17 @@ public class TestUser implements StrUser {
     @Override
     public void playSound(StrSoundEffect sfx) {
 
+    }
+
+    /**
+     * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
+     * See {@link StrContext}.
+     *
+     * @return true if the user supports context
+     */
+    @Override
+    public boolean supportsContext() {
+        return true;
     }
 
     /**

@@ -18,11 +18,10 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.text.StrClickable;
 import org.bukkit.Bukkit;
-
-import java.util.List;
 
 /**
  * Spigot console user.
@@ -52,17 +51,6 @@ public class SpigotConsole implements StrUser {
     }
 
     /**
-     * Send multiple options when there is something to choose from.<br>
-     * Note that it is required to have an Str.
-     *
-     * @param clickables the clickable options to send
-     */
-    @Override
-    public void sendOptions(List<StrClickable> clickables) {
-
-    }
-
-    /**
      * @return whether this user supports {@link StrClickable}s.
      */
     @Override
@@ -78,5 +66,16 @@ public class SpigotConsole implements StrUser {
     @Override
     public void playSound(StrSoundEffect sfx) {
 
+    }
+
+    /**
+     * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
+     * See {@link StrContext}.
+     *
+     * @return true if the user supports context
+     */
+    @Override
+    public boolean supportsContext() {
+        return false;
     }
 }

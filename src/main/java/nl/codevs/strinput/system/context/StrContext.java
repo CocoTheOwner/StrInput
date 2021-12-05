@@ -40,13 +40,13 @@ public class StrContext {
      * @return the context handler for the type
      * @throws StrNoParameterHandlerException if no context handler could be found
      */
-    public static StrContextHandler<?> getContextHandler(Class<?> type) throws StrNoParameterHandlerException {
+    public static StrContextHandler<?> getContextHandler(Class<?> type) throws StrNoContextHandlerException {
         for (StrContextHandler<?> parameterHandler : contextHandlers) {
             if (parameterHandler.supports(type)) {
                 return parameterHandler;
             }
         }
-        throw new StrNoParameterHandlerException(type);
+        throw new StrNoContextHandlerException(type);
     }
 
     /**

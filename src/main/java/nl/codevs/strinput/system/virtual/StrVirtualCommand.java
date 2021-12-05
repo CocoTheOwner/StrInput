@@ -22,12 +22,11 @@ import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.context.StrNoContextHandlerException;
 import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.exception.StrParseException;
-import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParseException;
+import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.util.Completables;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +34,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
@@ -500,7 +498,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     handler = StrContext.getContextHandler(option.getType());
                 } catch (StrNoContextHandlerException e) {
                     center.debug(new Str(C.R).a("Parameter " + option.getName() + " marked as contextual without available context handler (" + option.getType().getSimpleName() + ")."));
-                    user.sendMessage(new Str(C.R).a("Parameter ").a(C.GOLD).a(option.getHelp(user, true)).a(C.R).a(" marked as contextual without available context handler (" + option.getType().getSimpleName() + "). Please context your admin."));
+                    user.sendMessage(new Str(C.R).a("Parameter ").a(C.GOLD).a(option.help(user)).a(C.R).a(" marked as contextual without available context handler (" + option.getType().getSimpleName() + "). Please context your admin."));
                     e.printStackTrace();
                     continue;
                 }
@@ -585,20 +583,18 @@ public final class StrVirtualCommand implements StrVirtual {
 
         while (tries-- > 0 && (result == null || !options.contains(result))) {
             user.sendMessage(new Str("Please pick a valid option.", C.G, C.GOLD));
-            String password = UUID.randomUUID().toString().replaceAll("\\Q-\\E", "");
-            int m = 0;
 
-            for (String i : options) {
-                user.sendMessage(new Str("<hover:show_text:'" + gradients[m % gradients.length] + i + "</gradient>'><click:run_command:/Str-future " + password + " " + i + ">" + "- " + gradients[m % gradients.length] + i + "</gradient></click></hover>");
-                m++;
+            CompletableFuture<Integer> future = new CompletableFuture<>();
+            for (int i = 0; i < options.size(); i++) {
+                int finalI = i;
+                user.sendMessage(new Str("- " + options.get(i), C.G, C.GOLD, user1 -> {
+                    future.complete(finalI);
+                }, new Str(options.get(i), C.G, C.GOLD)));
             }
-
-            CompletableFuture<String> future = new CompletableFuture<>();
-            Completables.postAndClickable(password, future);
             user.playSound(StrUser.StrSoundEffect.PICK_OPTION);
 
             try {
-                result = future.get(15, TimeUnit.SECONDS);
+                result = options.get(future.get(15, TimeUnit.SECONDS));
             } catch (InterruptedException | ExecutionException | TimeoutException ignored) {
 
             }

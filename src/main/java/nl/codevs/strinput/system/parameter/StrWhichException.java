@@ -14,9 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.codevs.strinput.system.exception;
-
-import lombok.Getter;
+package nl.codevs.strinput.system.parameter;
 
 import java.util.List;
 
@@ -27,8 +25,13 @@ import java.util.List;
  * @since v0.1
  */
 public class StrWhichException extends Exception {
-    @Getter
+
     private final List<?> options;
+
+    public List<?> getOptions() {
+        return options;
+    }
+
     public StrWhichException(Class<?> type, String input, List<?> options) {
         super("Cannot parse \"" + input + "\" into type " + type.getSimpleName() + " because of multiple options");
         this.options = options;

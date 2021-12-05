@@ -18,8 +18,9 @@ package tests;
 
 import environment.TestCenter;
 import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.exception.StrParseException;
-import nl.codevs.strinput.system.exception.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameter;
+import nl.codevs.strinput.system.parameter.StrParseException;
+import nl.codevs.strinput.system.parameter.StrWhichException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ public class TestHandlers {
     public void testHandlerBoolean() {
         Boolean value = null;
         try {
-            value = (Boolean) SUT.parameter.getHandler(Boolean.class).parseSafe("true");
+            value = (Boolean) StrParameter.getHandler(Boolean.class).parseSafe("true");
         } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
             e.printStackTrace();
         }
@@ -48,7 +49,7 @@ public class TestHandlers {
     public void testHandlerDouble() {
         Double value = null;
         try {
-            value = (Double) SUT.parameter.getHandler(Double.class).parseSafe("0.1");
+            value = (Double) StrParameter.getHandler(Double.class).parseSafe("0.1");
         } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
             e.printStackTrace();
         }
@@ -60,7 +61,7 @@ public class TestHandlers {
     public void testHandlerByte() {
         Byte value = null;
         try {
-            value = (Byte) SUT.parameter.getHandler(Byte.class).parseSafe("10");
+            value = (Byte) StrParameter.getHandler(Byte.class).parseSafe("10");
         } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
             e.printStackTrace();
         }

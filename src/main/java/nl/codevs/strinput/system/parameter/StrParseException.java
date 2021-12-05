@@ -14,10 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.codevs.strinput.system.exception;
+package nl.codevs.strinput.system.parameter;
 
-import lombok.Getter;
-import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 
@@ -26,12 +24,27 @@ import nl.codevs.strinput.system.text.Str;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-@Getter
 public class StrParseException extends Exception {
     private final Class<?> type;
     private final Str input;
     private final Str reason;
-    private final Str message;
+    private final Str systemMessage;
+
+    public Class<?> getType() {
+        return type;
+    }
+
+    public Str getInput() {
+        return input;
+    }
+
+    public Str getSystemMessage() {
+        return systemMessage;
+    }
+
+    public Str getReason() {
+        return reason;
+    }
 
     public StrParseException(Class<?> type, String input, Throwable reason) {
         this(type, input, reason.getClass().getSimpleName() + " - " + reason.getMessage());
@@ -41,6 +54,6 @@ public class StrParseException extends Exception {
         this.type = type;
         this.input = new Str(input);
         this.reason = new Str(reason);
-        this.message = new Str(C.GOLD).a("Could not parse ").a(C.GOLD).a(input).a(C.R).a(" (").a(C.GOLD).a(type.getSimpleName()).a(C.R).a(") because of: ").a(C.GOLD).a(reason);
+        this.systemMessage = new Str(C.GOLD).a("Could not parse ").a(C.GOLD).a(input).a(C.R).a(" (").a(C.GOLD).a(type.getSimpleName()).a(C.R).a(") because of: ").a(C.GOLD).a(reason);
     }
 }

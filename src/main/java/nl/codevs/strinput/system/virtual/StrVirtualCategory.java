@@ -198,9 +198,9 @@ public final class StrVirtualCategory implements StrVirtual {
      */
     @Override
     public void help(StrUser user) {
-        List<StrClickable> helpMessage = new ArrayList<>();
+        List<Str> helpMessages = new ArrayList<>();
 
-        user.sendClickableMessage(helpMessage);
+        user.sendMessage(helpMessages);
     }
 
     /**
