@@ -147,9 +147,9 @@ public abstract class StrCenter {
             StrVirtualCategory root = roots.get(mainCommand);
 
             if (root == null) {
-                user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.Y).a(mainCommand));
+                user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.GOLD).a(mainCommand));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
-                debug(new Str(C.G).a("Command sent by ").a(C.Y).a(user.getName()).a(C.G).a(" took ").a(C.Y).a(String.valueOf(s.getTime())));
+                debug(new Str(C.G).a("Command sent by ").a(C.GOLD).a(user.getName()).a(C.G).a(" took ").a(C.GOLD).a(String.valueOf(s.getTime())));
                 return;
             }
 
@@ -168,8 +168,8 @@ public abstract class StrCenter {
         }
 
 
-        user.sendMessage(new Str("You sent command: ").a(C.Y).a(command.toString()));
-        user.sendMessage(new Str("And most likely category is: ").a(C.Y).a(roots.get(command.get(0)).getName()));
+        user.sendMessage(new Str("You sent command: ").a(C.GOLD).a(command.toString()));
+        user.sendMessage(new Str("And most likely category is: ").a(C.GOLD).a(roots.get(command.get(0)).getName()));
     }
 
     /**
@@ -265,21 +265,21 @@ public abstract class StrCenter {
                     center.debug(new Str(C.R).a("No successful root instances registered. Did you register all commands in the creator? Are they all annotated?"));
                 } else {
                     Str r = new Str(C.G).a("Loaded root category classes: ");
-                    rootInstancesSuccess.forEach(c -> r.a(C.Y).a(c.getClass().getSimpleName()).a(C.G).a(", "));
+                    rootInstancesSuccess.forEach(c -> r.a(C.GOLD).a(c.getClass().getSimpleName()).a(C.G).a(", "));
                     center.debug(r);
                 }
 
                 if (rootInstancesFailed.size() > 0) {
                     Str r = new Str(C.R);
-                    rootInstancesFailed.forEach(c -> r.a(C.R).a(", ").a(C.Y).a(c.getClass().getSimpleName()));
-                    center.debug(r.a("Failed root instances: ").a(C.Y));
+                    center.debug(r.a("Failed root instances: ").a(C.GOLD));
+                    rootInstancesFailed.forEach(c -> r.a(C.R).a(", ").a(C.GOLD).a(c.getClass().getSimpleName()));
                 }
 
                 if (registeredRootNames.isEmpty()) {
                     center.debug(new Str(C.R).a("No root commands registered! Did you register all commands in the creator? Are they @StrInput annotated?"));
                 } else {
                     Str r = new Str(C.G).a("Loaded root commands: ");
-                    registeredRootNames.forEach(c -> r.a(C.Y).a(c).a(C.G).a(", "));
+                    registeredRootNames.forEach(c -> r.a(C.GOLD).a(c).a(C.G).a(", "));
                     center.debug(r);
                 }
             }
@@ -438,7 +438,7 @@ public abstract class StrCenter {
          * Debug message prefix.
          * Cannot be modified by commands.
          */
-        public static Str debugPrefix = new Str(C.R).a("[").a(C.G).a("StrInput").a(C.R).a("]").a(C.RESET);
+        public static Str debugPrefix = new Str(C.R).a("[").a(C.G).a("StrInput").a(C.R).a("]").a(C.X);
 
         @StrInput(description = "Which threshold should be met for command matching using our improved N-Gram search algorithm?")
         public void setMatchThreshold(
@@ -582,10 +582,10 @@ public abstract class StrCenter {
                     FileWriter f = new FileWriter(file);
                     gson.toJson(new_, Settings.class, f);
                     f.close();
-                    console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.Y).a(file.getParent().replace("\\", "/")  + "/" + file.getName()).a(C.G).a(")"));
+                    console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.GOLD).a(file.getParent().replace("\\", "/")  + "/" + file.getName()).a(C.G).a(")"));
                     return new_;
                 }
-                console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.Y).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
+                console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.GOLD).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
                 return new Gson().fromJson(new FileReader(file), Settings.class);
             } catch (IOException e) {
                 e.printStackTrace();

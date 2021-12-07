@@ -157,7 +157,7 @@ public final class StrVirtualCategory implements StrVirtual {
         int n = options.size();
         options = options.stream().filter(o -> o.doesMatchUser(user)).collect(Collectors.toList());
         if (n != 0) {
-            center.debug(new Str(C.Y).a("Virtual" + getName() + " filtered out " + (n - options.size()) + " options!"));
+            center.debug(new Str(C.GOLD).a("Virtual" + getName() + " filtered out " + (n - options.size()) + " options!"));
         }
 
         String next = arguments.remove(0);
@@ -165,7 +165,7 @@ public final class StrVirtualCategory implements StrVirtual {
         List<StrVirtual> opt = NGram.sortByNGram(next, options, StrCenter.settings.matchThreshold);
 
         for (StrVirtual strVirtual : opt) {
-            center.debug(new Str(C.Y).a(strVirtual.getName()));
+            center.debug(new Str(C.GOLD).a(strVirtual.getName()));
         }
 
         center.debug(new Str(C.G).a("Virtual " + getName() + " attempting to find a match in " + options.size() + " options with input: " + next));

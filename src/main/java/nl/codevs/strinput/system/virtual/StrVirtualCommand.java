@@ -48,7 +48,7 @@ public final class StrVirtualCommand implements StrVirtual {
     /**
      * Newline.
      */
-    private static final Str newLine = new Str(C.RESET).a("\n");
+    private static final Str newLine = new Str(C.X).a("\n");
 
     /**
      * Command parameters.
@@ -145,7 +145,7 @@ public final class StrVirtualCommand implements StrVirtual {
      */
     @Override
     public boolean run(List<String> arguments, StrUser user, StrCenter center) {
-        center.debug(new Str(C.Y).a("Reached virtual command " + getName()));
+        center.debug(new Str(C.GOLD).a("Reached virtual command " + getName()));
         if (arguments.size() == parameters.size()) {
             center.debug(new Str(C.G).a("Running: " + getName()));
             return true;

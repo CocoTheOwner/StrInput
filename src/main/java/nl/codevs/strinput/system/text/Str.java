@@ -75,7 +75,7 @@ public class Str {
     }
 
     public Str(String text) {
-        this(text, C.RESET);
+        this(text, C.X);
     }
 
     public Str(C color) {
@@ -83,7 +83,7 @@ public class Str {
     }
 
     public Str(String text, C color) {
-        this(text, color, C.RESET);
+        this(text, color, C.X);
     }
 
     public Str(C startColor, C endColor) {
@@ -99,11 +99,11 @@ public class Str {
     }
 
     public Str(String text, Consumer<StrUser> runOnClick) {
-        this(text, C.RESET, runOnClick);
+        this(text, C.X, runOnClick);
     }
 
     public Str(C color, Consumer<StrUser> runOnClick) {
-        this("", color, C.RESET, runOnClick);
+        this("", color, C.X, runOnClick);
     }
 
     public Str(C startColor, C endColor, Consumer<StrUser> onClick, Str onHover) {
@@ -111,7 +111,7 @@ public class Str {
     }
 
     public Str(String text, C color, Consumer<StrUser> runOnClick) {
-        this(text, color, C.RESET, runOnClick);
+        this(text, color, C.X, runOnClick);
     }
 
     public Str(C startColor, C endColor, Consumer<StrUser> runOnClick) {
@@ -123,23 +123,23 @@ public class Str {
     }
 
     public Str(Str showOnHover) {
-        this("", C.RESET, showOnHover);
+        this("", C.X, showOnHover);
     }
 
     public Str(String text, Str showOnHover) {
-        this(text, C.RESET, showOnHover);
+        this(text, C.X, showOnHover);
     }
 
     public Str(String text, C color, Str showOnHover) {
-        this(text, color, C.RESET, showOnHover);
+        this(text, color, C.X, showOnHover);
     }
 
     public Str(C color, Str showOnHover) {
-        this("", color, C.RESET, showOnHover);
+        this("", color, C.X, showOnHover);
     }
 
     public Str(C color, Consumer<StrUser> runOnClick, Str showOnHover) {
-        this("", color, C.RESET, runOnClick, showOnHover);
+        this("", color, C.X, runOnClick, showOnHover);
     }
 
     public Str(String text, C startColor, C endColor, Str showOnHover) {
@@ -151,7 +151,7 @@ public class Str {
     }
 
     public Str(C color, Consumer<StrUser> onClick, Str onHover, List<Str> previous) {
-        this("", color, C.RESET, onClick, onHover, previous);
+        this("", color, C.X, onClick, onHover, previous);
     }
 
     public Str(C startColor, C endColor, Consumer<StrUser> runOnClick, Str showOnHover, List<Str> previous) {
