@@ -147,9 +147,9 @@ public abstract class StrCenter {
             StrVirtualCategory root = roots.get(mainCommand);
 
             if (root == null) {
-                user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.GOLD).a(mainCommand));
+                user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.B).a(mainCommand));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
-                debug(new Str(C.G).a("Command sent by ").a(C.GOLD).a(user.getName()).a(C.G).a(" took ").a(C.GOLD).a(String.valueOf(s.getTime())));
+                debug(new Str(C.G).a("Command sent by ").a(C.B).a(user.getName()).a(C.G).a(" took ").a(C.B).a(String.valueOf(s.getTime())));
                 return;
             }
 
@@ -168,8 +168,8 @@ public abstract class StrCenter {
         }
 
 
-        user.sendMessage(new Str("You sent command: ").a(C.GOLD).a(command.toString()));
-        user.sendMessage(new Str("And most likely category is: ").a(C.GOLD).a(roots.get(command.get(0)).getName()));
+        user.sendMessage(new Str("You sent command: ").a(C.B).a(command.toString()));
+        user.sendMessage(new Str("And most likely category is: ").a(C.B).a(roots.get(command.get(0)).getName()));
     }
 
     /**
@@ -265,21 +265,21 @@ public abstract class StrCenter {
                     center.debug(new Str(C.R).a("No successful root instances registered. Did you register all commands in the creator? Are they all annotated?"));
                 } else {
                     Str r = new Str(C.G).a("Loaded root category classes: ");
-                    rootInstancesSuccess.forEach(c -> r.a(C.GOLD).a(c.getClass().getSimpleName()).a(C.G).a(", "));
+                    rootInstancesSuccess.forEach(c -> r.a(C.B).a(c.getClass().getSimpleName()).a(C.G).a(", "));
                     center.debug(r);
                 }
 
                 if (rootInstancesFailed.size() > 0) {
                     Str r = new Str(C.R);
-                    center.debug(r.a("Failed root instances: ").a(C.GOLD));
-                    rootInstancesFailed.forEach(c -> r.a(C.R).a(", ").a(C.GOLD).a(c.getClass().getSimpleName()));
+                    center.debug(r.a("Failed root instances: ").a(C.B));
+                    rootInstancesFailed.forEach(c -> r.a(C.R).a(", ").a(C.B).a(c.getClass().getSimpleName()));
                 }
 
                 if (registeredRootNames.isEmpty()) {
                     center.debug(new Str(C.R).a("No root commands registered! Did you register all commands in the creator? Are they @StrInput annotated?"));
                 } else {
                     Str r = new Str(C.G).a("Loaded root commands: ");
-                    registeredRootNames.forEach(c -> r.a(C.GOLD).a(c).a(C.G).a(", "));
+                    registeredRootNames.forEach(c -> r.a(C.B).a(c).a(C.G).a(", "));
                     center.debug(r);
                 }
             }
@@ -450,7 +450,7 @@ public abstract class StrCenter {
                         Double threshold
         ){
             settings.matchThreshold = threshold;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("matching threshold ").a(C.G).a("to: ").a(C.GOLD).a(String.valueOf(settings.matchThreshold)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("matching threshold ").a(C.G).a("to: ").a(C.B).a(String.valueOf(settings.matchThreshold)));
         }
         public double matchThreshold = 0.1;
 
@@ -464,7 +464,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.settingsCommands = enable == null ? !settings.settingsCommands : enable;
-            user().sendMessage(new Str(C.G).a("After a restart, ").a(C.GOLD).a("settings commands ").a(C.G).a("will be: ").a(C.GOLD).a(String.valueOf(settings.settingsCommands)));
+            user().sendMessage(new Str(C.G).a("After a restart, ").a(C.B).a("settings commands ").a(C.G).a("will be: ").a(C.B).a(String.valueOf(settings.settingsCommands)));
         }
         public boolean settingsCommands = true;
 
@@ -478,7 +478,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.async = enable == null ? !settings.async : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("async ").a(C.G).a("to: ").a(C.GOLD).a(String.valueOf(settings.async)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("async ").a(C.G).a("to: ").a(C.B).a(String.valueOf(settings.async)));
         }
         public boolean async;
 
@@ -492,7 +492,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.allowNullInput = enable == null ? !settings.allowNullInput : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("allow null input ").a(C.G).a("to: ").a(C.GOLD).a(String.valueOf(settings.allowNullInput)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("allow null input ").a(C.G).a("to: ").a(C.B).a(String.valueOf(settings.allowNullInput)));
         }
         public boolean allowNullInput = false;
 
@@ -506,7 +506,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.debug = enable == null ? !settings.debug : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("debug ").a(C.G).a("to: ").a(C.GOLD).a(String.valueOf(settings.debug)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("debug ").a(C.G).a("to: ").a(C.B).a(String.valueOf(settings.debug)));
         }
         public boolean debug = false;
 
@@ -520,7 +520,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.debugTime = enable == null ? !settings.debugTime : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("debugTime ").a(C.G).a("to: ").a(String.valueOf(settings.debugTime)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("debugTime ").a(C.G).a("to: ").a(String.valueOf(settings.debugTime)));
         }
         public boolean debugTime;
 
@@ -534,7 +534,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.debugMatching = enable == null ? !settings.debugMatching : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("debug matching ").a(C.G).a("to: ").a(String.valueOf(settings.debugMatching)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("debug matching ").a(C.G).a("to: ").a(String.valueOf(settings.debugMatching)));
         }
         public boolean debugMatching = true;
 
@@ -548,7 +548,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.nullOnFailure = enable == null ? !settings.nullOnFailure : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("null on failure ").a(C.G).a("to: ").a(String.valueOf(settings.nullOnFailure)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("null on failure ").a(C.G).a("to: ").a(String.valueOf(settings.nullOnFailure)));
         }
         public boolean nullOnFailure = false;
 
@@ -562,7 +562,7 @@ public abstract class StrCenter {
                         Boolean enable
         ){
             settings.pickFirstOnMultiple = enable == null ? !settings.pickFirstOnMultiple : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.GOLD).a("pick first on multiple ").a(C.G).a("to: ").a(String.valueOf(settings.pickFirstOnMultiple)));
+            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("pick first on multiple ").a(C.G).a("to: ").a(String.valueOf(settings.pickFirstOnMultiple)));
         }
         public boolean pickFirstOnMultiple = false;
 
@@ -582,10 +582,10 @@ public abstract class StrCenter {
                     FileWriter f = new FileWriter(file);
                     gson.toJson(new_, Settings.class, f);
                     f.close();
-                    console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.GOLD).a(file.getParent().replace("\\", "/")  + "/" + file.getName()).a(C.G).a(")"));
+                    console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.B).a(file.getParent().replace("\\", "/")  + "/" + file.getName()).a(C.G).a(")"));
                     return new_;
                 }
-                console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.GOLD).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
+                console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
                 return new Gson().fromJson(new FileReader(file), Settings.class);
             } catch (IOException e) {
                 e.printStackTrace();

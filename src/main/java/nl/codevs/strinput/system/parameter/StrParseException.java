@@ -54,6 +54,6 @@ public class StrParseException extends Exception {
         this.type = type;
         this.input = new Str(input);
         this.reason = new Str(reason);
-        this.systemMessage = new Str(C.GOLD).a("Could not parse ").a(C.GOLD).a(input).a(C.R).a(" (").a(C.GOLD).a(type.getSimpleName()).a(C.R).a(") because of: ").a(C.GOLD).a(reason);
+        this.systemMessage = new Str(C.B).a("Could not parse ").a(C.B).a(input).a(C.R).a(" (").a(C.B).a(type.getSimpleName()).a(C.R).a(") because of: ").a(C.B).a(reason);
     }
 }

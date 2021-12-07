@@ -18,27 +18,27 @@
 package nl.codevs.strinput.system.text;
 
 /**
- * Colors. Reason this is not an {@code enum} is so that it can be extended with additional colors.
+ * Colors.
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class C {
+public enum C {
     /**
      * Red color.
      */
-    public static final C R = new C("red");
+    R("red"),
     /**
      * Green color.
      */
-    public static final C G = new C("green");
+    G("green"),
     /**
-     * Gold color.
+     * Blue color.
      */
-    public static final C GOLD = new C("gold");
+    B("blue"),
     /**
      * Reset color.
      */
-    public static final C X = new C("reset");
+    X("reset");
 
     /**
      * Name of the color.
@@ -49,7 +49,7 @@ public class C {
      * Construct a new color.
      * @param colorName the name of the color
      */
-    public C(String colorName) {
+    C(String colorName) {
         name = colorName;
     }
 
