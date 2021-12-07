@@ -16,6 +16,7 @@
  */
 package environment;
 
+import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.text.Str;
@@ -92,5 +93,15 @@ public class TestCenter extends StrCenter {
 
     public static void main(String[] args) {
         System.out.println(String.join("\n", SUT.getListing("  ", new ArrayList<String>(List.of("test", "mult", "1", "2")))));
+    }
+
+    /**
+     * Run a function sync (will run if {@link Settings#async} is false or when {@link StrInput#sync()} is true).
+     *
+     * @param runnable the runnable to run
+     */
+    @Override
+    public void runSync(Runnable runnable) {
+        runnable.run();
     }
 }

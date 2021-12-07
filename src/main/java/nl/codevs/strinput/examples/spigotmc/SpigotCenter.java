@@ -22,9 +22,11 @@ import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldHandler;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrCategory;
+import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -41,6 +43,12 @@ import java.util.List;
  * @since v0.1
  */
 public class SpigotCenter extends StrCenter {
+
+    /**
+     * The plugin instance for this command center.
+     */
+    private final Plugin instance;
+
     /**
      * Create a new spigot command center.
      *
@@ -67,6 +75,7 @@ public class SpigotCenter extends StrCenter {
                 },
                 rootCommands
         );
+        instance = plugin;
     }
 
     /**
@@ -84,5 +93,15 @@ public class SpigotCenter extends StrCenter {
         SpigotUser user = new SpigotUser(sender.getServer().getPlayer(sender.getName()));
         onCommand(cmd, user);
         return true;
+    }
+
+    /**
+     * Run a function sync (will run if {@link Settings#async} is false or when {@link StrInput#sync()} is true).
+     *
+     * @param runnable the runnable to run
+     */
+    @Override
+    public void runSync(Runnable runnable) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(instance, runnable);
     }
 }

@@ -179,7 +179,7 @@ public abstract class StrCenter {
      * @param message the debug message(s)
      */
     public void debug(Str message) {
-        console.sendMessage(Settings.debugPrefix.a(message));
+        console.sendMessage(Settings.debugPrefix.copy().a(message));
     }
 
     /**
@@ -207,6 +207,12 @@ public abstract class StrCenter {
     public StrUser getConsole() {
         return console;
     }
+
+    /**
+     * Run a function sync (will run if {@link Settings#async} is false or when {@link StrInput#sync()} is true).
+     * @param runnable the runnable to run
+     */
+    public abstract void runSync(Runnable runnable);
 
     /**
      * List this command system including all listed root command categories, commands and parameters.
@@ -464,7 +470,7 @@ public abstract class StrCenter {
          * Debug message prefix.
          * Cannot be modified by commands.
          */
-        public static Str debugPrefix = new Str(C.R).a("[").a(C.G).a("StrInput").a(C.R).a("]").a(C.X);
+        public static Str debugPrefix = new Str(C.R).a("[").a(C.G).a("StrInput").a(C.R).a("] ").a(C.X);
 
         @StrInput(description = "Which threshold should be met for command matching using our improved N-Gram search algorithm?")
         public void setMatchThreshold(
