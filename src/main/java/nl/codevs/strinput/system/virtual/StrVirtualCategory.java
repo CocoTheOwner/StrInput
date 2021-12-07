@@ -65,6 +65,7 @@ public final class StrVirtualCategory implements StrVirtual {
      * Command center.
      */
     private final StrCenter center;
+
     /**
      * Command mapping for input to command.
      */
@@ -134,6 +135,14 @@ public final class StrVirtualCategory implements StrVirtual {
     @Override
     public @NotNull StrInput getAnnotation() {
         return annotation;
+    }
+
+    /**
+     * Get the class instance this virtual category manages.
+     * @return the class instance of this virtual
+     */
+    public @NotNull StrCategory getInstance() {
+        return instance;
     }
 
     /**
