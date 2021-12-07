@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test {@link environment.TestRoot} commands.
@@ -32,6 +33,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since v0.1
  */
 public class TestCommand {
+
+    @Test
+    public void testShowGraph() {
+        for (String s : TestCenter.SUT.getListing("  ", new ArrayList<>(List.of("test", "add", "hey", "there")))) {
+            System.out.println(s);
+        }
+        assertTrue(true);
+    }
 
     @Test
     public void testCommandInvocation() {

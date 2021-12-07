@@ -1,7 +1,7 @@
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.context.StrUserContext;
+import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.parameter.StrParseException;
 import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -50,7 +50,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      */
     @Override
     public @NotNull World parse(@NotNull String text) throws Throwable {
-        if (!((SpigotUser) StrUserContext.get()).isPlayer()) {
+        if (!((SpigotUser) StrCenter.UserContext.get()).isPlayer()) {
             throw new StrParseException(World.class, text, "User is not a player");
         }
         List<World> options = getPossibilities(text);

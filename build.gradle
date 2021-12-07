@@ -25,10 +25,14 @@ dependencies {
     implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'net.dv8tion:JDA:4.4.0_350'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 test {
     useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs << '-parameters'
 }

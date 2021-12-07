@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for n-gram-based string comparison.
@@ -73,11 +74,13 @@ public class NGram {
      * Sort a list of virtual nodes by n-gram match to a string input.<br>
      * {@code strVirtualList} is sorted & returned.<br>
      * The best match (highest n-gram score) is first, and the lowest last.
-     * @param strVirtualList the list of virtual nodes to sort through. <em>Not modified.</em>
+     * @param input the input string for matching (source)
+     * @param strVirtualList the list of virtual nodes to sort (targets). <em>Not modified.</em>
+     * @param threshold the minimal matching score
      * @return an array with the elements of {@code strVirtualList}, in sorted order.
      */
     @Contract(mutates = "param2")
-    public static @NotNull List<StrVirtual> sortByNGram(String input, List<StrVirtual> strVirtualList) {
+    public static @NotNull List<StrVirtual> sortByNGram(String input, List<StrVirtual> strVirtualList, double threshold) {
 
         // Get names and virtuals
         List<String> names = new ArrayList<>();
@@ -103,7 +106,11 @@ public class NGram {
         }
 
         // Get & sort
-        strVirtualList.sort(Comparator.comparingDouble(v -> -scores.get(v.getName())));
+        strVirtualList
+                .stream()
+                .filter(v -> scores.get(v.getName()) > threshold)
+                .collect(Collectors.toList())
+                .sort(Comparator.comparingDouble(v -> -scores.get(v.getName())));
         return strVirtualList;
     }
 }

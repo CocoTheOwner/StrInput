@@ -17,10 +17,9 @@
 
 package nl.codevs.strinput.examples.spigotmc;
 
+import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrUser;
-import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.text.StrClickable;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -62,7 +61,7 @@ public record SpigotUser(Player player) implements StrUser {
     }
 
     /**
-     * @return whether this user supports {@link StrClickable}s.
+     * @return whether this user supports clickable {@link Str}s.
      */
     @Override
     public boolean supportsClickables() {
@@ -99,13 +98,24 @@ public record SpigotUser(Player player) implements StrUser {
 
     /**
      * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
-     * See {@link StrContext}.
+     * See {@link StrCenter.ContextHandling}.
      *
      * @return true if the user supports context
      */
     @Override
     public boolean supportsContext() {
         return true;
+    }
+
+    /**
+     * Whether this user has permission for a certain node or not.
+     *
+     * @param permission the permissions node
+     * @return true if permitted.
+     */
+    @Override
+    public boolean hasPermission(String permission) {
+        return player.hasPermission(permission);
     }
 
     /**

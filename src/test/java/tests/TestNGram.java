@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,7 +73,7 @@ public class TestNGram {
         List<StrVirtual> o = new ArrayList<>();
         o.addAll(t.getCommands());
         o.addAll(t.getSubCats());
-        o = NGram.sortByNGram("mult", o);
+        o = NGram.sortByNGram("mult", o, 0.6);
         assertEquals("mult", o.get(0).getName());
         assertEquals("add", o.get(1).getName());
     }

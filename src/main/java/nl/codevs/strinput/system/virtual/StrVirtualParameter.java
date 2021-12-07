@@ -17,20 +17,21 @@
 
 package nl.codevs.strinput.system.virtual;
 
+import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrUser;
-import nl.codevs.strinput.system.parameter.StrParameter;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.api.Param;
-import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
 import nl.codevs.strinput.system.parameter.StrParseException;
 import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
+import nl.codevs.strinput.system.util.NGram;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A {@link Param} annotated method parameter's virtual representation.
@@ -47,7 +48,7 @@ public final class StrVirtualParameter {
     /**
      * The annotation.
      */
-    private final Param param;
+    private final Param annotation;
     /**
      * Handler cache.
      */
@@ -56,21 +57,15 @@ public final class StrVirtualParameter {
      * Example cache.
      */
     private final AtomicCache<List<String>> exampleCache = new AtomicCache<>();
-    /**
-     * Command center.
-     */
-    private final StrCenter center;
 
     /**
      * Create a virtual parameter.<br>
      * Assumes {@code parameter} is annotated by @{@link Param}.
      * @param parameter the parameter
-     * @param center the command center
      */
-    public StrVirtualParameter(Parameter parameter, StrCenter center) {
-        this.center = center;
+    public StrVirtualParameter(Parameter parameter) {
         this.parameter = parameter;
-        this.param = parameter.getDeclaredAnnotation(Param.class);
+        this.annotation = parameter.getDeclaredAnnotation(Param.class);
     }
 
     /**
@@ -80,7 +75,7 @@ public final class StrVirtualParameter {
     public StrParameterHandler<?> getHandler() {
         return handlerCache.acquire(() -> {
             try {
-                return StrParameter.getHandler(parameter.getType());
+                return StrCenter.ParameterHandling.getHandler(parameter.getType());
             } catch (StrNoParameterHandlerException e) {
                 e.printStackTrace();
             }
@@ -94,22 +89,12 @@ public final class StrVirtualParameter {
      */
     public List<String> getExamples() {
         return exampleCache.acquire(() -> {
-            List<String> examples = new ArrayList<>();
 
-            if (getHandler().getPossibilities() == null) {
-                examples.add(getHandler().getRandomDefault());
-                return examples;
+            if (getHandler().getPossibilities() != null) {
+                return getHandler().getPossibilities().stream().map(p -> getHandler().toStringForce(p)).collect(Collectors.toList());
             }
 
-            getHandler().getPossibilities().forEach(p -> {
-                examples.add(getHandler().toStringForce(p));
-            });
-
-            if (examples.isEmpty()) {
-                examples.add(getHandler().getRandomDefault());
-            }
-
-            return examples;
+            return new ArrayList<>(List.of(getHandler().getRandomDefault()));
         });
     }
 
@@ -126,7 +111,7 @@ public final class StrVirtualParameter {
      * @return the default string
      */
     public String getDefault() {
-        return param.defaultValue().trim();
+        return annotation.defaultValue().trim();
     }
 
     /**
@@ -134,7 +119,7 @@ public final class StrVirtualParameter {
      * @return true if the parameter has a default
      */
     public boolean hasDefault() {
-        return getDefault().isEmpty();
+        return !getDefault().isEmpty();
     }
 
     /**
@@ -146,7 +131,7 @@ public final class StrVirtualParameter {
     }
 
     /**
-     * Get default value for this parameter.
+     * Get default value for this parameter. {@code null} if there is none (check {@link #hasDefault()} first).
      * @return an instance of the parameter type
      * @throws StrParseException thrown when parsing fails
      * @throws StrWhichException thrown when multiple options are possible
@@ -160,7 +145,7 @@ public final class StrVirtualParameter {
      * @return the description
      */
     public String getDescription() {
-        return param.description().isBlank() ? Param.DEFAULT_DESCRIPTION : param.description();
+        return annotation.description().isBlank() ? Param.DEFAULT_DESCRIPTION : annotation.description();
     }
 
     /**
@@ -168,7 +153,7 @@ public final class StrVirtualParameter {
      * @return the name
      */
     public String getName() {
-        return param.name().isBlank() ? parameter.getName() : param.name();
+        return annotation.name().isBlank() ? parameter.getName() : annotation.name();
     }
 
     /**
@@ -179,7 +164,7 @@ public final class StrVirtualParameter {
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add(getName());
-        for (String alias : param.aliases()) {
+        for (String alias : annotation.aliases()) {
             if (alias.isBlank()) {
                 continue;
             }
@@ -198,7 +183,7 @@ public final class StrVirtualParameter {
      * @return true if the parameter is contextual
      */
     public boolean isContextual() {
-        return param.contextual();
+        return annotation.contextual();
     }
 
     /**
@@ -208,5 +193,15 @@ public final class StrVirtualParameter {
      */
     public Str help(StrUser user) {
         return new Str("Node help of " + getName() + " for " + user.getName());
+    }
+
+    /**
+     * List this parameter (just the parameter type/name) to form a string-based graph representation.
+     * @param prefix prefix all substrings with this prefix, so it aligns with previous nodes
+     * @param current the current graph
+     * @param exampleMatch an example to match this against
+     */
+    public void getListing(String prefix, List<String> current, String exampleMatch) {
+        current.add(prefix + getName() + " of type '" + getType().getSimpleName() + "'" + (hasDefault() ? " defaults to '" + getDefault() + "'" : " has no default") + " and " + (isContextual() ? "is contextual" : "is not contextual") + " matches with " + exampleMatch + " @ " + ((double) NGram.nGramMatch(exampleMatch, getName()) / NGram.nGramMatch(getName(), getName())));
     }
 }

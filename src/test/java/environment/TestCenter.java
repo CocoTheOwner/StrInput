@@ -18,11 +18,11 @@ package environment;
 
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.context.StrContextHandler;
-import nl.codevs.strinput.system.parameter.StrParameterHandler;
+import nl.codevs.strinput.system.text.Str;
 
 import javax.management.InstanceAlreadyExistsException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,14 +51,46 @@ public class TestCenter extends StrCenter {
     public TestCenter() throws InstanceAlreadyExistsException {
         super(
                 new File("testSettings"),
-                new TestUser(),
-                new StrParameterHandler[0],
-                new StrContextHandler[0],
-                true,
+                new StrUser() {
+                    @Override
+                    public String getName() {
+                        return "Console";
+                    }
+
+                    @Override
+                    public void sendMessage(Str message) {
+                        System.out.println(message.toHumanReadable());
+                    }
+
+                    @Override
+                    public boolean supportsClickables() {
+                        return false;
+                    }
+
+                    @Override
+                    public void playSound(StrSoundEffect sfx) {
+
+                    }
+
+                    @Override
+                    public boolean supportsContext() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean hasPermission(String permission) {
+                        return true;
+                    }
+                },
                 new TestRoot()
         );
 
         // Set async to false so we can run tests sync
         settings.async = false;
+        settings.settingsCommands = false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(String.join("\n", SUT.getListing("  ", new ArrayList<String>(List.of("test", "mult", "1", "2")))));
     }
 }

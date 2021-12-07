@@ -23,7 +23,6 @@ import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.text.StrClickable;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -43,11 +41,6 @@ import java.util.stream.Collectors;
  * @since v0.1
  */
 public final class StrVirtualCategory implements StrVirtual {
-
-    /**
-     * Newline.
-     */
-    private static final Str newLine = new Str(C.RESET).a("\n");
 
     /**
      * Parent category.
@@ -156,7 +149,7 @@ public final class StrVirtualCategory implements StrVirtual {
     public boolean run(List<String> arguments, StrUser user, StrCenter center) {
         if (arguments.size() == 0) {
             help(user);
-            return false; // TODO: Consider false
+            return true;
         }
         List<StrVirtual> options = new ArrayList<>();
         options.addAll(subCats);
@@ -169,12 +162,8 @@ public final class StrVirtualCategory implements StrVirtual {
 
         String next = arguments.remove(0);
 
-        List<StrVirtual> opt = NGram.sortByNGram(next, options);
+        List<StrVirtual> opt = NGram.sortByNGram(next, options, StrCenter.settings.matchThreshold);
 
-        for (StrVirtual option : options) {
-            center.debug(new Str(C.Y).a(option.getName()));
-
-        }
         for (StrVirtual strVirtual : opt) {
             center.debug(new Str(C.Y).a(strVirtual.getName()));
         }
@@ -241,6 +230,7 @@ public final class StrVirtualCategory implements StrVirtual {
                 continue;
             }
 
+            // Class must be annotated by StrInput
             if (!subCat.getType().isAnnotationPresent(StrInput.class)) {
                 continue;
             }
@@ -285,5 +275,53 @@ public final class StrVirtualCategory implements StrVirtual {
         }
 
         return subCats;
+    }
+
+    /**
+     * Returns a string representation of the object. In general, the
+     * {@code toString} method returns a string that
+     * "textually represents" this object. The result should
+     * be a concise but informative representation that is easy for a
+     * person to read.
+     * It is recommended that all subclasses override this method.
+     * <p>
+     * The {@code toString} method for class {@code Object}
+     * returns a string consisting of the name of the class of which the
+     * object is an instance, the at-sign character `{@code @}', and
+     * the unsigned hexadecimal representation of the hash code of the
+     * object. In other words, this method returns a string equal to the
+     * value of:
+     * <blockquote>
+     * <pre>
+     * getClass().getName() + '@' + Integer.toHexString(hashCode())
+     * </pre></blockquote>
+     *
+     * @return a string representation of the object.
+     */
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("Virtual category called " + getName());
+        str.append("\n").append("Contains ").append(getCommands().size()).append(" commands named: ").append(getCommands().stream().map(StrVirtual::toString));
+        str.append("\n").append("Contains ").append(getSubCats().size()).append(" subcats named: ").append(getSubCats().stream().map(StrVirtual::toString));
+        str.append(getParent() != null ? "\n" + "With parent named " + getParent().getName() : str.append("\n").append("Without parent"));
+        return str.toString();
+    }
+
+    /**
+     * List this node and any sub-virtuals to form a string-based graph representation in {@code current}.
+     * @param prefix prefix all substrings with this prefix, so it aligns with previous nodes.
+     * @param spacing the space to append to the prefix for subsequent sub-virtuals
+     * @param current the current graph
+     * @param exampleInput an example input for NGram matching
+     */
+    @Contract(mutates = "param3")
+    public void getListing(String prefix, String spacing, List<String> current, List<String> exampleInput) {
+        current.add(prefix + getName() + (getAliases().isEmpty() ? "" : " (" + getAliases() + ")") + " cmds: " + getCommands().size() + " / subcs: " + getSubCats().size() + " matches with " + exampleInput.get(0) + " @ " + ((double) NGram.nGramMatch(exampleInput.get(0), getName()) / NGram.nGramMatch(getName(), getName())));
+        for (StrVirtualCategory subCat : getSubCats()) {
+            subCat.getListing(prefix + spacing, spacing, current, new ArrayList<>(exampleInput.subList(1, exampleInput.size())));
+        }
+        for (StrVirtualCommand command : getCommands()) {
+            command.getListing(prefix + spacing, spacing, current, new ArrayList<>(exampleInput.subList(1, exampleInput.size())));
+        }
     }
 }

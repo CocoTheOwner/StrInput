@@ -18,7 +18,6 @@
 package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.api.*;
-import nl.codevs.strinput.system.context.StrContext;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.context.StrNoContextHandlerException;
 import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
@@ -27,6 +26,7 @@ import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,7 +93,7 @@ public final class StrVirtualCommand implements StrVirtual {
      */
     private List<StrVirtualParameter> setupParameters() {
         List<StrVirtualParameter> parameters = new ArrayList<>();
-        Arrays.stream(method.getParameters()).filter(p -> p.isAnnotationPresent(Param.class)).forEach(p -> parameters.add(new StrVirtualParameter(p, center)));
+        Arrays.stream(method.getParameters()).filter(p -> p.isAnnotationPresent(Param.class)).forEach(p -> parameters.add(new StrVirtualParameter(p)));
         return parameters;
     }
 
@@ -495,7 +495,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 parseExceptionArgs.remove(option);
                 StrContextHandler<?> handler;
                 try {
-                    handler = StrContext.getContextHandler(option.getType());
+                    handler = StrCenter.ContextHandling.getContextHandler(option.getType());
                 } catch (StrNoContextHandlerException e) {
                     center.debug(new Str(C.R).a("Parameter " + option.getName() + " marked as contextual without available context handler (" + option.getType().getSimpleName() + ")."));
                     user.sendMessage(new Str(C.R).a("Parameter ").a(C.GOLD).a(option.help(user)).a(C.R).a(" marked as contextual without available context handler (" + option.getType().getSimpleName() + "). Please context your admin."));
@@ -520,7 +520,7 @@ public final class StrVirtualCommand implements StrVirtual {
         if (StrCenter.settings.allowNullInput) {
             center.debug(new Str(nullArgs.isEmpty() ? C.G : C.R)        .a("Unmatched null argument" +        (nullArgs.size() == 1           ? "":"s") + ": ").a(C.GOLD).a(!nullArgs.isEmpty()          ? String.join(", ", nullArgs) : "NONE"));
         }
-        center.debug(new Str(keylessArgs.isEmpty() ? C.G : C.R).a("Unmatched keyless argument" +    (keylessArgs.size() == 1        ? "":"s") + ": ").a(C.GOLD + (!keylessArgs.isEmpty()        ? String.join(", ", keylessArgs) : "NONE")));
+        center.debug(new Str(keylessArgs.isEmpty() ? C.G : C.R)         .a("Unmatched keyless argument" +     (keylessArgs.size() == 1        ? "":"s") + ": ").a(C.GOLD + (!keylessArgs.isEmpty()        ? String.join(", ", keylessArgs) : "NONE")));
         center.debug(new Str(keyedArgs.isEmpty() ? C.G : C.R)           .a("Unmatched keyed argument" +       (keyedArgs.size() == 1          ? "":"s") + ": ").a(C.GOLD + (!keyedArgs.isEmpty()          ? String.join(", ", keyedArgs) : "NONE")));
         center.debug(new Str(badArgs.isEmpty() ? C.G : C.R)             .a("Bad argument" +                   (badArgs.size() == 1            ? "":"s") + ": ").a(C.GOLD + (!badArgs.isEmpty()            ? String.join(", ", badArgs) : "NONE")));
         center.debug(new Str(parseExceptionArgs.isEmpty() ? C.G : C.R)  .a("Failed argument" +                (parseExceptionArgs.size() <= 1 ? "":"s") + ":\n"));
@@ -679,5 +679,19 @@ public final class StrVirtualCommand implements StrVirtual {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * List this node and any combination of parameters (disregarding order and value, just the parameter type/name) to form a string-based graph representation.
+     * @param prefix prefix all substrings with this prefix, so it aligns with previous nodes
+     * @param spacing the space to append to the prefix for parameter combinations
+     * @param current the current graph
+     * @param exampleInput example input for NGram match scores
+     */
+    public void getListing(String prefix, String spacing, List<String> current, List<String> exampleInput) {
+        current.add(prefix + getName() + (getAliases().isEmpty() ? "" : " (" + getAliases() + ")") + " has " + getParameters().size() + " " + (getParameters().size() > 1 ? "parameters" : "parameter") + " matches with " + exampleInput.get(0) + " @ " + ((double) NGram.nGramMatch(exampleInput.get(0), getName()) / NGram.nGramMatch(getName(), getName())));
+        for (int i = 0; i < getParameters().size(); i++) {
+            getParameters().get(i).getListing(prefix + spacing, current, exampleInput.get(Math.min(i + 1, exampleInput.size() - 1)));
+        }
     }
 }

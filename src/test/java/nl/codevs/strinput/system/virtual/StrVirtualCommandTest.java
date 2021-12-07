@@ -14,41 +14,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package nl.codevs.strinput.system.virtual;
 
-package nl.codevs.strinput.examples.spigotmc.command;
-
+import environment.TestCenter;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrInput;
-import org.bukkit.entity.Player;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Some spigot commands that players could run
+ * Virtual command tests.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-@StrInput(description = "Main command class", name = "plugin")
-public class SpigotCommands implements SpigotCommandCategory {
+@StrInput(name = "test", aliases = "t")
+class StrVirtualCommandTest {
 
-    @StrInput(description = "Kill a player", aliases = "k")
-    public void kill(
+    private static int x = 0;
+
+    @StrInput(name = "test")
+    public void testCommand(
             @Param(
-                    description = "The player to kill",
-                    name = "player"
+                    name = "param1"
             )
-            Player player
+            int param
     ) {
-        player.setHealth(0);
+        x = param;
     }
 
-    @StrInput(description = "Heal a player")
-    public void heal(
-            @Param(
-                    description = "The player to heal",
-                    name = "player"
-            )
-            Player player
-    ) {
-        player.setHealth(20);
+    @Test
+    public void testInvocation() throws NoSuchMethodException {
+        StrVirtualCommand test = new StrVirtualCommand(null, this.getClass().getDeclaredMethod("testCommand", int.class), TestCenter.SUT);
+        test.run(new ArrayList<>(List.of("1")), TestCenter.SUT.getConsole(), TestCenter.SUT);
+        assertEquals(1, x);
     }
 }

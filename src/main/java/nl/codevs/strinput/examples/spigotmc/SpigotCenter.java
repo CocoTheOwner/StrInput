@@ -66,7 +66,6 @@ public class SpigotCenter extends StrCenter {
                         new SpigotPlayerContext(),
                         new SpigotWorldContext()
                 },
-                enableSettingsCommands,
                 rootCommands
         );
     }

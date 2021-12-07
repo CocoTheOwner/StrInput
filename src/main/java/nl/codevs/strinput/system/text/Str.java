@@ -19,7 +19,10 @@ package nl.codevs.strinput.system.text;
 
 import nl.codevs.strinput.system.api.StrUser;
 
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -37,14 +40,11 @@ public class Str {
 
     private final Consumer<StrUser> onClick;
     private final Str onHover;
-    private String content;
     private final C mainColor;
     private final C gradientColor;
     private final List<Str> stringList;
 
-    public Consumer<StrUser> getOnClick() {
-        return onClick;
-    }
+    private String content;
 
     /**
      * This is the end color of the gradient. The first color is found in {@link #mainColor}.
@@ -70,39 +70,9 @@ public class Str {
         return stringList;
     }
 
-    //    public Str setOnClick(Consumer<StrUser> runOnClick) {
-//        onClick = runOnClick;
-//        return this;
-//    }
-//    public Str resetOnClick() {
-//        onClick = null;
-//        return this;
-//    }
-//
-//    public Str setOnHover(Str showOnHover) {
-//        onHover = showOnHover;
-//        return this;
-//    }
-//    public Str resetOnHover() {
-//        onHover = null;
-//        return this;
-//    }
-//
-//    public Str setText(String newText) {
-//        content = newText;
-//        return this;
-//    }
-//
-//    public Str setColor(C color) {
-//        mainColor = color;
-//        return this;
-//    }
-//
-//    public Str setGradientColor(C startColor, C endColor) {
-//        mainColor = startColor;
-//        gradientColor = endColor;
-//        return this;
-//    }
+    public Consumer<StrUser> getOnClick() {
+        return onClick;
+    }
 
     public Str(String text) {
         this(text, C.RESET);
@@ -111,6 +81,7 @@ public class Str {
     public Str(C color) {
         this("", color);
     }
+
     public Str(String text, C color) {
         this(text, color, C.RESET);
     }
@@ -197,7 +168,7 @@ public class Str {
         gradientColor = endColor;
         onClick = runOnClick;
         onHover = showOnHover;
-        stringList = strings;
+        stringList = Objects.requireNonNullElseGet(strings, () -> new ArrayList<>(List.of(this)));
     }
 
     /**
@@ -220,13 +191,20 @@ public class Str {
     }
 
     /**
-     * Add a new {@link Str} / new {@link Str}s.
+     * Add a new {@link Str} / new {@link Str}s.<br>
+     * These new {@link Str}s must share a single {@link #stringList} and be all the elements in said stringList!
+     * It throws a {@link InvalidParameterException} if this precondition is violated.
      * @param newText the new text component(s)
      * @return this
      */
     public Str add(Str... newText) {
-        stringList.addAll(List.of(newText));
-        return this;
+        if (newText.length != newText[0].stringList.size()) {
+            throw new InvalidParameterException("Non-equal elements provided as there are in the items' stringList!");
+        }
+        for (Str str : newText) {
+            stringList.add(new Str(str.getContent(), str.getMainColor(), str.getGradientColor(), str.getOnClick(), str.getOnHover(), stringList));
+        }
+        return stringList.get(stringList.size() - 1);
     }
 
     /**
@@ -280,5 +258,12 @@ public class Str {
      */
     public String toHumanReadable() {
         return String.join(" ", stringList.stream().map(s -> s.content).toList());
+    }
+
+    /**
+     * Make a copy of this {@link Str} to prevent previous copies from being modified.
+     */
+    public Str copy() {
+        return new Str(getContent(), getMainColor(), getGradientColor(), getOnClick(), getOnHover(), new ArrayList<>(getStringList()));
     }
 }

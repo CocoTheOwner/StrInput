@@ -17,11 +17,9 @@
 
 package nl.codevs.strinput.system.util;
 
-import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.text.StrClickable;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 /**
  * Handle {@link java.util.concurrent.CompletableFuture}s such as when a {@link StrWhichException} happens, and there are hence multiple options to pick from.

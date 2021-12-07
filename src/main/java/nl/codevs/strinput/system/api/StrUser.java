@@ -18,7 +18,6 @@
 package nl.codevs.strinput.system.api;
 
 import nl.codevs.strinput.system.text.Str;
-import nl.codevs.strinput.system.text.StrClickable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +43,7 @@ public interface StrUser {
     void sendMessage(Str message);
 
     /**
-     * @return whether this user supports {@link StrClickable}s.
+     * @return whether this user supports clickable {@link Str}s.
      */
     boolean supportsClickables();
 
@@ -75,10 +74,17 @@ public interface StrUser {
 
     /**
      * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
-     * See {@link nl.codevs.strinput.system.context.StrContext}.
+     * See {@link StrCenter.ContextHandling}.
      * @return true if the user supports context
      */
     boolean supportsContext();
+
+    /**
+     * Whether this user has permission for a certain node or not.
+     * @param permission the permissions node
+     * @return true if permitted.
+     */
+    boolean hasPermission(String permission);
 
     /**
      * Sound effects.

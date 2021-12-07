@@ -18,8 +18,6 @@
 package nl.codevs.strinput.system.api;
 
 
-import nl.codevs.strinput.system.context.StrUserContext;
-
 /**
  * Command and/or command category interface.
  * Register commands in your
@@ -32,7 +30,7 @@ public interface StrCategory {
      * @return The sender of the command, the user.
      */
     default StrUser user() {
-        return StrUserContext.get();
+        return StrCenter.UserContext.get();
     }
 
 }

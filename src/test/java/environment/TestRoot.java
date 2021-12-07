@@ -34,11 +34,15 @@ public class TestRoot implements StrCategory {
     @StrInput(name = "add", description = "Add two strings")
     public void stringAddition(
             @Param(
-                    description = "First string"
+                    description = "First string",
+                    aliases = "s1",
+                    name = "string1"
             ) String stringOne,
             @Param(
                     description = "Second string",
-                    defaultValue = "Yeet"
+                    defaultValue = "Yeet",
+                    aliases = "s2",
+                    name = "string2"
             ) String stringTwo
     ) {
         stringAddResult = stringOne + stringTwo;
@@ -47,10 +51,14 @@ public class TestRoot implements StrCategory {
     @StrInput(name = "mult", description = "Multiply two integers")
     public void multiplication(
             @Param(
-                    description = "The first integer"
+                    description = "The first integer",
+                    aliases = "i1",
+                    name = "input1"
             ) Integer i1,
             @Param(
-                    description = "The second integer"
+                    description = "The second integer",
+                    aliases = "i2",
+                    name = "input2"
             ) Integer i2
     ) {
         multResult = i1 * i2;
