@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Utility functions for StrVirtual classes.
@@ -112,9 +113,11 @@ public interface StrVirtual {
      * @return true if it matches the user
      */
     default boolean doesMatchUser(StrUser user) {
-        // TODO: Implement permissions check (abstract upstream of StrUser)
-        // TODO: Perhaps something with sender origin (non-console sender in the usecase of spigot)
-        return true;
+        if (Objects.equals(getAnnotation().permission(), StrInput.NO_PERMISSION)) {
+            return true;
+        } else {
+            return user.hasPermission(getAnnotation().permission());
+        }
     }
 
     /**
