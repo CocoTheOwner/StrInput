@@ -33,11 +33,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Input center. The main class for interacting with Strinput.<br>
@@ -62,6 +64,7 @@ public abstract class StrCenter {
      * @param rootCommands array of root commands (usually only 1, your main command)
      *
      * @throws InstanceAlreadyExistsException when this command system is already running
+     * @throws InvalidParameterException when the specified {@code settingsFolder} is not a directory
      */
     public StrCenter(
             @NotNull final File settingsFolder,
@@ -69,9 +72,13 @@ public abstract class StrCenter {
             @NotNull final StrParameterHandler<?>[] extraParameterHandlers,
             @NotNull final StrContextHandler<?>[] extraContextHandlers,
             @NotNull final StrCategory... rootCommands
-    ) throws InstanceAlreadyExistsException {
+    ) throws InstanceAlreadyExistsException, InvalidParameterException {
         if (settings != null) {
             throw new InstanceAlreadyExistsException();
+        }
+
+        if (!settingsFolder.isDirectory()) {
+            throw new InvalidParameterException("File specified: '" + settingsFolder.getAbsolutePath() + "' is not a directory");
         }
 
         // Fields
@@ -128,35 +135,36 @@ public abstract class StrCenter {
 
         Runnable cmd = () -> {
             StopWatch s = new StopWatch();
+            s.start();
 
-            if (settings.debugTime) {
-                s.start();
-            }
+            // Hot-load settings
             settings = settings.hotload(console);
 
-            List<String> arguments = new ArrayList<>();
-            command.forEach(c -> {
-                if (!c.isBlank()) {
-                    arguments.add(c);
-                }
-            });
+            // Remove empty arguments (spaces)
+            List<String> arguments = command.stream().filter(c -> !c.isBlank()).collect(Collectors.toList());
+
+            // Get main category
             String mainCommand = arguments.remove(0);
-
-            UserContext.touch(user);
-
             StrVirtualCategory root = roots.get(mainCommand);
 
+            // Store user in context for command invocation
+            UserContext.touch(user);
+
+            // Run
             if (root == null) {
                 user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.B).a(mainCommand));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
-                debug(new Str(C.G).a("Command sent by ").a(C.B).a(user.getName()).a(C.G).a(" took ").a(C.B).a(String.valueOf(s.getTime())));
-                return;
+            } else if (!root.run(arguments, user, this)) {
+                user.sendMessage(new Str(C.R).a("Failed to run your command!"));
+                user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
+            } else {
+                user.sendMessage(new Str(C.G).a("Successfully ran your command!"));
+                user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
-            if (root.run(arguments, user, this)) {
-                user.sendMessage(new Str(C.G).a("Successfully ran your command!"));
-            } else {
-                user.sendMessage(new Str(C.R).a("Failed to run your command!"));
+            s.stop();
+            if (settings.debugTime) {
+                debug(new Str(C.G).a("Command sent by ").a(C.B).a(user.getName()).a(C.G).a(" took ").a(C.B).a(String.valueOf(s.getTime())));
             }
 
         };
@@ -166,10 +174,6 @@ public abstract class StrCenter {
         } else {
             cmd.run();
         }
-
-
-        user.sendMessage(new Str("You sent command: ").a(C.B).a(command.toString()));
-        user.sendMessage(new Str("And most likely category is: ").a(C.B).a(roots.get(command.get(0)).getName()));
     }
 
     /**
@@ -537,21 +541,6 @@ public abstract class StrCenter {
             user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("debug matching ").a(C.G).a("to: ").a(String.valueOf(settings.debugMatching)));
         }
         public boolean debugMatching = true;
-
-        @StrInput(description = "On argument parsing fail, pass 'null' instead. Can break argument parsing, best to leave 'false'", permission = "settings")
-        public void nullOnFailure(
-                @Param(
-                        description = "Whether to set this setting to true or false",
-                        defaultValue = "toggle",
-                        name = "enable"
-                )
-                        Boolean enable
-        ){
-            settings.nullOnFailure = enable == null ? !settings.nullOnFailure : enable;
-            user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("null on failure ").a(C.G).a("to: ").a(String.valueOf(settings.nullOnFailure)));
-        }
-        public boolean nullOnFailure = false;
-
         @StrInput(description = "Auto-pick the first option when multiple exist?")
         public void pickFirstOnMultiple(
                 @Param(
