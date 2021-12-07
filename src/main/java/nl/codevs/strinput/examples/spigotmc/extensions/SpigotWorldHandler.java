@@ -2,8 +2,6 @@ package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
 import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.parameter.StrParseException;
-import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

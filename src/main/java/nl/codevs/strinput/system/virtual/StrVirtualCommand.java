@@ -19,10 +19,6 @@ package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.api.*;
 import nl.codevs.strinput.system.context.StrContextHandler;
-import nl.codevs.strinput.system.context.StrNoContextHandlerException;
-import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.parameter.StrParseException;
-import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
@@ -183,7 +179,7 @@ public final class StrVirtualCommand implements StrVirtual {
          */
 
         ConcurrentHashMap<StrVirtualParameter, Object> parameters = new ConcurrentHashMap<>();
-        ConcurrentHashMap<StrVirtualParameter, StrParseException> parseExceptionArgs = new ConcurrentHashMap<>();
+        ConcurrentHashMap<StrVirtualParameter, StrParameterHandler.StrParseException> parseExceptionArgs = new ConcurrentHashMap<>();
 
         List<StrVirtualParameter> options = getParameters();
         List<String> dashBooleanArgs = new ArrayList<>();
@@ -429,9 +425,9 @@ public final class StrVirtualCommand implements StrVirtual {
                     parameters.put(option, result);
                     continue looping;
 
-                } catch (StrParseException e) {
+                } catch (StrParameterHandler.StrParseException e) {
                     parseExceptionArgs.put(option, e);
-                } catch (StrWhichException e) {
+                } catch (StrParameterHandler.StrWhichException e) {
                     parseExceptionArgs.remove(option);
                     options.remove(option);
                     keylessArgs.remove(keylessArg);
@@ -465,10 +461,10 @@ public final class StrVirtualCommand implements StrVirtual {
                     Object val = option.getDefaultValue();
                     parameters.put(option, val == null ? nullParam : val);
                     options.remove(option);
-                } catch (StrParseException e) {
+                } catch (StrParameterHandler.StrParseException e) {
                     center.debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" could not be parsed to ").a(option.getType().getSimpleName()));
                     center.debug(new Str(C.R).a("Reason: ").a(C.B).a(e.getMessage()));
-                } catch (StrWhichException e) {
+                } catch (StrParameterHandler.StrWhichException e) {
                     center.debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" returned multiple options"));
                     options.remove(option);
                     if (StrCenter.settings.pickFirstOnMultiple) {
@@ -488,7 +484,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 StrContextHandler<?> handler;
                 try {
                     handler = StrCenter.ContextHandling.getContextHandler(option.getType());
-                } catch (StrNoContextHandlerException e) {
+                } catch (StrCenter.ContextHandling.StrNoContextHandlerException e) {
                     center.debug(new Str(C.R).a("Parameter " + option.getName() + " marked as contextual without available context handler (" + option.getType().getSimpleName() + ")."));
                     user.sendMessage(new Str(C.R).a("Parameter ").a(C.B).a(option.help(user)).a(C.R).a(" marked as contextual without available context handler (" + option.getType().getSimpleName() + "). Please context your admin."));
                     e.printStackTrace();
@@ -612,14 +608,14 @@ public final class StrVirtualCommand implements StrVirtual {
      * @param user The user of the command
      * @return True if valid, false if not
      */
-    private boolean validateParameters(ConcurrentHashMap<StrVirtualParameter, Object> parameters, StrUser user, ConcurrentHashMap<StrVirtualParameter, StrParseException> parseExceptions) {
+    private boolean validateParameters(ConcurrentHashMap<StrVirtualParameter, Object> parameters, StrUser user, ConcurrentHashMap<StrVirtualParameter, StrParameterHandler.StrParseException> parseExceptions) {
         boolean valid = true;
         for (StrVirtualParameter parameter : getParameters()) {
             if (!parameters.containsKey(parameter)) {
                 center.debug(new Str(C.R).a("Parameter: ").a(C.B).a(parameter.getName()).a(C.R).a(" not in mapping."));
                 Str message = new Str(C.R).a("Parameter: ").a(C.B).a(parameter.help(user));
                 if (parseExceptions.containsKey(parameter)) {
-                    StrParseException e = parseExceptions.get(parameter);
+                    StrParameterHandler.StrParseException e = parseExceptions.get(parameter);
                     message.a(" (").a(C.B).a(e.getType().getSimpleName()).a(C.R).a(") failed for ").a(C.B).a(e.getInput()).a(C.R).a(". Reason: ").a(C.B).a(e.getReason());
                 } else {
                     message.a(" not specified. Please add.");
@@ -642,7 +638,7 @@ public final class StrVirtualCommand implements StrVirtual {
     private boolean parseParamInto(
             ConcurrentHashMap<StrVirtualParameter, Object> parameters,
             List<String> badArgs,
-            ConcurrentHashMap<StrVirtualParameter, StrParseException> parseExceptionArgs,
+            ConcurrentHashMap<StrVirtualParameter, StrParameterHandler.StrParseException> parseExceptionArgs,
             StrVirtualParameter option,
             String value,
             StrUser sender
@@ -650,7 +646,7 @@ public final class StrVirtualCommand implements StrVirtual {
         try {
             parameters.put(option, value.equalsIgnoreCase("null") ? nullParam : option.getHandler().parseSafe(value));
             return true;
-        } catch (StrWhichException e) {
+        } catch (StrParameterHandler.StrWhichException e) {
             center.debug(new Str(C.R).a("Value ").a(C.B).a(value).a(C.R).a(" returned multiple options"));
             if (StrCenter.settings.pickFirstOnMultiple) {
                 center.debug(new Str(C.G).a("Adding: ").a(C.B).a(e.getOptions().get(0).toString()));
@@ -664,7 +660,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 }
             }
             return true;
-        } catch (StrParseException e) {
+        } catch (StrParameterHandler.StrParseException e) {
             parseExceptionArgs.put(option, e);
         } catch (Throwable e) {
             center.debug(new Str("Failed to parse into: '" + option.getName() + "' value '" + value + "'"));

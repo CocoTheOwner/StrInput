@@ -22,9 +22,6 @@ import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.api.Param;
-import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.parameter.StrParseException;
-import nl.codevs.strinput.system.parameter.StrWhichException;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.util.NGram;
 
@@ -76,7 +73,7 @@ public final class StrVirtualParameter {
         return handlerCache.acquire(() -> {
             try {
                 return StrCenter.ParameterHandling.getHandler(parameter.getType());
-            } catch (StrNoParameterHandlerException e) {
+            } catch (StrCenter.ParameterHandling.StrNoParameterHandlerException e) {
                 e.printStackTrace();
             }
             return null;
@@ -133,10 +130,10 @@ public final class StrVirtualParameter {
     /**
      * Get default value for this parameter. {@code null} if there is none (check {@link #hasDefault()} first).
      * @return an instance of the parameter type
-     * @throws StrParseException thrown when parsing fails
-     * @throws StrWhichException thrown when multiple options are possible
+     * @throws StrParameterHandler.StrParseException thrown when parsing fails
+     * @throws StrParameterHandler.StrWhichException thrown when multiple options are possible
      */
-    public Object getDefaultValue() throws StrParseException, StrWhichException {
+    public Object getDefaultValue() throws StrParameterHandler.StrParseException, StrParameterHandler.StrWhichException {
         return hasDefault() ? getHandler().parseSafe(getDefault()) : null;
     }
 

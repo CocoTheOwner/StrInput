@@ -20,7 +20,6 @@ package nl.codevs.strinput.system.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import nl.codevs.strinput.system.context.StrContextHandler;
-import nl.codevs.strinput.system.context.StrNoContextHandlerException;
 import nl.codevs.strinput.system.parameter.*;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
@@ -52,7 +51,7 @@ import java.util.stream.Collectors;
 public abstract class StrCenter {
     public static Settings settings;
     final StrUser console;
-    final StrRoots roots;
+    final Roots roots;
 
     /**
      * Create a new command center.<br>
@@ -100,7 +99,7 @@ public abstract class StrCenter {
         ContextHandling.register(extraContextHandlers);
 
         // Command map (roots)
-        roots = new StrRoots(settings.settingsCommands, rootCommands, this);
+        roots = new Roots(settings.settingsCommands, rootCommands, this);
     }
 
     /**
@@ -215,7 +214,7 @@ public abstract class StrCenter {
      * @author Sjoerd van de Goor
      * @since v0.1
      */
-    public static class StrRoots extends ConcurrentHashMap<String, StrVirtualCategory> {
+    public static class Roots extends ConcurrentHashMap<String, StrVirtualCategory> {
 
         /**
          * Create command roots
@@ -223,7 +222,7 @@ public abstract class StrCenter {
          * @param categories array of categories
          * @param center the controlling command center
          */
-        public StrRoots(final boolean enableSettingsCommands, final StrCategory[] categories, final StrCenter center) {
+        public Roots(final boolean enableSettingsCommands, final StrCategory[] categories, final StrCenter center) {
 
             // Debug
             List<StrCategory> rootInstancesFailed = new ArrayList<>();
@@ -343,6 +342,18 @@ public abstract class StrCenter {
         public static void register(StrParameterHandler<?>... handlers) {
             parameterHandlers.addAll(List.of(handlers));
         }
+
+        /**
+         * Exception thrown when no parameter handler could be found.
+         *
+         * @author Sjoerd van de Goor
+         * @since v0.1
+         */
+        public static class StrNoParameterHandlerException extends Exception {
+            public StrNoParameterHandlerException(Class<?> type) {
+                super("Could not find parameter handler for: " + type.getSimpleName());
+            }
+        }
     }
 
     /**
@@ -378,6 +389,18 @@ public abstract class StrCenter {
          */
         public static void register(StrContextHandler<?>... handlers) {
             contextHandlers.addAll(List.of(handlers));
+        }
+
+        /**
+         * Exception for when no context handlers exist.
+         *
+         * @author Sjoerd van de Goor
+         * @since v0.1
+         */
+        public static class StrNoContextHandlerException extends Exception {
+            public StrNoContextHandlerException(Class<?> type) {
+                super("Could not find parameter handler for: " + type.getSimpleName());
+            }
         }
     }
 

@@ -18,9 +18,7 @@ package tests;
 
 import environment.TestCenter;
 import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.parameter.StrNoParameterHandlerException;
-import nl.codevs.strinput.system.parameter.StrParseException;
-import nl.codevs.strinput.system.parameter.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +36,7 @@ public class TestHandlers {
         Boolean value = null;
         try {
             value = (Boolean) StrCenter.ParameterHandling.getHandler(Boolean.class).parseSafe("true");
-        } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
+        } catch (StrCenter.ParameterHandling.StrNoParameterHandlerException | StrParameterHandler.StrWhichException | StrParameterHandler.StrParseException e) {
             e.printStackTrace();
         }
         assert value != null;
@@ -50,7 +48,7 @@ public class TestHandlers {
         Double value = null;
         try {
             value = (Double) StrCenter.ParameterHandling.getHandler(Double.class).parseSafe("0.1");
-        } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
+        } catch (StrCenter.ParameterHandling.StrNoParameterHandlerException | StrParameterHandler.StrWhichException | StrParameterHandler.StrParseException e) {
             e.printStackTrace();
         }
         assert value != null;
@@ -62,7 +60,7 @@ public class TestHandlers {
         Byte value = null;
         try {
             value = (Byte) StrCenter.ParameterHandling.getHandler(Byte.class).parseSafe("10");
-        } catch (StrNoParameterHandlerException | StrWhichException | StrParseException e) {
+        } catch (StrCenter.ParameterHandling.StrNoParameterHandlerException | StrParameterHandler.StrWhichException | StrParameterHandler.StrParseException e) {
             e.printStackTrace();
         }
         assert value != null;

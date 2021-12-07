@@ -17,6 +17,7 @@
 
 package nl.codevs.strinput.system.parameter;
 
+import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,10 +29,14 @@ import java.util.stream.Collectors;
  * Parameter handler for a certain type.
  *
  * @author Sjoerd van de Goor
+ * @param <T> the type that this handler handles
  * @since v0.1
  */
 public interface StrParameterHandler<T> {
 
+    /**
+     * Randomization used.
+     */
     Random RANDOM = new Random();
 
     /**
@@ -95,7 +100,7 @@ public interface StrParameterHandler<T> {
         } catch (StrWhichException | StrParseException e) {
             throw e;
         } catch (Throwable e) {
-            throw new StrParseException(StrParameterHandler.class, text, e);
+            throw new StrParseException(getClass(), text, e.getClass().getSimpleName() + " - " + e.getMessage());
         }
     }
 
@@ -174,5 +179,86 @@ public interface StrParameterHandler<T> {
             case 'm' | 'M' -> 1000000;
             default -> 1;
         };
+    }
+
+    /**
+     * Thrown when a decree parameter is parsed, but parsing fails.
+     * @author Sjoerd van de Goor
+     * @since v0.1
+     */
+    class StrParseException extends Exception {
+        private final Class<?> type;
+        private final Str input;
+        private final Str reason;
+
+        /**
+         * Get the underlying exception's class.
+         * @return the underlying exception's class
+         */
+        public Class<?> getType() {
+            return type;
+        }
+
+        /**
+         * Get the input that caused the exception.
+         * @return the input
+         */
+        public Str getInput() {
+            return input;
+        }
+
+        /**
+         * Get the specified reason the parser failed.
+         * @return the reason the parser failed
+         */
+        public Str getReason() {
+            return reason;
+        }
+
+        /**
+         * Create a new exception.
+         * @param type the underlying parser's class
+         * @param input the input string that caused the exception
+         * @param reason the reason specified for the exception
+         */
+        public StrParseException(final Class<?> type, final String input, final String reason) {
+            super();
+            this.type = type;
+            this.input = new Str(input);
+            this.reason = new Str(reason);
+        }
+    }
+
+    /**
+     * Thrown when more than one option is available for a singular mapping<br>
+     * Like having a hashmap where one input maps to two outputs.
+     * @author Sjoerd van de Goor
+     * @since v0.1
+     */
+    class StrWhichException extends Exception {
+
+        /**
+         * List of options that caused the exception to be thrown.
+         */
+        private final List<?> options;
+
+        /**
+         * Get the options that caused this exception.
+         * @return the list of options
+         */
+        public List<?> getOptions() {
+            return options;
+        }
+
+        /**
+         * Create a new exception.
+         * @param type the underlying parser's class
+         * @param input the input string that caused the exception
+         * @param options the list of options to pick from
+         */
+        public StrWhichException(final Class<?> type, final String input, final List<?> options) {
+            super("Cannot parse \"" + input + "\" into type " + type.getSimpleName() + " because of multiple options");
+            this.options = options;
+        }
     }
 }

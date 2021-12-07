@@ -17,7 +17,7 @@
 
 package nl.codevs.strinput.system.util;
 
-import nl.codevs.strinput.system.parameter.StrWhichException;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 
@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Handle {@link java.util.concurrent.CompletableFuture}s such as when a {@link StrWhichException} happens, and there are hence multiple options to pick from.
+ * Handle {@link java.util.concurrent.CompletableFuture}s such as when a {@link StrParameterHandler.StrWhichException} happens, and there are hence multiple options to pick from.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
