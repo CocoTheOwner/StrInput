@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package nl.codevs.strinput.system.api;
 
 import com.google.gson.Gson;
@@ -180,7 +179,7 @@ public abstract class StrCenter {
      * @param message the debug message(s)
      */
     public void debug(Str message) {
-        console.sendMessage(message);
+        console.sendMessage(Settings.debugPrefix.a(message));
     }
 
     /**
@@ -207,6 +206,28 @@ public abstract class StrCenter {
      */
     public StrUser getConsole() {
         return console;
+    }
+
+    /**
+     * List this command system including all listed root command categories, commands and parameters.
+     * @param spacing the space to append to the prefix for subsequent sub-virtuals
+     * @param exampleInput the input example to show matching scores
+     */
+    public List<String> getListing(String spacing, List<String> exampleInput) {
+        List<String> result = new ArrayList<>();
+        List<StrVirtualCategory> loadedCategories = new ArrayList<>();
+
+        for (StrVirtualCategory value : roots.values()) {
+            if (!loadedCategories.contains(value)) {
+                loadedCategories.add(value);
+            }
+        }
+
+        result.add(getClass().getSimpleName() + " command system with " + loadedCategories.size() + " loaded roots with input: " + String.join(" ", exampleInput));
+        for (StrVirtualCategory loadedCategory : loadedCategories) {
+            loadedCategory.getListing(spacing, spacing, result, exampleInput);
+        }
+        return result;
     }
 
     /**
@@ -290,35 +311,13 @@ public abstract class StrCenter {
     }
 
     /**
-     * List this command system including all listed root command categories, commands and parameters.
-     * @param spacing the space to append to the prefix for subsequent sub-virtuals
-     * @param exampleInput the input example to show matching scores
-     */
-    public List<String> getListing(String spacing, List<String> exampleInput) {
-        List<String> result = new ArrayList<>();
-        List<StrVirtualCategory> loadedCategories = new ArrayList<>();
-
-        for (StrVirtualCategory value : roots.values()) {
-            if (!loadedCategories.contains(value)) {
-                loadedCategories.add(value);
-            }
-        }
-
-        result.add(getClass().getSimpleName() + " command system with " + loadedCategories.size() + " loaded roots with input: " + String.join(" ", exampleInput));
-        for (StrVirtualCategory loadedCategory : loadedCategories) {
-            loadedCategory.getListing(spacing, spacing, result, exampleInput);
-        }
-        return result;
-    }
-
-    /**
      * Str parameter handling.
      * @author Sjoerd van de Goor
      * @since v0.1
      */
     public static class ParameterHandling {
 
-        private static List<StrParameterHandler<?>> parameterHandlers = new ArrayList<>();
+        private static final List<StrParameterHandler<?>> parameterHandlers = new ArrayList<>();
 
         /**
          * Get handler for a type.
