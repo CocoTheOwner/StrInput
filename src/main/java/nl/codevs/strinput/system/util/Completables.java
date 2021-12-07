@@ -89,7 +89,7 @@ public class Completables {
 
         // Generate Strs
         List<Str> optionsList = new ArrayList<>();
-        options.forEach(o -> optionsList.add(new Str(C.X, C.X, strUser -> Completables.complete(o))));
+        options.forEach(o -> optionsList.add(new Str(C.X, C.X, () -> Completables.complete(o))));
 
         // Post future
         FUTURES.put(password, toComplete);
