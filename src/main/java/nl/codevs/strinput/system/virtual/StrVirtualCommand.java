@@ -171,7 +171,7 @@ public final class StrVirtualCommand implements StrVirtual {
      * @param center The command center running this
      * @return A {@link ConcurrentHashMap} from the parameter to the instantiated object for that parameter
      */
-    private ConcurrentHashMap<StrVirtualParameter, Object> computeParameters(List<String> args, StrUser user, StrCenter center) throws StrNoParameterHandlerException {
+    private ConcurrentHashMap<StrVirtualParameter, Object> computeParameters(List<String> args, StrUser user, StrCenter center) {
 
         /*
          * Apologies for the obscene amount of loops.
@@ -255,8 +255,6 @@ public final class StrVirtualCommand implements StrVirtual {
                     if (parseParamInto(parameters, badArgs, parseExceptionArgs, option, value, user)) {
                         options.remove(option);
                         keyedArgs.remove(arg);
-                    } else if (StrCenter.settings.nullOnFailure) {
-                        parameters.put(option, nullParam);
                     }
                     continue looping;
                 }
@@ -273,8 +271,6 @@ public final class StrVirtualCommand implements StrVirtual {
                         if (parseParamInto(parameters, badArgs, parseExceptionArgs, option, value, user)) {
                             options.remove(option);
                             keyedArgs.remove(arg);
-                        } else if (StrCenter.settings.nullOnFailure) {
-                            parameters.put(option, nullParam);
                         }
                         continue looping;
                     }
@@ -292,8 +288,6 @@ public final class StrVirtualCommand implements StrVirtual {
                         if (parseParamInto(parameters, badArgs, parseExceptionArgs, option, value, user)) {
                             options.remove(option);
                             keyedArgs.remove(arg);
-                        } else if (StrCenter.settings.nullOnFailure) {
-                            parameters.put(option, nullParam);
                         }
                         continue looping;
                     }
@@ -311,8 +305,6 @@ public final class StrVirtualCommand implements StrVirtual {
                         if (parseParamInto(parameters, badArgs, parseExceptionArgs, option, value, user)) {
                             options.remove(option);
                             keyedArgs.remove(arg);
-                        } else if (StrCenter.settings.nullOnFailure) {
-                            parameters.put(option, nullParam);
                         }
                         continue looping;
                     }
@@ -377,6 +369,8 @@ public final class StrVirtualCommand implements StrVirtual {
         // Keyless arguments
         looping: for (StrVirtualParameter option : new ArrayList<>(options)) {
             if (option.getHandler().supports(boolean.class)) {
+
+                // Quick equals
                 for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
                     if (option.getNames().contains(dashBooleanArg)) {
                         parameters.put(option, true);
@@ -385,6 +379,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     }
                 }
 
+                // Ignored case equals
                 for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
                     for (String name : option.getNames()) {
                         if (name.equalsIgnoreCase(dashBooleanArg)) {
@@ -395,6 +390,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     }
                 }
 
+                // Name contains key (key substring of name)
                 for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
                     for (String name : option.getNames()) {
                         if (name.contains(dashBooleanArg)) {
@@ -405,6 +401,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     }
                 }
 
+                // Key contains name (name substring of key)
                 for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
                     for (String name : option.getNames()) {
                         if (dashBooleanArg.contains(name)) {
@@ -469,13 +466,8 @@ public final class StrVirtualCommand implements StrVirtual {
                     parameters.put(option, val == null ? nullParam : val);
                     options.remove(option);
                 } catch (StrParseException e) {
-                    if (StrCenter.settings.nullOnFailure) {
-                        parameters.put(option, nullParam);
-                        options.remove(option);
-                    } else {
-                        center.debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" could not be parsed to ").a(option.getType().getSimpleName()));
-                        center.debug(new Str(C.R).a("Reason: ").a(C.B).a(e.getMessage()));
-                    }
+                    center.debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" could not be parsed to ").a(option.getType().getSimpleName()));
+                    center.debug(new Str(C.R).a("Reason: ").a(C.B).a(e.getMessage()));
                 } catch (StrWhichException e) {
                     center.debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" returned multiple options"));
                     options.remove(option);
