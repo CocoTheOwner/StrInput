@@ -18,6 +18,7 @@ package nl.codevs.strinput.system.virtual;
 
 import environment.TestCenter;
 import nl.codevs.strinput.system.api.Param;
+import nl.codevs.strinput.system.api.StrCategory;
 import nl.codevs.strinput.system.api.StrInput;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since v0.1
  */
 @StrInput(name = "test", aliases = "t")
-class StrVirtualCommandTest {
+class StrVirtualCommandTest implements StrCategory {
 
     private static int x = 0;
 
@@ -48,8 +49,13 @@ class StrVirtualCommandTest {
     }
 
     @Test
+    public void testSetupParameters() throws NoSuchMethodException {
+        assertEquals(1, new StrVirtualCommand(new StrVirtualCategory(null, this, TestCenter.SUT), this.getClass().getDeclaredMethod("testCommand", int.class), TestCenter.SUT).getParameters().size());
+    }
+
+    @Test
     public void testInvocation() throws NoSuchMethodException {
-        StrVirtualCommand test = new StrVirtualCommand(null, this.getClass().getDeclaredMethod("testCommand", int.class), TestCenter.SUT);
+        StrVirtualCommand test = new StrVirtualCommand(new StrVirtualCategory(null, this, TestCenter.SUT), this.getClass().getDeclaredMethod("testCommand", int.class), TestCenter.SUT);
         test.run(new ArrayList<>(List.of("1")), TestCenter.SUT.getConsole(), TestCenter.SUT);
         assertEquals(1, x);
     }
