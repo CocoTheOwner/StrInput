@@ -108,7 +108,7 @@ public class NGram {
         // Get & sort
         strVirtualList
                 .stream()
-                .filter(v -> scores.get(v.getName()) > threshold)
+                .filter(v -> scores.get(v.getName()) >= threshold)
                 .collect(Collectors.toList())
                 .sort(Comparator.comparingDouble(v -> -scores.get(v.getName())));
         return strVirtualList;
