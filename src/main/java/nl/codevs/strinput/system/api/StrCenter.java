@@ -18,7 +18,15 @@
 package nl.codevs.strinput.system.api;
 
 import nl.codevs.strinput.system.context.StrContextHandler;
-import nl.codevs.strinput.system.parameter.*;
+import nl.codevs.strinput.system.parameter.BooleanHandler;
+import nl.codevs.strinput.system.parameter.ByteHandler;
+import nl.codevs.strinput.system.parameter.DoubleHandler;
+import nl.codevs.strinput.system.parameter.FloatHandler;
+import nl.codevs.strinput.system.parameter.IntegerHandler;
+import nl.codevs.strinput.system.parameter.LongHandler;
+import nl.codevs.strinput.system.parameter.ShortHandler;
+import nl.codevs.strinput.system.parameter.StringHandler;
+import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
@@ -42,9 +50,21 @@ import java.util.stream.Collectors;
  * @since v0.1
  */
 public abstract class StrCenter {
-    StrSettings settings;
-    final StrUser console;
-    final Roots roots;
+
+    /**
+     * Settings for this command system.
+     */
+    private StrSettings settings;
+
+    /**
+     * The console which receives messages (such as from {@link #debug(Str)}).
+     */
+    private final StrUser console;
+
+    /**
+     * Roots instance containing root command categories.
+     */
+    private final Roots roots;
 
     /**
      * Get console sender.
@@ -65,13 +85,16 @@ public abstract class StrCenter {
     /**
      * Create a new command center.<br>
      * Make sure to point command calls to {@link #onCommand(List, StrUser)}
-     * @param settingsFolder the settings folder for this system (settings file stored as {@code strconfig.json})
+     * @param settingsFolder the settings folder for this system
+     *                      (settings file stored as {@code strconfig.json})
      * @param consoleUser the console ({@link StrUser})
      * @param extraParameterHandlers additional parameter handlers
      * @param extraContextHandlers additional context handlers
-     * @param rootCommands array of root commands (usually only 1, your main command)
+     * @param rootCommands array of root commands
+     *                    (usually only 1, your main command)
      *
-     * @throws InvalidParameterException when the specified {@code settingsFolder} is not a directory
+     * @throws InvalidParameterException
+     * when the specified {@code settingsFolder} is not a directory
      */
     public StrCenter(
             @NotNull final File settingsFolder,
@@ -82,11 +105,19 @@ public abstract class StrCenter {
     ) throws InvalidParameterException {
 
         if (!settingsFolder.isDirectory()) {
-            throw new InvalidParameterException("File specified: '" + settingsFolder.getAbsolutePath() + "' is not a directory");
+            throw new InvalidParameterException(
+                    "File specified: '"
+                            + settingsFolder.getAbsolutePath()
+                            + "' is not a directory"
+            );
         }
 
         // Create settings and sender
-        settings = StrSettings.fromConfigJson(new File(settingsFolder.getAbsolutePath() + "/strsettings.json"), consoleUser);
+        settings = StrSettings.fromConfigJson(
+                new File(settingsFolder.getAbsolutePath()
+                        + "/strsettings.json"),
+                consoleUser
+        );
         console = consoleUser;
 
         // Handlers
@@ -110,11 +141,14 @@ public abstract class StrCenter {
     /**
      * Create a new command center.<br>
      * Make sure to point command calls to {@link #onCommand(List, StrUser)}
-     * @param settingsFolder the settings folder for this system (settings file stored as {@code strconfig.json})
+     * @param settingsFolder the settings folder for this system
+     *                      (settings file stored as {@code strconfig.json})
      * @param consoleUser the console ({@link StrUser})
-     * @param rootCommands array of root commands (usually only 1, your main command)
+     * @param rootCommands array of root commands
+     *                    (usually only 1, your main command)
      *
-     * @throws InvalidParameterException when the specified {@code settingsFolder} is not a directory
+     * @throws InvalidParameterException
+     * when the specified {@code settingsFolder} is not a directory
      */
     public StrCenter(
             @NotNull final File settingsFolder,
@@ -154,7 +188,9 @@ public abstract class StrCenter {
             settings = settings.hotload(user);
 
             // Remove empty arguments (spaces)
-            List<String> arguments = command.stream().filter(c -> !c.isBlank()).collect(Collectors.toList());
+            List<String> arguments = command.stream().filter(
+                    c -> !c.isBlank()
+            ).collect(Collectors.toList());
 
             // Get main category
             String mainCommand = arguments.remove(0);
@@ -162,19 +198,29 @@ public abstract class StrCenter {
 
             // Run
             if (root == null) {
-                user.sendMessage(new Str(C.R).a("Could not find root command for: ").a(C.B).a(mainCommand));
+                user.sendMessage(new Str(C.R)
+                        .a("Could not find root command for: ")
+                        .a(C.B)
+                        .a(mainCommand)
+                );
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else if (!root.run(arguments)) {
-                user.sendMessage(new Str(C.R).a("Failed to run your command!"));
+                user.sendMessage(new Str(C.R)
+                        .a("Failed to run your command!"));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else {
-                user.sendMessage(new Str(C.G).a("Successfully ran your command!"));
+                user.sendMessage(new Str(C.G)
+                        .a("Successfully ran your command!"));
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
             s.stop();
             if (settings.debugTime) {
-                debug(new Str(C.G).a("Command sent by ").a(C.B).a(user.getName()).a(C.G).a(" took ").a(C.B).a(String.valueOf(s.getTime())));
+                debug(new Str(C.G).a("Command sent by ")
+                        .a(C.B).a(user.getName())
+                        .a(C.G).a(" took ")
+                        .a(C.B).a(String.valueOf(s.getTime()))
+                );
             }
 
         };
@@ -190,7 +236,7 @@ public abstract class StrCenter {
      * Send a debug message.
      * @param message the debug message(s)
      */
-    public void debug(Str message) {
+    public void debug(final Str message) {
         console.sendMessage(StrSettings.debugPrefix.copy().a(message));
     }
 
@@ -198,7 +244,7 @@ public abstract class StrCenter {
      * Send a debug message.
      * @param messages the debug message(s)
      */
-    public void debug(List<Str> messages) {
+    public void debug(final @NotNull List<Str> messages) {
         for (Str message : messages) {
             debug(message);
         }
@@ -208,22 +254,29 @@ public abstract class StrCenter {
      * Debug a string.
      * @param message the debug string
      */
-    public void debug(String message) {
+    public void debug(final String message) {
         debug(new Str(message));
     }
 
     /**
-     * Run a function sync (will run if {@link StrSettings#async} is false or when {@link StrInput#sync()} is true).
+     * Run a function sync (on the main thread, when needed).
+     *
      * @param runnable the runnable to run
      */
-    public abstract void runSync(Runnable runnable);
+    public abstract void runSync(@NotNull final Runnable runnable);
 
     /**
-     * List this command system including all listed root command categories, commands and parameters.
-     * @param spacing the space to append to the prefix for subsequent sub-virtuals
+     * List this command system including
+     * all listed root command categories, commands and parameters.
+     * @param spacing the space to append to the prefix
+     *               for subsequent sub-virtuals
      * @param exampleInput the input example to show matching scores
+     * @return a list of strings representing this command system
      */
-    public List<String> getListing(String spacing, List<String> exampleInput) {
+    public List<String> getListing(
+            @NotNull final String spacing,
+            @NotNull final List<String> exampleInput
+    ) {
         List<String> result = new ArrayList<>();
         List<StrVirtualCategory> loadedCategories = new ArrayList<>();
 
@@ -233,7 +286,12 @@ public abstract class StrCenter {
             }
         }
 
-        result.add(getClass().getSimpleName() + " command system with " + loadedCategories.size() + " loaded roots with input: " + String.join(" ", exampleInput));
+        result.add(getClass().getSimpleName()
+                + " command system with "
+                + loadedCategories.size()
+                + " loaded roots with input: "
+                + String.join(" ", exampleInput)
+        );
         for (StrVirtualCategory loadedCategory : loadedCategories) {
             loadedCategory.getListing(spacing, spacing, result, exampleInput);
         }
@@ -241,15 +299,19 @@ public abstract class StrCenter {
     }
 
     /**
-     * Command roots mapping. Functions just as a normal {@link ConcurrentHashMap} but setup is built-in.
+     * Command roots mapping.<br>
+     * Functions just as a normal
+     * {@link ConcurrentHashMap} but setup is built-in.
      * @author Sjoerd van de Goor
      * @since v0.1
      */
-    public static class Roots extends ConcurrentHashMap<String, StrVirtualCategory> {
+    public static class Roots extends
+            ConcurrentHashMap<String, StrVirtualCategory> {
 
         /**
-         * Create command roots
+         * Create command roots.
          * @param categories array of categories
+         * @param center the command center controlling these roots
          */
         public Roots(
                 @NotNull final StrCategory[] categories,
@@ -277,7 +339,8 @@ public abstract class StrCenter {
                 }
 
                 // Get input annotation of the root instance
-                StrInput input = r.getClass().getDeclaredAnnotation(StrInput.class);
+                StrInput input = r.getClass()
+                        .getDeclaredAnnotation(StrInput.class);
 
                 // Instance names
                 List<String> names = new ArrayList<>();
@@ -297,24 +360,39 @@ public abstract class StrCenter {
             // Debug startup
             if (center.getSettings().debugTime) {
                 if (rootInstancesSuccess.isEmpty()) {
-                    center.debug(new Str(C.R).a("No successful root instances registered. Did you register all commands in the creator? Are they all annotated?"));
+                    center.debug(new Str(C.R).a(
+                            "No successful root instances registered."
+                            + " Did you register all commands in the creator?"
+                            + " Are they all annotated?")
+                    );
                 } else {
                     Str r = new Str(C.G).a("Loaded root category classes: ");
-                    rootInstancesSuccess.forEach(c -> r.a(C.B).a(c.getClass().getSimpleName()).a(C.G).a(", "));
+                    rootInstancesSuccess.forEach(
+                            c -> r.a(C.B).a(c.getClass().getSimpleName())
+                                    .a(C.G).a(", ")
+                    );
                     center.debug(r);
                 }
 
                 if (rootInstancesFailed.size() > 0) {
                     Str r = new Str(C.R);
                     center.debug(r.a("Failed root instances: ").a(C.B));
-                    rootInstancesFailed.forEach(c -> r.a(C.R).a(", ").a(C.B).a(c.getClass().getSimpleName()));
+                    rootInstancesFailed.forEach(
+                            c -> r.a(C.R).a(", ")
+                                    .a(C.B).a(c.getClass().getSimpleName())
+                    );
                 }
 
                 if (registeredRootNames.isEmpty()) {
-                    center.debug(new Str(C.R).a("No root commands registered! Did you register all commands in the creator? Are they @StrInput annotated?"));
+                    center.debug(new Str(C.R).a("No root commands registered!"
+                            + " Did you register all commands in the creator?"
+                            + " Are they @StrInput annotated?")
+                    );
                 } else {
                     Str r = new Str(C.G).a("Loaded root commands: ");
-                    registeredRootNames.forEach(c -> r.a(C.B).a(c).a(C.G).a(", "));
+                    registeredRootNames.forEach(
+                            c -> r.a(C.B).a(c).a(C.G).a(", ")
+                    );
                     center.debug(r);
                 }
             }
@@ -328,16 +406,23 @@ public abstract class StrCenter {
      */
     public static class ParameterHandling {
 
-        private static final List<StrParameterHandler<?>> parameterHandlers = new ArrayList<>();
+        /**
+         * Parameter handlers available.
+         */
+        private static final List<StrParameterHandler<?>>
+                PARAMETER_HANDLERS = new ArrayList<>();
 
         /**
          * Get handler for a type.
          * @param type the type to get the handler for
          * @return the parameter handler for the type
-         * @throws StrNoParameterHandlerException if no parameter handler could be found
+         * @throws StrNoParameterHandlerException
+         * if no parameter handler could be found
          */
-        public static StrParameterHandler<?> getHandler(Class<?> type) throws StrNoParameterHandlerException {
-            for (StrParameterHandler<?> parameterHandler : parameterHandlers) {
+        public static @NotNull StrParameterHandler<?> getHandler(
+                @NotNull final Class<?> type
+        ) throws StrNoParameterHandlerException {
+            for (StrParameterHandler<?> parameterHandler : PARAMETER_HANDLERS) {
                 if (parameterHandler.supports(type)) {
                     return parameterHandler;
                 }
@@ -349,8 +434,10 @@ public abstract class StrCenter {
          * Register new parameter handlers.
          * @param handlers the parameter handlers
          */
-        public static void register(StrParameterHandler<?>... handlers) {
-            parameterHandlers.addAll(List.of(handlers));
+        public static void register(
+                @NotNull final StrParameterHandler<?>... handlers
+        ) {
+            PARAMETER_HANDLERS.addAll(List.of(handlers));
         }
 
         /**
@@ -360,8 +447,16 @@ public abstract class StrCenter {
          * @since v0.1
          */
         public static class StrNoParameterHandlerException extends Exception {
-            public StrNoParameterHandlerException(Class<?> type) {
-                super("Could not find parameter handler for: " + type.getSimpleName());
+
+            /**
+             * Create a new exception.
+             * @param type the type for which no handler is available.
+             */
+            public StrNoParameterHandlerException(
+                    @NotNull final Class<?> type
+            ) {
+                super("Could not find parameter handler for: "
+                        + type.getSimpleName());
             }
         }
     }
@@ -376,16 +471,20 @@ public abstract class StrCenter {
         /**
          * Context handler list.
          */
-        private static final List<StrContextHandler<?>> contextHandlers = new ArrayList<>();
+        private static final List<StrContextHandler<?>>
+                CONTEXT_HANDLERS = new ArrayList<>();
 
         /**
          * Get context handler for a type.
          * @param type the type to get the context handler for
          * @return the context handler for the type
-         * @throws StrNoContextHandlerException if no context handler could be found
+         * @throws StrNoContextHandlerException
+         * if no context handler could be found
          */
-        public static StrContextHandler<?> getContextHandler(Class<?> type) throws StrNoContextHandlerException {
-            for (StrContextHandler<?> parameterHandler : contextHandlers) {
+        public static @NotNull StrContextHandler<?> getContextHandler(
+                @NotNull final Class<?> type
+        ) throws StrNoContextHandlerException {
+            for (StrContextHandler<?> parameterHandler : CONTEXT_HANDLERS) {
                 if (parameterHandler.supports(type)) {
                     return parameterHandler;
                 }
@@ -397,8 +496,10 @@ public abstract class StrCenter {
          * Register new context handlers.
          * @param handlers the context handlers
          */
-        public static void register(StrContextHandler<?>... handlers) {
-            contextHandlers.addAll(List.of(handlers));
+        public static void register(
+                @NotNull final StrContextHandler<?>... handlers
+        ) {
+            CONTEXT_HANDLERS.addAll(List.of(handlers));
         }
 
         /**
@@ -408,8 +509,16 @@ public abstract class StrCenter {
          * @since v0.1
          */
         public static class StrNoContextHandlerException extends Exception {
-            public StrNoContextHandlerException(Class<?> type) {
-                super("Could not find parameter handler for: " + type.getSimpleName());
+
+            /**
+             * Create a new exception.
+             * @param type the type for which no context handler is available
+             */
+            public StrNoContextHandlerException(
+                    @NotNull final Class<?> type
+            ) {
+                super("Could not find parameter handler for: "
+                        + type.getSimpleName());
             }
         }
     }

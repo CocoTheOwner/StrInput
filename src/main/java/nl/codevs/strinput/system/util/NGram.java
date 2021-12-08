@@ -143,14 +143,13 @@ public final class NGram {
         scores.forEach((v, s) -> System.out.println(v.getName() + " -> " + s));
 
         // Get & sort
-        strVirtualList = strVirtualList
+
+
+        return strVirtualList
                 .stream()
                 .filter(v -> scores.get(v) >= threshold)
+                .sorted(Comparator.comparingInt(v -> v.getName().length()))
+                .sorted(Comparator.comparingDouble(v -> -scores.get(v)))
                 .collect(Collectors.toList());
-        strVirtualList.sort(Comparator.comparingInt(v -> v.getName().length()));
-        strVirtualList.sort(Comparator.comparingDouble(v -> -scores.get(v)));
-
-
-        return strVirtualList;
     }
 }

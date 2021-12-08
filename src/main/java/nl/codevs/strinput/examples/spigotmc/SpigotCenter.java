@@ -21,7 +21,9 @@ import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerHandler;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldHandler;
-import nl.codevs.strinput.system.api.*;
+import nl.codevs.strinput.system.api.StrCenter;
+import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.api.StrCategory;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
@@ -52,12 +54,14 @@ public class SpigotCenter extends StrCenter {
      *
      * @param plugin the plugin running this command system ({@code this})
      * @param consoleUser  the console ({@link StrUser})
-     * @param rootCommands array of root commands (usually only 1, your main command)
+     * @param rootCommands array of root commands
+     *                    (usually only 1, your main command)
      */
     public SpigotCenter(
             final Plugin plugin,
             final StrUser consoleUser,
-            final StrCategory... rootCommands) throws InstanceAlreadyExistsException {
+            final StrCategory... rootCommands
+    ) throws InstanceAlreadyExistsException {
         super(
                 plugin.getDataFolder(),
                 consoleUser,
@@ -82,22 +86,29 @@ public class SpigotCenter extends StrCenter {
      * @param args the command arguments
      * @return true if successful
      */
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(
+            @NotNull final CommandSender sender,
+            @NotNull final Command command,
+            @NotNull final String label,
+            @NotNull final String[] args
+    ) {
         List<String> cmd = new ArrayList<>();
         cmd.add(command.getName());
         cmd.addAll(List.of(args));
-        SpigotUser user = new SpigotUser(sender.getServer().getPlayer(sender.getName()));
+        SpigotUser user = new SpigotUser(
+                sender.getServer().getPlayer(sender.getName())
+        );
         onCommand(cmd, user);
         return true;
     }
 
     /**
-     * Run a function sync (will run if {@link StrSettings#async} is false or when {@link StrInput#sync()} is true).
+     * Run a function sync (on the main thread, when needed).
      *
      * @param runnable the runnable to run
      */
     @Override
-    public void runSync(Runnable runnable) {
+    public void runSync(@NotNull final Runnable runnable) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(instance, runnable);
     }
 }
