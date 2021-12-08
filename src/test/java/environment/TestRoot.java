@@ -32,6 +32,8 @@ public class TestRoot implements StrCategory {
     public static String stringAddResult;
     public static int multResult;
 
+//    public TestRoot r = new TestRoot();
+
     @StrInput(name = "add", description = "Add two strings")
     public void stringAddition(
             @Param(

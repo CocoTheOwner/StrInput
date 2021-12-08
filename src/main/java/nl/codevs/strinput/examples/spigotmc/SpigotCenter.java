@@ -21,9 +21,9 @@ import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerHandler;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldHandler;
-import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.api.StrUser;
-import nl.codevs.strinput.system.api.StrCategory;
+import nl.codevs.strinput.system.StrCenter;
+import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
@@ -32,7 +32,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import javax.management.InstanceAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.List;
 

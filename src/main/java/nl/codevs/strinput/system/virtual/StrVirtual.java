@@ -182,10 +182,12 @@ public interface StrVirtual {
      * @param str the {@link Str} message to send
      */
     default void debug(@NotNull Str str) {
-        center().debug(new Str(getName(), C.B)
-                .a(new Str(": ", C.G))
-                .a(str.copy())
-        );
+        if (Env.settings().isDebugMatching()) {
+            center().debug(new Str(getName(), C.B)
+                    .a(new Str(": ", C.G))
+                    .a(str.copy())
+            );
+        }
     }
 
     /**

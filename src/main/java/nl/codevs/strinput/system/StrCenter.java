@@ -34,7 +34,6 @@ import org.apache.commons.lang.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.security.InvalidParameterException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +54,11 @@ public abstract class StrCenter {
      * Settings for this command system.
      */
     private StrSettings settings;
+
+    /**
+     * The settings file where the settings are stored.
+     */
+    private final File settingsFile;
 
     /**
      * The console which receives messages (such as from {@link #debug(Str)}).
@@ -101,12 +105,11 @@ public abstract class StrCenter {
             @NotNull final StrCategory... rootCommands
     ) {
 
+        settingsFile = new File(settingsFolder.getAbsolutePath()
+                + "/strsettings.json");
+
         // Create settings and sender
-        settings = StrSettings.fromConfigJson(
-                new File(settingsFolder.getAbsolutePath()
-                        + "/strsettings.json"),
-                consoleUser
-        );
+        settings = StrSettings.fromConfigJson(settingsFile, consoleUser);
         console = consoleUser;
 
         // Handlers
@@ -171,7 +174,7 @@ public abstract class StrCenter {
             s.start();
 
             // Hot-load settings
-            settings = settings.hotload(user);
+            settings = settings.hotLoad(settingsFile, user);
 
             // Remove empty arguments (spaces)
             List<String> arguments = command.stream().filter(
@@ -201,7 +204,7 @@ public abstract class StrCenter {
             }
 
             s.stop();
-            if (settings.debugTime) {
+            if (settings.isDebugTime()) {
                 debug(new Str(C.G).a("Command sent by ")
                         .a(C.B).a(user.getName())
                         .a(C.G).a(" took ")
@@ -211,7 +214,7 @@ public abstract class StrCenter {
 
         };
 
-        if (settings.async) {
+        if (settings.isAsync()) {
             new Thread(cmd, "StrInput command by " + user.getName()).start();
         } else {
             cmd.run();
@@ -223,7 +226,9 @@ public abstract class StrCenter {
      * @param message the debug message(s)
      */
     public void debug(final Str message) {
-        console.sendMessage(settings.debugPrefix.copy().a(message));
+        if (settings.isDebug()) {
+            console.sendMessage(settings.getDebugPrefix().copy().a(message));
+        }
     }
 
     /**
@@ -311,7 +316,7 @@ public abstract class StrCenter {
 
             // Roots
             List<StrCategory> roots = new ArrayList<>(List.of(categories));
-            if (center.getSettings().settingsCommands) {
+            if (center.getSettings().isSettingsCommands()) {
                 roots.add(center.getSettings());
             }
 
@@ -344,7 +349,7 @@ public abstract class StrCenter {
             });
 
             // Debug startup
-            if (center.getSettings().debugTime) {
+            if (center.getSettings().isDebugTime()) {
                 if (rootInstancesSuccess.isEmpty()) {
                     center.debug(new Str(C.R).a(
                             "No successful root instances registered."

@@ -188,14 +188,35 @@ public interface StrParameterHandler<T> {
      */
     default int multiplierFor(char character) throws IllegalStateException {
         return switch (character) {
-            case 'c' | 'C' -> 16;
-            case 'h' | 'H' -> 100;
-            case 'r' | 'R' -> 512;
-            case 'k' | 'K' -> 1000;
-            case 'm' | 'M' -> 1000000;
+            case 'c' | 'C' -> MULTIPLIER_C;
+            case 'h' | 'H' -> MULTIPLIER_H;
+            case 'r' | 'R' -> MULTIPLIER_R;
+            case 'k' | 'K' -> MULTIPLIER_K;
+            case 'm' | 'M' -> MULTIPLIER_M;
             default -> 1;
         };
     }
+
+    /**
+     * Multiplier for character 'c'.
+     */
+    int MULTIPLIER_C = 16;
+    /**
+     * Multiplier for character 'h'.
+     */
+    int MULTIPLIER_H = 100;
+    /**
+     * Multiplier for character 'r'.
+     */
+    int MULTIPLIER_R = 512;
+    /**
+     * Multiplier for character 'k'.
+     */
+    int MULTIPLIER_K = 1_000;
+    /**
+     * Multiplier for character 'm'.
+     */
+    int MULTIPLIER_M = 1_000_000;
 
     /**
      * Thrown when a decree parameter is parsed, but parsing fails.

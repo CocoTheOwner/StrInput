@@ -17,10 +17,10 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.api.StrInput;
-import nl.codevs.strinput.system.api.StrCategory;
-import nl.codevs.strinput.system.api.Env;
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.StrCategory;
+import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.NGram;
@@ -28,6 +28,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Field;
@@ -89,7 +91,7 @@ public final class StrVirtualCategory implements StrVirtual {
      * @return the parent virtual
      */
     @Override
-    public @Nullable StrVirtual getParent() {
+    public @Nullable StrVirtualCategory getParent() {
         return parent;
     }
 
@@ -161,7 +163,7 @@ public final class StrVirtualCategory implements StrVirtual {
                 o -> o.doesMatchUser(user())
         ).collect(Collectors.toList());
         if (n != 0) {
-            center().debug(new Str(C.B).a(
+            debug(new Str(C.B).a(
                     "Virtual" + getName() + " filtered out "
                             + (n - options.size()) + " options!"
             ));
@@ -172,14 +174,14 @@ public final class StrVirtualCategory implements StrVirtual {
         List<StrVirtual> opt = NGram.sortByNGram(
                 next,
                 options,
-                Env.settings().matchThreshold
+                Env.settings().getMatchThreshold()
         );
 
         for (StrVirtual strVirtual : opt) {
-            center().debug(new Str(C.B).a(strVirtual.getName()));
+            debug(new Str(C.B).a(strVirtual.getName()));
         }
 
-        center().debug(new Str(C.G).a(
+        debug(new Str(C.G).a(
                 "Virtual " + getName() + " attempting to find a match in "
                         + options.size() + " options with input: " + next)
         );
@@ -187,14 +189,14 @@ public final class StrVirtualCategory implements StrVirtual {
             if (option.run(new ArrayList<>(arguments))) {
                 return true;
             } else {
-                center().debug(new Str(C.R).a(
+                debug(new Str(C.R).a(
                         "Virtual " + option.getName()
                                 + " matched with "
                                 + next + " but failed to run!"
                 ));
             }
         }
-        center().debug(new Str(C.R).a(
+        debug(new Str(C.R).a(
                 "Virtual " + getName()
                         + " failed to find a matching option for "
                         + next + " and returns false"
@@ -246,6 +248,8 @@ public final class StrVirtualCategory implements StrVirtual {
     private @NotNull List<StrVirtualCategory> setupSubCats() {
         List<StrVirtualCategory> setupCategories = new ArrayList<>();
 
+        // Get all previous categories in the chain
+
         for (Field subCat : instance.getClass().getDeclaredFields()) {
             if (Modifier.isStatic(subCat.getModifiers())
                     || Modifier.isFinal(subCat.getModifiers())
@@ -260,16 +264,25 @@ public final class StrVirtualCategory implements StrVirtual {
                 continue;
             }
 
+            debug(new Str("REE! " + subCat.getClass().getSimpleName()));
+            try {
+                new FileWriter(
+                        subCat.getClass().getSimpleName() + ".txt"
+                ).write(subCat.toGenericString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             subCat.setAccessible(true);
             Object childRoot;
             try {
                 childRoot = subCat.get(instance);
             } catch (IllegalAccessException e) {
-                center().debug("Could not get child \""
+                debug(new Str("Could not get child \""
                         + subCat.getName() + "\" from instance: \""
                         + instance.getClass().getSimpleName() + "\""
-                );
-                center().debug("Because of: " + e.getMessage());
+                ));
+                debug(new Str("Because of: " + e.getMessage()));
                 continue;
             }
             if (childRoot == null) {
@@ -277,31 +290,31 @@ public final class StrVirtualCategory implements StrVirtual {
                     childRoot = subCat.getType().getConstructor().newInstance();
                     subCat.set(instance, childRoot);
                 } catch (NoSuchMethodException e) {
-                    center().debug("Method \"" + subCat.getName()
+                    debug(new Str("Method \"" + subCat.getName()
                             + "\" does not exist in instance: \""
                             + instance.getClass().getSimpleName() + "\""
-                    );
-                    center().debug("Because of: " + e.getMessage());
+                    ));
+                    debug(new Str("Because of: " + e.getMessage()));
                 } catch (IllegalAccessException e) {
-                    center().debug("Could get, but not access child \""
+                    debug(new Str("Could get, but not access child \""
                             + subCat.getName() + "\" from instance: \""
                             + instance.getClass().getSimpleName() + "\""
-                    );
-                    center().debug("Because of: " + e.getMessage());
+                    ));
+                    debug(new Str("Because of: " + e.getMessage()));
                 } catch (InstantiationException e) {
-                    center().debug("Could not instantiate \"" + subCat.getName()
+                    debug(new Str("Could not instantiate \"" + subCat.getName()
                             + "\" from instance: \""
                             + instance.getClass().getSimpleName() + "\""
-                    );
-                    center().debug("Because of: " + e.getMessage());
+                    ));
+                    debug(new Str("Because of: " + e.getMessage()));
                 } catch (InvocationTargetException e) {
-                    center().debug("Invocation exception on \""
+                    debug(new Str("Invocation exception on \""
                             + subCat.getName() + "\" from instance: \""
                             + instance.getClass().getSimpleName() + "\""
-                    );
-                    center().debug("Because of: " + e.getMessage());
-                    center().debug("Underlying exception: "
-                            + e.getTargetException().getMessage());
+                    ));
+                    debug(new Str("Because of: " + e.getMessage()));
+                    debug(new Str("Underlying exception: "
+                            + e.getTargetException().getMessage()));
                 }
             }
 

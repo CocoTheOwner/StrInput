@@ -18,15 +18,12 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.examples.spigotmc.command.SpigotCommands;
-import nl.codevs.strinput.system.text.Str;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import javax.management.InstanceAlreadyExistsException;
 
 /**
  * A Spigot plugin example.

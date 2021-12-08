@@ -17,7 +17,7 @@
  */
 package environment;
 
-import nl.codevs.strinput.system.api.*;
+import nl.codevs.strinput.system.*;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,16 +76,31 @@ public class TestCenter extends StrCenter {
         );
 
         // Set async to false so we can run tests sync
-        getSettings().async = false;
-        getSettings().settingsCommands = false;
+        Env.touch(getConsole());
+        Env.touch(this);
+        getSettings().setAsync(false);
+        getSettings().setSettingsCommands(false);
     }
 
     public static void main(String[] args) {
-        System.out.println(String.join("\n", SUT.getListing("  ", new ArrayList<>(List.of("test", "mult", "1", "2")))));
+        System.out.println(
+                String.join(
+                        "\n",
+                        SUT.getListing(
+                                "  ",
+                                new ArrayList<>(List.of(
+                                        "test",
+                                        "mult",
+                                        "1",
+                                        "2"
+                                ))
+                        )
+                )
+        );
     }
 
     /**
-     * Run a function sync (will run if {@link StrSettings#async} is false or when {@link StrInput#sync()} is true).
+     * Run a function sync (will run if {@link StrSettings#isAsync()} is false or when {@link StrInput#sync()} is true).
      *
      * @param runnable the runnable to run
      */
