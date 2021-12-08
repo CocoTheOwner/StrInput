@@ -104,7 +104,7 @@ public abstract class StrCenter {
         ContextHandling.register(extraContextHandlers);
 
         // Command map (roots)
-        roots = new Roots(rootCommands);
+        roots = new Roots(rootCommands, this);
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class StrCenter {
             s.start();
 
             // Hot-load settings
-            settings = settings.hotload();
+            settings = settings.hotload(user);
 
             // Remove empty arguments (spaces)
             List<String> arguments = command.stream().filter(c -> !c.isBlank()).collect(Collectors.toList());

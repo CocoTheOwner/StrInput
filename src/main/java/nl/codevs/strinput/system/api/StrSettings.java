@@ -154,7 +154,7 @@ public class StrSettings implements StrCategory {
      * @param file    the file to read json from
      * @return the new {@link StrSettings}
      */
-    public static StrSettings fromConfigJson(File file) {
+    public static StrSettings fromConfigJson(File file, StrUser console) {
         StrSettings.file = file;
         lastChanged = file.lastModified();
         try {
@@ -164,10 +164,10 @@ public class StrSettings implements StrCategory {
                 FileWriter f = new FileWriter(file);
                 gson.toJson(new_, StrSettings.class, f);
                 f.close();
-                Env.center().getConsole().sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
+                console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
                 return new_;
             }
-            Env.center().getConsole().sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
+            console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
             return new Gson().fromJson(new FileReader(file), StrSettings.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -176,18 +176,20 @@ public class StrSettings implements StrCategory {
     }
 
     /**
-     * Save the config to
+     * Save the config to a file.
      *
-     * @param file a file (path)
+     * @param file the file path
+     * @param console the console to send debug messages to
      */
-    public void saveToConfig(File file) {
+    public void saveToConfig(File file, StrUser console) {
         try {
             FileWriter f = new FileWriter(file);
             gson.toJson(this, StrSettings.class, f);
             f.close();
-            Env.center().getConsole().sendMessage(new Str(C.G).a("Saved StrInput Settings"));
+            console.sendMessage(new Str(C.G).a("Saved StrInput Settings"));
             lastChanged = file.lastModified();
         } catch (IOException e) {
+            console.sendMessage(new Str("Failed to save config: \n" + gson.toJson(this)));
             e.printStackTrace();
         }
     }
@@ -197,22 +199,22 @@ public class StrSettings implements StrCategory {
      *
      * @return the new settings
      */
-    public StrSettings hotload() {
+    public StrSettings hotload(StrUser console) {
 
         // Load file
-        StrSettings fileSettings = fromConfigJson(file);
+        StrSettings fileSettings = fromConfigJson(file, console);
         assert fileSettings != null;
 
         // File is newer
         if (lastChanged != file.lastModified()) {
             lastChanged = file.lastModified();
-            Env.center().getConsole().sendMessage(new Str(C.G).a("Hotloaded StrInput Settings"));
+            console.sendMessage(new Str(C.G).a("Hotloaded StrInput Settings"));
             return fileSettings;
         }
 
         // In-memory settings are newer
         if (!fileSettings.equals(this)) {
-            saveToConfig(file);
+            saveToConfig(file, console);
         }
         return this;
     }
