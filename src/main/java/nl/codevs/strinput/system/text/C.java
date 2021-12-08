@@ -49,7 +49,7 @@ public enum C {
      * Construct a new color.
      * @param colorName the name of the color
      */
-    C(String colorName) {
+    C(final String colorName) {
         name = colorName;
     }
 

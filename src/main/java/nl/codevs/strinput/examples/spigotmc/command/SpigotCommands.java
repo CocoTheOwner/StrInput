@@ -22,33 +22,46 @@ import nl.codevs.strinput.system.api.StrInput;
 import org.bukkit.entity.Player;
 
 /**
- * Some spigot commands that players could run
+ * Some spigot commands that players could run.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
 @StrInput(description = "Main command class", name = "plugin")
-public class SpigotCommands implements SpigotCommandCategory {
+public final class SpigotCommands implements SpigotCommandCategory {
 
+    /**
+     * Kill a player.
+     * @param player the player to kill
+     */
     @StrInput(description = "Kill a player", aliases = "k")
     public void kill(
             @Param(
                     description = "The player to kill",
                     name = "player"
             )
-            Player player
+            final Player player
     ) {
         player.setHealth(0);
     }
 
+    /**
+     * Max player health.
+     */
+    private static final int MAX_PLAYER_HEALTH = 20;
+
+    /**
+     * Heal a player.
+     * @param player the player to heal
+     */
     @StrInput(description = "Heal a player")
     public void heal(
             @Param(
                     description = "The player to heal",
                     name = "player"
             )
-            Player player
+            final Player player
     ) {
-        player.setHealth(20);
+        player.setHealth(MAX_PLAYER_HEALTH);
     }
 }

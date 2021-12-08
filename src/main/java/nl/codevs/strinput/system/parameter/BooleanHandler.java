@@ -19,7 +19,10 @@ package nl.codevs.strinput.system.parameter;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 
 /**
  * Boolean handler.

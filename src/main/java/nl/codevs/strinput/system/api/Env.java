@@ -3,7 +3,11 @@ package nl.codevs.strinput.system.api;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Env {
+public final class Env {
+
+    private Env() {
+        // Never used
+    }
 
     /**
      * Get the current user.
@@ -34,7 +38,7 @@ public class Env {
      *
      * @param center the center
      */
-    public static void touch(StrCenter center) {
+    public static void touch(final StrCenter center) {
         CenterContext.touch(center);
     }
 
@@ -43,7 +47,7 @@ public class Env {
      *
      * @param user the user
      */
-    public static void touch(StrUser user) {
+    public static void touch(final StrUser user) {
         UserContext.touch(user);
     }
 
@@ -69,32 +73,36 @@ public class Env {
      */
     public static class UserContext {
 
-        private static final ConcurrentHashMap<Thread, StrUser> context = new ConcurrentHashMap<>();
+        /**
+         * Map containing environment users.
+         */
+        private static final
+        ConcurrentHashMap<Thread, StrUser> MAP = new ConcurrentHashMap<>();
 
         /**
-         * Get the current user from the current thread's context
+         * Get the current user from the current thread's context.
          *
          * @return the {@link StrUser} for this thread
          */
         public static StrUser get() {
-            return context.get(Thread.currentThread());
+            return MAP.get(Thread.currentThread());
         }
 
         /**
-         * Add the {@link StrUser} to the context map & removes dead threads
+         * Add the {@link StrUser} to the context map & removes dead threads.
          *
          * @param user the user
          */
-        public static void touch(StrUser user) {
-            synchronized (context) {
-                context.put(Thread.currentThread(), user);
+        public static void touch(final StrUser user) {
+            synchronized (MAP) {
+                MAP.put(Thread.currentThread(), user);
 
-                Enumeration<Thread> contextKeys = context.keys();
+                Enumeration<Thread> contextKeys = MAP.keys();
 
                 while (contextKeys.hasMoreElements()) {
                     Thread thread = contextKeys.nextElement();
                     if (!thread.isAlive()) {
-                        context.remove(thread);
+                        MAP.remove(thread);
                     }
                 }
             }
@@ -107,7 +115,8 @@ public class Env {
      * This system REQUIRES:
      * <ul>
      *     <li>each command to be be handled in a new thread</li>
-     *     <li>a call to {@link #touch(StrCenter)} asap after a command call</li>
+     *     <li>a call to {@link #touch(StrCenter)}
+     *     asap after a command call</li>
      * </ul>
      *
      * @author Sjoerd van de Goor
@@ -115,35 +124,39 @@ public class Env {
      */
     public static class CenterContext {
 
-        private static final ConcurrentHashMap<Thread, StrCenter> context = new ConcurrentHashMap<>();
+        /**
+         * Map containing environment {@link StrCenter}.
+         */
+        private static final
+        ConcurrentHashMap<Thread, StrCenter> MAP = new ConcurrentHashMap<>();
 
         /**
-         * Get the current center from the current thread's context
+         * Get the current center from the current thread's context.
          *
          * @return the {@link StrCenter} for this thread
          */
         public static StrCenter get() {
-            return context.get(Thread.currentThread());
+            return MAP.get(Thread.currentThread());
         }
 
         /**
-         * Add the {@link StrCenter} to the context map & removes dead threads
+         * Add the {@link StrCenter} to the context map & removes dead threads.
          *
          * @param center the center
          */
-        public static void touch(StrCenter center) {
-            synchronized (context) {
+        public static void touch(final StrCenter center) {
+            synchronized (MAP) {
 
-                Enumeration<Thread> contextKeys = context.keys();
+                Enumeration<Thread> contextKeys = MAP.keys();
 
                 while (contextKeys.hasMoreElements()) {
                     Thread thread = contextKeys.nextElement();
                     if (!thread.isAlive()) {
-                        context.remove(thread);
+                        MAP.remove(thread);
                     }
                 }
 
-                context.put(Thread.currentThread(), center);
+                MAP.put(Thread.currentThread(), center);
             }
         }
     }
