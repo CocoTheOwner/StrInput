@@ -17,7 +17,10 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.api.*;
+import nl.codevs.strinput.system.api.StrInput;
+import nl.codevs.strinput.system.api.StrCategory;
+import nl.codevs.strinput.system.api.Env;
+import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.NGram;
@@ -25,10 +28,12 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -61,11 +66,6 @@ public final class StrVirtualCategory implements StrVirtual {
     private final StrCategory instance;
 
     /**
-     * Command mapping for input to command.
-     */
-    private final ConcurrentHashMap<String, StrVirtual> commandMap = new ConcurrentHashMap<>();
-
-    /**
      * Get commands.
      * @return the commands
      */
@@ -96,22 +96,23 @@ public final class StrVirtualCategory implements StrVirtual {
     /**
      * Create a new virtual category.<br>
      * Assumes the {@code instance} is annotated by @{@link StrInput}
-     * @param parent the parent category (null if root)
-     * @param instance an instance of the underlying class
+     * @param previous the parent category (null if root)
+     * @param object an instance of the underlying class
      */
     public StrVirtualCategory(
-            @Nullable StrVirtualCategory parent,
-            @NotNull StrCategory instance
+            @Nullable final StrVirtualCategory previous,
+            @NotNull final StrCategory object
     ) {
-        this.parent = parent;
-        this.annotation = instance.getClass().getAnnotation(StrInput.class);
-        this.instance = instance;
+        this.parent = previous;
+        this.annotation = object.getClass().getAnnotation(StrInput.class);
+        this.instance = object;
         this.commands = setupCommands();
         this.subCats = setupSubCats();
     }
 
     /**
-     * Get the default virtual name (when the annotation was not given a specific name)
+     * Get the default virtual name
+     * when the annotation was not given a specific name.
      *
      * @return the name
      */
@@ -145,7 +146,7 @@ public final class StrVirtualCategory implements StrVirtual {
      * @return true if this virtual ran successfully
      */
     @Override
-    public boolean run(@NotNull List<String> arguments) {
+    public boolean run(@NotNull final List<String> arguments) {
         debug(new Str("Running...", C.G));
         if (arguments.size() == 0) {
             debug(new Str("Sending help to user"));
@@ -156,28 +157,48 @@ public final class StrVirtualCategory implements StrVirtual {
         options.addAll(subCats);
         options.addAll(commands);
         int n = options.size();
-        options = options.stream().filter(o -> o.doesMatchUser(user())).collect(Collectors.toList());
+        options = options.stream().filter(
+                o -> o.doesMatchUser(user())
+        ).collect(Collectors.toList());
         if (n != 0) {
-            center().debug(new Str(C.B).a("Virtual" + getName() + " filtered out " + (n - options.size()) + " options!"));
+            center().debug(new Str(C.B).a(
+                    "Virtual" + getName() + " filtered out "
+                            + (n - options.size()) + " options!"
+            ));
         }
 
         String next = arguments.remove(0);
 
-        List<StrVirtual> opt = NGram.sortByNGram(next, options, Env.settings().matchThreshold);
+        List<StrVirtual> opt = NGram.sortByNGram(
+                next,
+                options,
+                Env.settings().matchThreshold
+        );
 
         for (StrVirtual strVirtual : opt) {
             center().debug(new Str(C.B).a(strVirtual.getName()));
         }
 
-        center().debug(new Str(C.G).a("Virtual " + getName() + " attempting to find a match in " + options.size() + " options with input: " + next));
+        center().debug(new Str(C.G).a(
+                "Virtual " + getName() + " attempting to find a match in "
+                        + options.size() + " options with input: " + next)
+        );
         for (StrVirtual option : opt) {
             if (option.run(new ArrayList<>(arguments))) {
                 return true;
             } else {
-                center().debug(new Str(C.R).a("Virtual " + option.getName() + " matched with " + next + " but failed to run!"));
+                center().debug(new Str(C.R).a(
+                        "Virtual " + option.getName()
+                                + " matched with "
+                                + next + " but failed to run!"
+                ));
             }
         }
-        center().debug(new Str(C.R).a("Virtual " + getName() + " failed to find a matching option for " + next + " and returns false"));
+        center().debug(new Str(C.R).a(
+                "Virtual " + getName()
+                        + " failed to find a matching option for "
+                        + next + " and returns false"
+        ));
         return false;
     }
 
@@ -187,7 +208,7 @@ public final class StrVirtualCategory implements StrVirtual {
      * @param user the user to send help to
      */
     @Override
-    public void help(@NotNull StrUser user) {
+    public void help(final @NotNull StrUser user) {
         List<Str> helpMessages = new ArrayList<>();
 
         user.sendMessage(helpMessages);
@@ -198,10 +219,13 @@ public final class StrVirtualCategory implements StrVirtual {
      * @return the list of setup virtual commands
      */
     private @NotNull List<StrVirtualCommand> setupCommands() {
-        List<StrVirtualCommand> commands = new ArrayList<>();
+        List<StrVirtualCommand> setupCommands = new ArrayList<>();
 
         for (Method command : instance.getClass().getDeclaredMethods()) {
-            if (Modifier.isStatic(command.getModifiers()) || Modifier.isFinal(command.getModifiers()) || Modifier.isPrivate(command.getModifiers())) {
+            if (Modifier.isStatic(command.getModifiers())
+                    || Modifier.isFinal(command.getModifiers())
+                    || Modifier.isPrivate(command.getModifiers())
+            ) {
                 continue;
             }
 
@@ -209,10 +233,10 @@ public final class StrVirtualCategory implements StrVirtual {
                 continue;
             }
 
-            commands.add(new StrVirtualCommand(this, command));
+            setupCommands.add(new StrVirtualCommand(this, command));
         }
 
-        return commands;
+        return setupCommands;
     }
 
     /**
@@ -220,7 +244,7 @@ public final class StrVirtualCategory implements StrVirtual {
      * @return the list of setup virtual categories
      */
     private @NotNull List<StrVirtualCategory> setupSubCats() {
-        List<StrVirtualCategory> subCats = new ArrayList<>();
+        List<StrVirtualCategory> setupCategories = new ArrayList<>();
 
         for (Field subCat : instance.getClass().getDeclaredFields()) {
             if (Modifier.isStatic(subCat.getModifiers())
@@ -241,7 +265,10 @@ public final class StrVirtualCategory implements StrVirtual {
             try {
                 childRoot = subCat.get(instance);
             } catch (IllegalAccessException e) {
-                center().debug("Could not get child \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
+                center().debug("Could not get child \""
+                        + subCat.getName() + "\" from instance: \""
+                        + instance.getClass().getSimpleName() + "\""
+                );
                 center().debug("Because of: " + e.getMessage());
                 continue;
             }
@@ -250,18 +277,31 @@ public final class StrVirtualCategory implements StrVirtual {
                     childRoot = subCat.getType().getConstructor().newInstance();
                     subCat.set(instance, childRoot);
                 } catch (NoSuchMethodException e) {
-                    center().debug("Method \"" + subCat.getName() + "\" does not exist in instance: \"" + instance.getClass().getSimpleName() + "\"");
+                    center().debug("Method \"" + subCat.getName()
+                            + "\" does not exist in instance: \""
+                            + instance.getClass().getSimpleName() + "\""
+                    );
                     center().debug("Because of: " + e.getMessage());
                 } catch (IllegalAccessException e) {
-                    center().debug("Could get, but not access child \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
+                    center().debug("Could get, but not access child \""
+                            + subCat.getName() + "\" from instance: \""
+                            + instance.getClass().getSimpleName() + "\""
+                    );
                     center().debug("Because of: " + e.getMessage());
                 } catch (InstantiationException e) {
-                    center().debug("Could not instantiate \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
+                    center().debug("Could not instantiate \"" + subCat.getName()
+                            + "\" from instance: \""
+                            + instance.getClass().getSimpleName() + "\""
+                    );
                     center().debug("Because of: " + e.getMessage());
                 } catch (InvocationTargetException e) {
-                    center().debug("Invocation exception on \"" + subCat.getName() + "\" from instance: \"" + instance.getClass().getSimpleName() + "\"");
+                    center().debug("Invocation exception on \""
+                            + subCat.getName() + "\" from instance: \""
+                            + instance.getClass().getSimpleName() + "\""
+                    );
                     center().debug("Because of: " + e.getMessage());
-                    center().debug("Underlying exception: " + e.getTargetException().getMessage());
+                    center().debug("Underlying exception: "
+                            + e.getTargetException().getMessage());
                 }
             }
 
@@ -269,32 +309,59 @@ public final class StrVirtualCategory implements StrVirtual {
                 continue;
             }
 
-            subCats.add(new StrVirtualCategory(this, (StrCategory) childRoot));
+            setupCategories.add(
+                    new StrVirtualCategory(this, (StrCategory) childRoot)
+            );
         }
 
-        return subCats;
+        return setupCategories;
     }
 
     /**
-     * List this node and any sub-virtuals to form a string-based graph representation in {@code current}.
-     * @param prefix prefix all substrings with this prefix, so it aligns with previous nodes.
-     * @param spacing the space to append to the prefix for subsequent sub-virtuals
+     * List this node and any sub-virtuals
+     * to form a string-based graph representation in {@code current}.
+     * @param prefix prefix all substrings with this prefix,
+     *              so it aligns with previous nodes.
+     * @param spacing the space to append to the prefix
+     *               for subsequent sub-virtuals
      * @param current the current graph
      * @param exampleInput an example input for NGram matching
      */
     @Contract(mutates = "param3")
     public void getListing(
-            @NotNull String prefix,
-            @NotNull String spacing,
-            @NotNull List<String> current,
-            @NotNull List<String> exampleInput
+            @NotNull final String prefix,
+            @NotNull final String spacing,
+            @NotNull final List<String> current,
+            @NotNull final List<String> exampleInput
     ) {
-        current.add(prefix + getName() + (getAliases().isEmpty() ? "" : " (" + getAliases() + ")") + " cmds: " + getCommands().size() + " / subcs: " + getSubCats().size() + " matches with " + exampleInput.get(0) + " @ " + ((double) NGram.nGramMatch(exampleInput.get(0), getName()) / NGram.nGramMatch(getName(), getName())));
+        current.add(prefix
+                + getName()
+                + (getAliases().isEmpty() ? "" : " (" + getAliases() + ")")
+                + " cmds: " + getCommands().size()
+                + " / subcs: " + getSubCats().size()
+                + " matches with " + exampleInput.get(0)
+                + " @ " + ((double) NGram.nGramMatch(
+                        exampleInput.get(0), getName())
+                / NGram.nGramMatch(getName(), getName())));
         for (StrVirtualCategory subCat : getSubCats()) {
-            subCat.getListing(prefix + spacing, spacing, current, new ArrayList<>(exampleInput.subList(1, exampleInput.size())));
+            subCat.getListing(
+                    prefix + spacing,
+                    spacing, current,
+                    new ArrayList<>(exampleInput.subList(
+                            1,
+                            exampleInput.size()
+                    ))
+            );
         }
         for (StrVirtualCommand command : getCommands()) {
-            command.getListing(prefix + spacing, spacing, current, new ArrayList<>(exampleInput.subList(1, exampleInput.size())));
+            command.getListing(
+                    prefix + spacing,
+                    spacing, current,
+                    new ArrayList<>(exampleInput.subList(
+                            1,
+                            exampleInput.size()
+                    ))
+            );
         }
     }
 }

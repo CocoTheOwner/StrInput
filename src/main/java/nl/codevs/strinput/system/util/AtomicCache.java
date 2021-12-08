@@ -17,67 +17,118 @@
  */
 package nl.codevs.strinput.system.util;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
  * Caching values.<br>
  * @param <T> the type to cache
- * @see <a href="https://github.com/VolmitSoftware/Iris/blob/master/src/main/java/com/volmit/iris/engine/data/cache/AtomicCache.java">Iris - AtomicCache</a>
+ * @see <a href="https://github.com/VolmitSoftware/Iris/blob/master/src/main/java/com/volmit/iris/engine/data/cache/AtomicCache.java">
+ *     Iris - AtomicCache</a>
  * @author Cyberpwn
  * @since v0.1
  */
 public final class AtomicCache<T> {
-    private transient volatile T t;
-    private transient volatile long a;
+    /**
+     * The stored value.
+     */
+    private transient volatile T value;
+
+    /**
+     * Stores the time when stored.
+     */
+    private transient volatile long expiryTime;
+
+    /**
+     * Amount of validation checks.
+     */
     private transient volatile int validations;
+
+    /**
+     * The amount of validations required.
+     */
+    private static final int REQUIRED_VALIDATIONS = 1000;
+
+    /**
+     * Thread safety lock.
+     */
     private final ReentrantLock check;
+
+    /**
+     * Thread safety lock.
+     */
     private final ReentrantLock time;
+
+    /**
+     * Thread safety lock.
+     */
     private final ReentrantLock write;
+
+    /**
+     * Whether this supports null values or not.
+     */
     private final boolean nullSupport;
 
+    /**
+     * Create a new cache.
+     */
     public AtomicCache() {
         this(false);
     }
 
-    public AtomicCache(boolean nullSupport) {
-        this.nullSupport = nullSupport;
+    /**
+     * Create a new cache.
+     * @param supportsNull can store null if set to {@code true}
+     */
+    public AtomicCache(final boolean supportsNull) {
+        this.nullSupport = supportsNull;
         check = new ReentrantLock();
         write = new ReentrantLock();
         time = new ReentrantLock();
         validations = 0;
-        a = -1;
-        t = null;
+        expiryTime = -1;
+        value = null;
     }
 
-    public T acquire(Supplier<T> t) {
+    /**
+     * Acquire the cache by means of a function.<br>
+     * This function is ran once, after which the value is cached and returned.
+     * @param supplier the supplier of the value
+     * @return the value
+     */
+    @Nullable public T acquire(@NotNull final Supplier<T> supplier) {
         if (nullSupport) {
-            return acquireNull(t);
+            return acquireNull(supplier);
         }
 
-        if (this.t != null && validations > 1000) {
-            return this.t;
+        if (this.value != null && validations > REQUIRED_VALIDATIONS) {
+            return this.value;
         }
 
-        if (this.t != null && System.currentTimeMillis() - a > 1000) {
-            if (this.t != null) {
+        if (this.value != null
+                && System.currentTimeMillis() - expiryTime
+                > REQUIRED_VALIDATIONS) {
+            if (this.value != null) {
                 //noinspection NonAtomicOperationOnVolatileField
                 validations++;
             }
 
-            return this.t;
+            return this.value;
         }
 
         check.lock();
 
-        if (this.t == null) {
+        if (this.value == null) {
             write.lock();
-            this.t = t.get();
+            this.value = supplier.get();
 
             time.lock();
 
-            if (a == -1) {
-                a = System.currentTimeMillis();
+            if (expiryTime == -1) {
+                expiryTime = System.currentTimeMillis();
             }
 
             time.unlock();
@@ -85,33 +136,41 @@ public final class AtomicCache<T> {
         }
 
         check.unlock();
-        return this.t;
+        return this.value;
     }
 
-    public T acquireNull(Supplier<T> t) {
-        if (validations > 1000) {
-            return this.t;
+    /**
+     * Acquire the cache by means of a function.<br>
+     * This function is ran once,
+     * after which the value is cached and returned.<br>
+     * This can return null.
+     * @param supplier the supplier of the value
+     * @return the value of the supplier
+     */
+    public @Nullable T acquireNull(@NotNull final Supplier<T> supplier) {
+        if (validations > REQUIRED_VALIDATIONS) {
+            return this.value;
         }
 
-        if (System.currentTimeMillis() - a > 1000) {
+        if (System.currentTimeMillis() - expiryTime > REQUIRED_VALIDATIONS) {
             //noinspection NonAtomicOperationOnVolatileField
             validations++;
-            return this.t;
+            return this.value;
         }
 
         check.lock();
         write.lock();
-        this.t = t.get();
+        this.value = supplier.get();
 
         time.lock();
 
-        if (a == -1) {
-            a = System.currentTimeMillis();
+        if (expiryTime == -1) {
+            expiryTime = System.currentTimeMillis();
         }
 
         time.unlock();
         write.unlock();
         check.unlock();
-        return this.t;
+        return this.value;
     }
 }

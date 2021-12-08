@@ -52,7 +52,8 @@ public final class StrVirtualParameter {
     /**
      * Handler cache.
      */
-    private final AtomicCache<StrParameterHandler<?>> handlerCache = new AtomicCache<>();
+    private final AtomicCache<StrParameterHandler<?>> handlerCache
+            = new AtomicCache<>();
     /**
      * Example cache.
      */
@@ -61,11 +62,11 @@ public final class StrVirtualParameter {
     /**
      * Create a virtual parameter.<br>
      * Assumes {@code parameter} is annotated by @{@link Param}.
-     * @param parameter the parameter
+     * @param param the parameter
      */
-    public StrVirtualParameter(Parameter parameter) {
-        this.parameter = parameter;
-        this.annotation = parameter.getDeclaredAnnotation(Param.class);
+    public StrVirtualParameter(final @NotNull Parameter param) {
+        this.parameter = param;
+        this.annotation = param.getDeclaredAnnotation(Param.class);
     }
 
     /**
@@ -75,8 +76,10 @@ public final class StrVirtualParameter {
     public StrParameterHandler<?> getHandler() {
         return handlerCache.acquire(() -> {
             try {
-                return StrCenter.ParameterHandling.getHandler(parameter.getType());
-            } catch (StrCenter.ParameterHandling.StrNoParameterHandlerException e) {
+                return StrCenter.ParameterHandling
+                        .getHandler(parameter.getType());
+            } catch (StrCenter.ParameterHandling
+                    .StrNoParameterHandlerException e) {
                 e.printStackTrace();
             }
             return null;
@@ -84,18 +87,16 @@ public final class StrVirtualParameter {
     }
 
     /**
-     * Get a list of example values for this parameter
+     * Get a list of example values for this parameter.
      * @return A list of example values
      */
     public List<String> getExamples() {
-        return exampleCache.acquire(() -> {
-
-            if (getHandler().getPossibilities() != null) {
-                return getHandler().getPossibilities().stream().map(p -> getHandler().toStringForce(p)).collect(Collectors.toList());
-            }
-
-            return new ArrayList<>(List.of(getHandler().getRandomDefault()));
-        });
+        return exampleCache.acquire(() ->
+                getHandler().getPossibilities()
+                        .stream()
+                        .map(p -> getHandler().toStringForce(p))
+                        .collect(Collectors.toList())
+        );
     }
 
     /**
@@ -131,12 +132,17 @@ public final class StrVirtualParameter {
     }
 
     /**
-     * Get default value for this parameter. {@code null} if there is none (check {@link #hasDefault()} first).
+     * Get default value for this parameter.
+     * {@code null} if there is none (check {@link #hasDefault()} first).
      * @return an instance of the parameter type
-     * @throws StrParameterHandler.StrParseException thrown when parsing fails
-     * @throws StrParameterHandler.StrWhichException thrown when multiple options are possible
+     * @throws StrParameterHandler.StrParseException
+     * thrown when parsing fails
+     * @throws StrParameterHandler.StrWhichException
+     * thrown when multiple options are possible
      */
-    public @Nullable Object getDefaultValue() throws StrParameterHandler.StrParseException, StrParameterHandler.StrWhichException {
+    public @Nullable Object getDefaultValue() throws
+            StrParameterHandler.StrParseException,
+            StrParameterHandler.StrWhichException {
         return hasDefault() ? getHandler().parseSafe(getDefault()) : null;
     }
 
@@ -145,7 +151,9 @@ public final class StrVirtualParameter {
      * @return the description
      */
     public String getDescription() {
-        return annotation.description().isBlank() ? Param.DEFAULT_DESCRIPTION : annotation.description();
+        return annotation.description().isBlank()
+                ? Param.DEFAULT_DESCRIPTION
+                : annotation.description();
     }
 
     /**
@@ -153,7 +161,9 @@ public final class StrVirtualParameter {
      * @return the name
      */
     public String getName() {
-        return annotation.name().isBlank() ? parameter.getName() : annotation.name();
+        return annotation.name().isBlank()
+                ? parameter.getName()
+                : annotation.name();
     }
 
     /**
@@ -178,7 +188,9 @@ public final class StrVirtualParameter {
 
     /**
      * Get if the parameter is contextual.
-     * Make sure there is a {@link nl.codevs.strinput.system.context.StrContextHandler} available for this type.
+     * Make sure there is a
+     * {@link nl.codevs.strinput.system.context.StrContextHandler}
+     * available for this type.
      * These are to be registered with the constructor on the command center.
      * @return true if the parameter is contextual
      */
@@ -197,8 +209,10 @@ public final class StrVirtualParameter {
     }
 
     /**
-     * List this parameter (just the parameter type/name) to form a string-based graph representation.
-     * @param prefix prefix all substrings with this prefix, so it aligns with previous nodes
+     * List this parameter (just the parameter type/name)
+     * to form a string-based graph representation.
+     * @param prefix prefix all substrings with this prefix,
+     *              so it aligns with previous nodes
      * @param current the current graph
      * @param exampleMatch an example to match this against
      */
@@ -207,6 +221,24 @@ public final class StrVirtualParameter {
             @NotNull final List<String> current,
             @NotNull final String exampleMatch
     ) {
-        current.add(prefix + getName() + " of type '" + getType().getSimpleName() + "'" + (hasDefault() ? " defaults to '" + getDefault() + "'" : " has no default") + " and " + (isContextual() ? "is contextual" : "is not contextual") + " matches with " + exampleMatch + " @ " + ((double) NGram.nGramMatch(exampleMatch, getName()) / NGram.nGramMatch(getName(), getName())));
+        current.add(prefix + getName()
+                + " of type '" + getType().getSimpleName() + "'"
+                + (
+                        hasDefault()
+                                ? " defaults to '" + getDefault() + "'"
+                                : " has no default"
+                )
+                + " and " + (
+                        isContextual()
+                                ? "is contextual"
+                                : "is not contextual"
+                )
+                + " matches with " + exampleMatch
+                + " @ " + ((double) NGram.nGramMatch(
+                        exampleMatch, getName()
+                ) / NGram.nGramMatch(
+                        getName(), getName())
+                )
+        );
     }
 }

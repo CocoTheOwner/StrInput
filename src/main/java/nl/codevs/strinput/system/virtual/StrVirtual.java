@@ -44,7 +44,8 @@ public interface StrVirtual {
     @Nullable StrVirtual getParent();
 
     /**
-     * Get the default virtual name (when the annotation was not given a specific name)
+     * Get the default virtual name
+     * (when the annotation was not given a specific name).
      * @return the name
      */
     @NotNull String getDefaultName();
@@ -58,8 +59,6 @@ public interface StrVirtual {
     /**
      * Run the virtual.
      * @param arguments the remaining arguments
-     * @param user the user that sent the command
-     * @param center the command system
      * @return true if this virtual ran successfully
      */
     boolean run(List<String> arguments);
@@ -75,7 +74,11 @@ public interface StrVirtual {
      * @return the category name
      */
     @NotNull default String getName() {
-        return capitalToLine(getAnnotation().name().trim().equals(StrInput.DEFAULT_NAME) ? getDefaultName() : getAnnotation().name());
+        return capitalToLine(
+                getAnnotation().name().trim().equals(StrInput.DEFAULT_NAME)
+                        ? getDefaultName()
+                        : getAnnotation().name()
+        );
     }
 
     /**
@@ -97,7 +100,9 @@ public interface StrVirtual {
      * @return the command path
      */
     @NotNull default String getPath() {
-        return getParent() == null ? getName() : getParent().getPath() + " " + getName();
+        return getParent() == null
+                ? getName()
+                : getParent().getPath() + " " + getName();
     }
 
     /**
@@ -117,23 +122,36 @@ public interface StrVirtual {
      * @return true if it matches the user
      */
     default boolean doesMatchUser(StrUser user) {
-        if (Objects.equals(getAnnotation().permission(), StrInput.NO_PERMISSION)) {
+        if (Objects.equals(
+                getAnnotation().permission(),
+                StrInput.NO_PERMISSION)
+        ) {
             return true;
         } else {
-            return user.hasPermission(getPath() + "." + getAnnotation().permission());
+            return user.hasPermission(
+                    getPath() + "." + getAnnotation().permission()
+            );
         }
     }
 
+    /**
+     * Get the permission node for this virtual.<br>
+     * All strings are passed through {@link #capitalToLine(String)}<br>
+     * Built as: {@code cat1.cat2.cat3.command1}
+     * @return the permission node
+     */
     @NotNull default String getPermission() {
         if (getParent() != null) {
-            return getParent().getPermission() + "." + capitalToLine(getParent().getPermission());
+            return getParent().getPermission()
+                    + "." + capitalToLine(getPermission());
         } else {
             return capitalToLine(getAnnotation().permission());
         }
     }
 
     /**
-     * Replace all capital letters in a string with a '-' and lowercase representation
+     * Replace all capital letters in
+     * a string with a '-' and lowercase representation.
      * @param string The string to convert 'IMineDiamondsForFun'
      * @return The converted string 'i-mine-diamonds-for-fun'
      */
@@ -159,11 +177,15 @@ public interface StrVirtual {
     }
 
     /**
-     * Send a debug message with additional information about the node in its prefix.
+     * Send a debug message with additional information
+     * about the node in its prefix.
      * @param str the {@link Str} message to send
      */
     default void debug(@NotNull Str str) {
-        center().debug(new Str(getName(), C.B).a(new Str(": ", C.G)).a(str.copy()));
+        center().debug(new Str(getName(), C.B)
+                .a(new Str(": ", C.G))
+                .a(str.copy())
+        );
     }
 
     /**
