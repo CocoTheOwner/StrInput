@@ -92,9 +92,6 @@ public abstract class StrCenter {
      * @param extraContextHandlers additional context handlers
      * @param rootCommands array of root commands
      *                    (usually only 1, your main command)
-     *
-     * @throws InvalidParameterException
-     * when the specified {@code settingsFolder} is not a directory
      */
     public StrCenter(
             @NotNull final File settingsFolder,
@@ -102,15 +99,7 @@ public abstract class StrCenter {
             @NotNull final StrParameterHandler<?>[] extraParameterHandlers,
             @NotNull final StrContextHandler<?>[] extraContextHandlers,
             @NotNull final StrCategory... rootCommands
-    ) throws InvalidParameterException {
-
-        if (!settingsFolder.isDirectory()) {
-            throw new InvalidParameterException(
-                    "File specified: '"
-                            + settingsFolder.getAbsolutePath()
-                            + "' is not a directory"
-            );
-        }
+    ) {
 
         // Create settings and sender
         settings = StrSettings.fromConfigJson(
@@ -146,9 +135,6 @@ public abstract class StrCenter {
      * @param consoleUser the console ({@link StrUser})
      * @param rootCommands array of root commands
      *                    (usually only 1, your main command)
-     *
-     * @throws InvalidParameterException
-     * when the specified {@code settingsFolder} is not a directory
      */
     public StrCenter(
             @NotNull final File settingsFolder,
