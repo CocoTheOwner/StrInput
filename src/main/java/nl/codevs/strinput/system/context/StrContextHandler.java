@@ -21,8 +21,10 @@ import nl.codevs.strinput.system.api.StrUser;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * StrUserContext handler.
+ * StrUserContext handler.<br>
+ * These handlers make use of a provided {@link StrUser} to deduct a value.
  *
+ * @param <T> the type to handle in context.
  * @author Sjoerd van de Goor
  * @since v0.1
  */
@@ -38,8 +40,14 @@ public interface StrContextHandler<T> {
     boolean supports(Class<?> type);
 
     /**
-     * The handler for this context. Can use any data found in the user object for context derivation.
-     * @param user the user whose data may be used
+     * The handler for this context.<br>
+     * Can use any data found in the user object for context derivation.<br>
+     * More data can be added to the user by:
+     * <ol>
+     *     <li>Adding fields to the user implementation, and then</li>
+     *     <li>Casting this {@code user} to the new type.</li>
+     * </ol>
+     * @param user the user whose data may be used (can be casted)
      * @return the value in the assigned type
      */
     @NotNull T handle(StrUser user);
@@ -47,12 +55,12 @@ public interface StrContextHandler<T> {
     /**
      * Convert this context to a string.
      *
-     * @param string result of {@link #handle(StrUser)} which should be parsed to a string
+     * @param string result of {@link #handle(StrUser)},
+     *              which should be parsed to a string
      *
      * @return result of conversion
      */
     @NotNull default String toString(T string) {
         return string.toString();
     }
-
 }
