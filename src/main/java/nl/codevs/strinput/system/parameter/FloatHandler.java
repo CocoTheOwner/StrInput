@@ -55,18 +55,21 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      *
      * @param text the string to parse
      *
      * @return an instance of this type parsed from the string
      *
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Float parse(@NotNull String text) throws Throwable {
+    public @NotNull Float parse(@NotNull final String text) throws Throwable {
         return Float.parseFloat(text);
     }
 

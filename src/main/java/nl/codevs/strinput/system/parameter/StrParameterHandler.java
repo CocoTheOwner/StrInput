@@ -47,7 +47,8 @@ public interface StrParameterHandler<T> {
     List<T> getPossibilities();
 
     /**
-     * Get all possible values for this type, filtered with some input string.<br>
+     * Get all possible values for this type,
+     * filtered with some input string.<br>
      * @param input the input string to filter by
      * @return a list of possibilities
      */
@@ -72,35 +73,48 @@ public interface StrParameterHandler<T> {
      * @param type a type
      * @return true if it supports the type
      */
-    boolean supports(@NotNull final Class<?> type);
+    boolean supports(@NotNull Class<?> type);
 
     /**
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @NotNull T parse(@NotNull String text) throws Throwable;
 
     /**
-     * Safely parse, catching exceptions that are not {@link StrWhichException} or {@link StrParseException}.
+     * Safely parse.<br>
+     * Converts all exceptions other than
+     * {@link StrWhichException} or {@link StrParseException}
+     * to {@link StrParseException}s.
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws StrWhichException when there are multiple options in a parser, based on the string
+     * @throws StrWhichException
+     * when there are multiple options in a parser, based on the string
      * @throws StrParseException when a parser fails
      */
-    @NotNull default T parseSafe(@NotNull String text) throws StrWhichException, StrParseException {
+    @NotNull default T parseSafe(
+            @NotNull String text
+    ) throws StrWhichException, StrParseException {
         try {
             return parse(text);
         } catch (StrWhichException | StrParseException e) {
             throw e;
         } catch (Throwable e) {
-            throw new StrParseException(getClass(), text, e.getClass().getSimpleName() + " - " + e.getMessage());
+            throw new StrParseException(
+                    getClass(),
+                    text,
+                    e.getClass().getSimpleName() + " - " + e.getMessage()
+            );
         }
     }
 
@@ -131,7 +145,8 @@ public interface StrParameterHandler<T> {
 
     /**
      * Get the multiplier for a string.
-     * Sets the value to the original value, except for the multiplier characters at the end.
+     * Sets the value to the original value,
+     * except for the multiplier characters at the end.
      * Returns the total multiplier.
      * @param value the value string to parse
      * @return the value, parsed.
@@ -143,7 +158,8 @@ public interface StrParameterHandler<T> {
         char[] chars = value.get().toCharArray();
         StringBuilder res = new StringBuilder();
         for (i = chars.length - 1; i >= 0; i--) {
-            if ((multiplier = multiplierFor(chars[i])) != 1) {
+            multiplier = multiplierFor(chars[i]);
+            if (multiplier != 1) {
                 total *= multiplier;
                 continue;
             }
@@ -187,8 +203,20 @@ public interface StrParameterHandler<T> {
      * @since v0.1
      */
     class StrParseException extends Exception {
+        /**
+         * Class of the exception that was converted to a
+         * {@link StrParseException}.
+         */
         private final Class<?> type;
+
+        /**
+         * The input text that caused the exception.
+         */
         private final Str input;
+
+        /**
+         * The system reason for the exception.
+         */
         private final Str reason;
 
         /**
@@ -217,15 +245,19 @@ public interface StrParameterHandler<T> {
 
         /**
          * Create a new exception.
-         * @param type the underlying parser's class
-         * @param input the input string that caused the exception
-         * @param reason the reason specified for the exception
+         * @param exceptionType the underlying parser's class
+         * @param inputString the input string that caused the exception
+         * @param systemReason the reason specified for the exception
          */
-        public StrParseException(final Class<?> type, final String input, final String reason) {
+        public StrParseException(
+                final Class<?> exceptionType,
+                final String inputString,
+                final String systemReason
+        ) {
             super();
-            this.type = type;
-            this.input = new Str(input);
-            this.reason = new Str(reason);
+            this.type = exceptionType;
+            this.input = new Str(inputString);
+            this.reason = new Str(systemReason);
         }
     }
 
@@ -254,11 +286,16 @@ public interface StrParameterHandler<T> {
          * Create a new exception.
          * @param type the underlying parser's class
          * @param input the input string that caused the exception
-         * @param options the list of options to pick from
+         * @param possibilities the list of options to pick from
          */
-        public StrWhichException(final Class<?> type, final String input, final List<?> options) {
-            super("Cannot parse \"" + input + "\" into type " + type.getSimpleName() + " because of multiple options");
-            this.options = options;
+        public StrWhichException(
+                final Class<?> type,
+                final String input,
+                final List<?> possibilities
+        ) {
+            super("Cannot parse \"" + input + "\" into type "
+                    + type.getSimpleName() + " because of multiple options");
+            this.options = possibilities;
         }
     }
 }

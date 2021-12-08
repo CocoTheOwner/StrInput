@@ -56,8 +56,10 @@ public final class StringHandler implements StrParameterHandler<String> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      *
      * @param text the string to parse
@@ -73,7 +75,7 @@ public final class StringHandler implements StrParameterHandler<String> {
     }
 
     /**
-     * Default strings (examples)
+     * Default strings (examples).
      */
     private static final String[] DEFAULTS = new String[]{
             "text",

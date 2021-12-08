@@ -48,7 +48,7 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(Byte.class) || type.equals(byte.class);
     }
 
@@ -59,10 +59,11 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      *
      * @return an instance of this type parsed from the string
      *
-     * @throws Throwable         when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Byte parse(@NotNull String text) throws Throwable {
+    public @NotNull Byte parse(@NotNull final String text) throws Throwable {
         return Byte.parseByte(text);
     }
 
@@ -73,6 +74,8 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return String.valueOf(RANDOM.nextInt(Byte.MAX_VALUE * 2) - Byte.MIN_VALUE);
+        return String.valueOf(
+                RANDOM.nextInt(Byte.MAX_VALUE * 2)
+                        - Byte.MIN_VALUE);
     }
 }

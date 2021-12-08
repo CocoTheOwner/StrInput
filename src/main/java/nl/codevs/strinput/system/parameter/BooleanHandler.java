@@ -47,7 +47,7 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(Boolean.class) || type.equals(boolean.class);
     }
 
@@ -55,27 +55,36 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Boolean parse(@NotNull String text) throws StrParseException, StrWhichException {
-        text = text.toLowerCase(Locale.ROOT);
+    public @NotNull Boolean parse(
+            @NotNull final String text
+    ) throws StrParseException, StrWhichException {
+        String lower = text.toLowerCase(Locale.ROOT);
         for (String fls : FALSES) {
-            if (text.equals(fls)) {
+            if (lower.equals(fls)) {
                 return false;
             }
         }
         for (String fls : TRUES) {
-            if (text.equals(fls)) {
+            if (lower.equals(fls)) {
                 return true;
             }
         }
-        throw new StrParseException(Boolean.class, text, "Cannot map to true or false");
+        throw new StrParseException(
+                Boolean.class,
+                text,
+                "Cannot map to true or false"
+        );
     }
 
     /**

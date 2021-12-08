@@ -56,17 +56,20 @@ public final class IntegerHandler implements StrParameterHandler<Integer> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Integer parse(@NotNull String text) throws Throwable {
+    public @NotNull Integer parse(@NotNull final String text) throws Throwable {
         AtomicReference<String> r = new AtomicReference<>(text);
-        return (int) (Integer.valueOf(r.get()).doubleValue() * getMultiplier(r));
+        return (int) Integer.valueOf(r.get()).doubleValue() * getMultiplier(r);
     }
 
 
@@ -78,7 +81,7 @@ public final class IntegerHandler implements StrParameterHandler<Integer> {
      * @return the string representation of an instance of this type
      */
     @Override
-    public @NotNull String toString(@NotNull Integer input) {
+    public @NotNull String toString(@NotNull final Integer input) {
         return input.toString();
     }
 
