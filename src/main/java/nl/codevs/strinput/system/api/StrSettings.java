@@ -57,7 +57,7 @@ public final class StrSettings implements StrCategory {
     /**
      * The file the settings are stored in.
      */
-    private final File settingsFile;
+    private transient final File settingsFile;
 
     /**
      * Debug message prefix.
@@ -71,13 +71,8 @@ public final class StrSettings implements StrCategory {
     /**
      * Create a new configuration.
      * @param file the settings file
-     * @throws IllegalArgumentException if the file does not exist
      */
-    public StrSettings(@NotNull final File file)
-            throws IllegalArgumentException {
-        if (!file.exists()) {
-            throw new IllegalArgumentException();
-        }
+    public StrSettings(@NotNull final File file) {
         this.settingsFile = file;
     }
 
@@ -249,6 +244,7 @@ public final class StrSettings implements StrCategory {
         user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("debug matching ").a(C.G).a("to: ").a(String.valueOf(debugMatching)));
     }
 
+
     public boolean debugMatching = true;
 
     /**
@@ -293,7 +289,6 @@ public final class StrSettings implements StrCategory {
             @NotNull final File file,
             @NotNull final StrUser console
     ) {
-        lastChanged = file.lastModified();
         try {
             if (!file.exists() || file.length() == 0) {
                 file.getParentFile().mkdirs();
@@ -301,6 +296,7 @@ public final class StrSettings implements StrCategory {
                 FileWriter f = new FileWriter(file);
                 GSON.toJson(newSettings, StrSettings.class, f);
                 f.close();
+                lastChanged = file.lastModified();
                 console.sendMessage(new Str(C.G).a("Made new StrInput config (")
                         .a(C.B).a(file.getParent().replace("\\", "/")
                                 + "/" + file.getName())
