@@ -61,7 +61,7 @@ public class SpigotCenter extends StrCenter {
             final Plugin plugin,
             final StrUser consoleUser,
             final StrCategory... rootCommands
-    ) throws InstanceAlreadyExistsException {
+    ) {
         super(
                 plugin.getDataFolder(),
                 consoleUser,
