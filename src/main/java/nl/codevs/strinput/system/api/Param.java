@@ -40,34 +40,51 @@ public @interface Param {
     /**
      * The main name of this command.<br>
      * Required parameter.<br>
-     * This is what is used in game, alongside any (if specified) {@link #aliases() aliases}
+     * This is what is used in game,
+     * alongside any (if specified) {@link #aliases() aliases}
+     * @return the name of this parameter
      */
     String name();
 
     /**
      * The description of this parameter, used in help-popups in game.<br>
      * The default value is {@link #DEFAULT_DESCRIPTION}
+     * @return the description of this parameter
      */
     String description() default DEFAULT_DESCRIPTION;
 
     /**
      * The default value for this argument.<br>
-     * The entered string is parsed to the value similarly to how commandline-text would be.<br>
-     * Which indicates the variable MUST be defined by the person running the command.<br>
-     * If you define this, the variable automatically becomes non-required, but can still be set.
+     * The entered string is parsed to the parameter type
+     * similarly to how normal command input would be.<br>
+     * Which indicates the variable MUST be defined
+     * by the person running the command if this is undefined.<br>
+     * If you define this,
+     * the variable automatically becomes non-required,
+     * but can still be set.
+     * @return the default value (as a string) of this parameter
      */
     String defaultValue() default "";
 
     /**
-     * The aliases of this parameter (instead of just the {@link #name() name} (if specified) or Method Name (name of method))<br>
-     * Can be initialized as just a string (ex. "alias") or as an array (ex. {"alias1", "alias2"})<br>
-     * If someone uses /plugin foo bar=baz, and you specify alias="b" here, /plugin foo b=baz will do the exact same.
+     * The aliases of this parameter
+     * (instead of just the {@link #name() name}
+     * (if specified) or Method Name (name of method))<br>
+     * Can be initialized as just a string
+     * (ex. "alias") or as an array (ex. {"alias1", "alias2"})<br>
+     * If someone uses /plugin foo bar=baz,
+     * and you specify alias="b" here,
+     * /plugin foo b=baz will do the exact same.
+     * @return the aliases of this parameter
      */
     String[] aliases() default "";
 
     /**
-     * Attempts to dynamically pull context from the user, default data or something else for supported types.</br>
-     * Requires a context handler in {@link nl.codevs.strinput.system.context}
+     * Attempts to dynamically pull context from the user,
+     * default data or something else for supported types.<br>
+     * <em>Requires a context handler in
+     * {@link nl.codevs.strinput.system.context}</em>
+     * @return true if this parameter can be devied from context.
      */
     boolean contextual() default false;
 }
