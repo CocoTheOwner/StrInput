@@ -4,7 +4,10 @@ import nl.codevs.strinput.system.virtual.StrVirtual;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -15,7 +18,11 @@ import java.util.stream.Collectors;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class NGram {
+public final class NGram {
+
+    private NGram() {
+        // Never used
+    }
 
     /**
      * Match input with options using n-gram search.<br>
@@ -26,45 +33,49 @@ public class NGram {
      * @return the [0, 1] match degree
      */
     public static double[] ngramMatching(
-            @NotNull String input,
-            @NotNull List<String> options
+            @NotNull final String input,
+            @NotNull final List<String> options
     ) {
         int max = nGramMatch(input, input);
-        return options.stream().mapToDouble(o -> (double) nGramMatch(input, o) / max).toArray();
+        return options.stream().mapToDouble(
+                o -> (double) nGramMatch(input, o) / max
+        ).toArray();
     }
 
     /**
      * N-gram match two strings.<br>
      *
-     * N-gram matching is modified to award sources that form (a part of) the beginning of the target.<br>
+     * Standard N-gram matching is modified to award sources
+     * that form (a part of) the beginning of the target.
      *
+     * @see <a href="https://en.wikipedia.org/wiki/N-gram">N-Gram Wikipedia</a>
      * @param source string 1
      * @param target string 2
      * @return match score between 0 and 1
      */
     public static int nGramMatch(
-            @NotNull String source,
-            @NotNull String target
+            @NotNull final String source,
+            @NotNull final String target
     ) {
 
-        source = source.toLowerCase(Locale.ROOT);
-        target = target.toLowerCase(Locale.ROOT);
+        String sourceLower = source.toLowerCase(Locale.ROOT);
+        String targetLower = target.toLowerCase(Locale.ROOT);
 
         int nGramScore = 0;
-        for (int i = 1; i < source.length() + 1; i++) {
+        for (int i = 1; i < sourceLower.length() + 1; i++) {
 
-            if (target.startsWith(source.substring(0, i))) {
-                nGramScore += source.length();
+            if (targetLower.startsWith(sourceLower.substring(0, i))) {
+                nGramScore += sourceLower.length();
             }
 
             List<String> set = new ArrayList<>();
 
-            for (int j = 0; j < source.length() - i + 1; j++) {
-                set.add(source.substring(j, j + i));
+            for (int j = 0; j < sourceLower.length() - i + 1; j++) {
+                set.add(sourceLower.substring(j, j + i));
             }
 
-            for (int j = 0; j < target.length() - i + 1; j++) {
-                String sub = target.substring(j, j + i);
+            for (int j = 0; j < targetLower.length() - i + 1; j++) {
+                String sub = targetLower.substring(j, j + i);
                 if (set.contains(sub)) {
                     nGramScore += i;
                     set.remove(sub);
@@ -81,19 +92,22 @@ public class NGram {
      * {@code strVirtualList} is sorted & returned.<br>
      * The best match (highest n-gram score) is first, and the lowest last.
      * @param input the input string for matching (source)
-     * @param strVirtualList the list of virtual nodes to sort (targets). <em>Not modified.</em>
+     * @param strVirtualList the list of virtual nodes to sort.
+     *                       <em>Not modified.</em>
      * @param threshold the minimal matching score
-     * @return an array with the elements of {@code strVirtualList}, in sorted order.
+     * @return an array with the elements of
+     * {@code strVirtualList}, in sorted order.
      */
     @Contract(mutates = "param2")
     public static @NotNull List<StrVirtual> sortByNGram(
-            @NotNull String input,
-            @NotNull List<StrVirtual> strVirtualList,
-            double threshold
+            @NotNull final String input,
+            @NotNull final List<StrVirtual> strVirtualList,
+            final double threshold
     ) {
 
         // Get names and virtuals
-        int amount = strVirtualList.stream().mapToInt(v -> v.getNames().size()).sum();
+        int amount = strVirtualList.stream()
+                .mapToInt(v -> v.getNames().size()).sum();
 
         StrVirtual[] virtuals = new StrVirtual[amount];
         String[] names = new String[amount];
@@ -108,16 +122,20 @@ public class NGram {
         }
 
         if (amount != index) {
-            throw new IllegalStateException("Amount " + amount + " not equal to index " + input);
+            throw new IllegalStateException(
+                    "Amount " + amount + " not equal to index " + input
+            );
         }
 
         // Results array, 1:1 with names
         double[] results = NGram.ngramMatching(input, List.of(names));
 
         // Ordered list of virtual nodes
-        ConcurrentHashMap<StrVirtual, Double> scores = new ConcurrentHashMap<>();
+        ConcurrentHashMap<StrVirtual, Double> scores
+                = new ConcurrentHashMap<>();
         for (int i = 0; i < amount; i++) {
-            if (!scores.containsKey(virtuals[i]) || scores.get(virtuals[i]) < results[i]) {
+            if (!scores.containsKey(virtuals[i])
+                    || scores.get(virtuals[i]) < results[i]) {
                 scores.put(virtuals[i], results[i]);
             }
         }
