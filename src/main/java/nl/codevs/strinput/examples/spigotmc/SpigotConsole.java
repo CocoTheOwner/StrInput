@@ -17,10 +17,10 @@
  */
 package nl.codevs.strinput.examples.spigotmc;
 
-import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Spigot console user.
@@ -45,7 +45,7 @@ public class SpigotConsole implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(Str message) {
+    public void sendMessage(@NotNull final Str message) {
         Bukkit.getConsoleSender().sendMessage(message.toHumanReadable());
     }
 
@@ -58,18 +58,19 @@ public class SpigotConsole implements StrUser {
     }
 
     /**
-     * Play a sound effect
+     * Play a sound effect.
      *
      * @param sfx the sound effect type
      */
     @Override
-    public void playSound(StrSoundEffect sfx) {
+    public void playSound(@NotNull final StrSoundEffect sfx) {
 
     }
 
     /**
-     * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
-     * See {@link StrCenter.ContextHandling}.
+     * If this sender supports context,
+     * i.e. has values it stores for getting data automatically
+     * (instead of specifying it in commands).
      *
      * @return true if the user supports context
      */
@@ -85,7 +86,7 @@ public class SpigotConsole implements StrUser {
      * @return true if permitted.
      */
     @Override
-    public boolean hasPermission(String permission) {
+    public boolean hasPermission(@NotNull final String permission) {
         return true;
     }
 }

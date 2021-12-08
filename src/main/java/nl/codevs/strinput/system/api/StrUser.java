@@ -18,6 +18,7 @@
 package nl.codevs.strinput.system.api;
 
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ public interface StrUser {
      * Send a message to the user.
      * @param message the message to send
      */
-    void sendMessage(Str message);
+    void sendMessage(@NotNull final Str message);
 
     /**
      * @return whether this user supports clickable {@link Str}s.
@@ -74,7 +75,7 @@ public interface StrUser {
 
     /**
      * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
-     * See {@link StrCenter.ContextHandling}.
+     *
      * @return true if the user supports context
      */
     boolean supportsContext();

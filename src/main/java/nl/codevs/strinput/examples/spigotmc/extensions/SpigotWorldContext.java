@@ -38,7 +38,7 @@ public class SpigotWorldContext implements StrContextHandler<World> {
      * @return the type
      */
     @Override
-    public boolean supports(Class<?> type) {
+    public boolean supports(@NotNull Class<?> type) {
         return type.equals(World.class);
     }
 
@@ -50,7 +50,7 @@ public class SpigotWorldContext implements StrContextHandler<World> {
      * @return the value in the assigned type
      */
     @Override
-    public @NotNull World handle(StrUser user) {
+    public @NotNull World handle(@NotNull StrUser user) {
         return ((SpigotUser) user).getPlayer().getWorld();
     }
 }

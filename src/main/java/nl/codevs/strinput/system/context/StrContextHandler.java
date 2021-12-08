@@ -37,7 +37,7 @@ public interface StrContextHandler<T> {
      *
      * @return the type
      */
-    boolean supports(Class<?> type);
+    boolean supports(@NotNull final Class<?> type);
 
     /**
      * The handler for this context.<br>
@@ -50,7 +50,7 @@ public interface StrContextHandler<T> {
      * @param user the user whose data may be used (can be casted)
      * @return the value in the assigned type
      */
-    @NotNull T handle(StrUser user);
+    @NotNull T handle(@NotNull final StrUser user);
 
     /**
      * Convert this context to a string.
@@ -60,7 +60,7 @@ public interface StrContextHandler<T> {
      *
      * @return result of conversion
      */
-    @NotNull default String toString(T string) {
+    @NotNull default String toString(@NotNull final T string) {
         return string.toString();
     }
 }

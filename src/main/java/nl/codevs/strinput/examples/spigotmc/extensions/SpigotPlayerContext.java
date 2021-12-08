@@ -31,26 +31,27 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SpigotPlayerContext implements StrContextHandler<Player> {
     /**
-     * The type this context handler handles
+     * The type this context handler handles.
      *
      * @param type checks this type
      *
      * @return the type
      */
     @Override
-    public boolean supports(Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(Player.class);
     }
 
     /**
-     * The handler for this context. Can use any data found in the user object for context derivation.
+     * The handler for this context.
+     * Can use any data found in the user object for context derivation.
      *
      * @param user the user whose data may be used
      *
      * @return the value in the assigned type
      */
     @Override
-    public @NotNull Player handle(StrUser user) {
+    public @NotNull Player handle(@NotNull final StrUser user) {
         return ((SpigotUser) user).getPlayer();
     }
 }
