@@ -186,6 +186,7 @@ public record SpigotUser(Player player) implements StrUser {
      * TODO Implement colors
      */
     private @NotNull String strToString(@NotNull final Str message) {
+        // TODO: Implement clickables, hovering, colors, gradients
         return message.toHumanReadable();
     }
 }

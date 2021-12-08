@@ -514,4 +514,38 @@ public abstract class StrCenter {
         }
     }
 
+    /**
+     * A default console user without platform-specific properties.
+     */
+    public static final StrUser DEFAULT_CONSOLE_USER = new StrUser() {
+        @Override
+        public @NotNull String getName() {
+            return "Console";
+        }
+
+        @Override
+        public void sendMessage(@NotNull Str message) {
+            System.out.println(message.toHumanReadable());
+        }
+
+        @Override
+        public boolean supportsClickables() {
+            return false;
+        }
+
+        @Override
+        public void playSound(@NotNull StrSoundEffect sfx) {
+
+        }
+
+        @Override
+        public boolean supportsContext() {
+            return false;
+        }
+
+        @Override
+        public boolean hasPermission(@NotNull String permission) {
+            return true;
+        }
+    };
 }

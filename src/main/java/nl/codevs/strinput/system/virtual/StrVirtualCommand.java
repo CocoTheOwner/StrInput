@@ -546,7 +546,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     options.remove(option);
                     keylessArgs.remove(keylessArg);
 
-                    if (Env.settings().isPickFirstOnMultiple()) {
+                    if (Env.settings().isPickFirstOnMultiple() || user().supportsClickables()) {
                         params.put(option, e.getOptions().get(0));
                     } else {
                         Object result = pickValidOption(e.getOptions(), option);
@@ -581,7 +581,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 } catch (StrParameterHandler.StrWhichException e) {
                     debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" returned multiple options"));
                     options.remove(option);
-                    if (Env.settings().isPickFirstOnMultiple()) {
+                    if (Env.settings().isPickFirstOnMultiple() || user().supportsClickables()) {
                         debug(new Str(C.G).a("Adding the first option for parameter ").a(C.B).a(option.getName()));
                         params.put(option, e.getOptions().get(0));
                     } else {
@@ -819,7 +819,7 @@ public final class StrVirtualCommand implements StrVirtual {
         } catch (StrParameterHandler.StrWhichException e) {
             debug(new Str(C.R).a("Value ")
                     .a(C.B).a(value).a(C.R).a(" returned multiple options"));
-            if (Env.settings().isPickFirstOnMultiple()) {
+            if (Env.settings().isPickFirstOnMultiple() || user().supportsClickables()) {
                 debug(new Str(C.G).a("Adding: ")
                         .a(C.B).a(e.getOptions().get(0).toString()));
                 params.put(option, e.getOptions().get(0));
