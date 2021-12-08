@@ -17,7 +17,6 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import environment.TestCenter;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.api.StrCategory;
 import nl.codevs.strinput.system.api.StrInput;
