@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 /**
- * Caching values<br>
+ * Caching values.<br>
  * @param <T> the type to cache
  * @see <a href="https://github.com/VolmitSoftware/Iris/blob/master/src/main/java/com/volmit/iris/engine/data/cache/AtomicCache.java">Iris - AtomicCache</a>
  * @author Cyberpwn

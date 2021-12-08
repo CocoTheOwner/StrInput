@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,11 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package tests;
+package nl.codevs.strinput.system.parameter;
 
 import environment.TestCenter;
+import nl.codevs.strinput.system.api.Env;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,8 +31,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class TestHandlers {
-    private static final TestCenter SUT = TestCenter.SUT;
+public class StrParameterHandlerTest {
+
+    @BeforeAll
+    public static void setup() {
+        if (!Env.registered()) {
+            Env.touch(new TestCenter());
+        }
+    }
 
     @Test
     public void testHandlerBoolean() {

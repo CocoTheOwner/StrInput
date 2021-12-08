@@ -1,5 +1,5 @@
 /**
- * Example implementations of the Strinput system for:
+ * Example implementations of the Strinput system for discord and spigot.
  * <ul>
  *     <li>{@link nl.codevs.strinput.examples.discord}</li>
  *     <li>{@link nl.codevs.strinput.examples.spigotmc}</li>

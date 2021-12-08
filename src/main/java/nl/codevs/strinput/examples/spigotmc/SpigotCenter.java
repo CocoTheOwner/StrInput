@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,10 +21,7 @@ import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerHandler;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldHandler;
-import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.api.StrCategory;
-import nl.codevs.strinput.system.api.StrInput;
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.api.*;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
@@ -54,13 +52,11 @@ public class SpigotCenter extends StrCenter {
      *
      * @param plugin the plugin running this command system ({@code this})
      * @param consoleUser  the console ({@link StrUser})
-     * @param enableSettingsCommands if set to true, enables commands for the system's settings
      * @param rootCommands array of root commands (usually only 1, your main command)
      */
     public SpigotCenter(
             final Plugin plugin,
             final StrUser consoleUser,
-            final boolean enableSettingsCommands,
             final StrCategory... rootCommands) throws InstanceAlreadyExistsException {
         super(
                 plugin.getDataFolder(),
@@ -96,7 +92,7 @@ public class SpigotCenter extends StrCenter {
     }
 
     /**
-     * Run a function sync (will run if {@link Settings#async} is false or when {@link StrInput#sync()} is true).
+     * Run a function sync (will run if {@link StrSettings#async} is false or when {@link StrInput#sync()} is true).
      *
      * @param runnable the runnable to run
      */

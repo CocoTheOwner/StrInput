@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,7 +48,7 @@ public final class StringHandler implements StrParameterHandler<String> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(String.class);
     }
 
@@ -55,7 +56,7 @@ public final class StringHandler implements StrParameterHandler<String> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrWhichException} to indicate multiple options</li>
      *     <li>{@link StrParseException} to indicate parsing problems</li>
      * </ul>
      *
@@ -63,13 +64,17 @@ public final class StringHandler implements StrParameterHandler<String> {
      *
      * @return an instance of this type parsed from the string
      *
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull String parse(@NotNull String text) throws Throwable {
+    public @NotNull String parse(@NotNull final String text) throws Throwable {
         return text;
     }
 
+    /**
+     * Default strings (examples)
+     */
     private static final String[] DEFAULTS = new String[]{
             "text",
             "something",

@@ -12,6 +12,6 @@
  *     Extensions to the parameter parsing and context handling</li>
  * </ul>
  * @author Sjoerd van de Goor
+ * @since v0.1
  */
-
 package nl.codevs.strinput.examples.spigotmc;

@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,17 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package tests;
+package nl.codevs.strinput.system.util;
 
-import environment.TestCenter;
 import environment.TestRoot;
-import nl.codevs.strinput.system.util.NGram;
 import nl.codevs.strinput.system.virtual.StrVirtual;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class TestNGram {
+public class NGramTest {
 
     @Test
     public void testNGram() {
@@ -69,13 +69,15 @@ public class TestNGram {
 
     @Test
     public void sortVirtuals() {
-        StrVirtualCategory t = new StrVirtualCategory(null, new TestRoot(), TestCenter.SUT);
+        StrVirtualCategory t = new StrVirtualCategory(null, new TestRoot());
         List<StrVirtual> o = new ArrayList<>();
         o.addAll(t.getCommands());
         o.addAll(t.getSubCats());
         o = NGram.sortByNGram("mult", o, 0.6);
-        assertEquals("mult", o.get(0).getName());
-        assertEquals("add", o.get(1).getName());
+        for (StrVirtual os : o) {
+            System.out.println(os.getName());
+        }
+        assertEquals("mult, multi", o.stream().map(StrVirtual::getName).collect(Collectors.joining(", ")));
     }
 
     /**

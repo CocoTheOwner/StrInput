@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +18,8 @@
 package nl.codevs.strinput.system.api;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Command and/or command category interface.
  * Register commands in your
@@ -28,8 +31,15 @@ public interface StrCategory {
     /**
      * @return The sender of the command, the user.
      */
-    default StrUser user() {
-        return StrCenter.UserContext.get();
+    @NotNull default StrUser user() {
+        return Env.user();
+    }
+
+    /**
+     * @return The command center running the system.
+     */
+    @NotNull default StrCenter center() {
+        return Env.center();
     }
 
 }

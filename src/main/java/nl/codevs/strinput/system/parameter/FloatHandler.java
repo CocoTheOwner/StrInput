@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,7 +47,7 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(Float.class) || type.equals(float.class);
     }
 

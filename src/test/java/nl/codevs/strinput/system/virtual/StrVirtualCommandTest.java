@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,13 +51,18 @@ class StrVirtualCommandTest implements StrCategory {
 
     @Test
     public void testSetupParameters() throws NoSuchMethodException {
-        assertEquals(1, new StrVirtualCommand(new StrVirtualCategory(null, this, TestCenter.SUT), this.getClass().getDeclaredMethod("testCommand", int.class), TestCenter.SUT).getParameters().size());
+        assertEquals(1, new StrVirtualCommand(new StrVirtualCategory(null, this), this.getClass().getDeclaredMethod("testCommand", int.class)).getParameters().size());
     }
 
     @Test
     public void testInvocation() throws NoSuchMethodException {
-        StrVirtualCommand test = new StrVirtualCommand(new StrVirtualCategory(null, this, TestCenter.SUT), this.getClass().getDeclaredMethod("testCommand", int.class), TestCenter.SUT);
-        test.run(new ArrayList<>(List.of("1")), TestCenter.SUT.getConsole(), TestCenter.SUT);
+        StrVirtualCommand test = new StrVirtualCommand(new StrVirtualCategory(null, this), this.getClass().getDeclaredMethod("testCommand", int.class));
+        test.run(new ArrayList<>(List.of("1")));
         assertEquals(1, x);
+    }
+
+    @Test
+    public void testGetDefaultName() throws NoSuchMethodException {
+        assertEquals("testCommand", new StrVirtualCommand(null, this.getClass().getDeclaredMethod("testCommand", int.class)).getDefaultName());
     }
 }

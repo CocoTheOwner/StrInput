@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +24,9 @@ import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.api.Param;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.util.NGram;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -98,7 +102,7 @@ public final class StrVirtualParameter {
      * Get the type of the parameter.
      * @return the type of the parameter
      */
-    public Class<?> getType() {
+    public @NotNull Class<?> getType() {
         return parameter.getType();
     }
 
@@ -106,7 +110,7 @@ public final class StrVirtualParameter {
      * Get the default string.
      * @return the default string
      */
-    public String getDefault() {
+    public @NotNull String getDefault() {
         return annotation.defaultValue().trim();
     }
 
@@ -132,7 +136,7 @@ public final class StrVirtualParameter {
      * @throws StrParameterHandler.StrParseException thrown when parsing fails
      * @throws StrParameterHandler.StrWhichException thrown when multiple options are possible
      */
-    public Object getDefaultValue() throws StrParameterHandler.StrParseException, StrParameterHandler.StrWhichException {
+    public @Nullable Object getDefaultValue() throws StrParameterHandler.StrParseException, StrParameterHandler.StrWhichException {
         return hasDefault() ? getHandler().parseSafe(getDefault()) : null;
     }
 
@@ -157,7 +161,7 @@ public final class StrVirtualParameter {
      * Consists of the main name and non-blank aliases.
      * @return the names
      */
-    public List<String> getNames() {
+    public @NotNull List<String> getNames() {
         List<String> names = new ArrayList<>();
         names.add(getName());
         for (String alias : annotation.aliases()) {
@@ -187,7 +191,8 @@ public final class StrVirtualParameter {
      * @param user the user to get help for
      * @return the help
      */
-    public Str help(StrUser user) {
+    @Contract("_ -> new")
+    public @NotNull Str help(@NotNull final StrUser user) {
         return new Str("Node help of " + getName() + " for " + user.getName());
     }
 
@@ -197,7 +202,11 @@ public final class StrVirtualParameter {
      * @param current the current graph
      * @param exampleMatch an example to match this against
      */
-    public void getListing(String prefix, List<String> current, String exampleMatch) {
+    public void getListing(
+            @NotNull final String prefix,
+            @NotNull final List<String> current,
+            @NotNull final String exampleMatch
+    ) {
         current.add(prefix + getName() + " of type '" + getType().getSimpleName() + "'" + (hasDefault() ? " defaults to '" + getDefault() + "'" : " has no default") + " and " + (isContextual() ? "is contextual" : "is not contextual") + " matches with " + exampleMatch + " @ " + ((double) NGram.nGramMatch(exampleMatch, getName()) / NGram.nGramMatch(getName(), getName())));
     }
 }

@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +17,9 @@
  */
 package environment;
 
-import nl.codevs.strinput.system.api.StrInput;
-import nl.codevs.strinput.system.api.StrUser;
-import nl.codevs.strinput.system.api.StrCenter;
+import nl.codevs.strinput.system.api.*;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
 
 import javax.management.InstanceAlreadyExistsException;
 import java.io.File;
@@ -33,23 +33,13 @@ import java.util.List;
  */
 public class TestCenter extends StrCenter {
 
-    public static TestCenter SUT = null;
-
-    static {
-        try {
-            SUT = new TestCenter();
-        } catch (InstanceAlreadyExistsException e) {
-            e.printStackTrace();
-        }
-    }
+    public static TestCenter SUT = new TestCenter();
 
     /**
      * Create a new command center.<br>
      * Make sure to point command calls to {@link #onCommand(List, StrUser)}
-     *
-     * @throws InstanceAlreadyExistsException when this command system is already running
      */
-    public TestCenter() throws InstanceAlreadyExistsException {
+    public TestCenter() {
         super(
                 new File("testSettings"),
                 new StrUser() {
@@ -87,21 +77,21 @@ public class TestCenter extends StrCenter {
         );
 
         // Set async to false so we can run tests sync
-        settings.async = false;
-        settings.settingsCommands = false;
+        Env.settings().async = false;
+        Env.settings().settingsCommands = false;
     }
 
     public static void main(String[] args) {
-        System.out.println(String.join("\n", SUT.getListing("  ", new ArrayList<String>(List.of("test", "mult", "1", "2")))));
+        System.out.println(String.join("\n", SUT.getListing("  ", new ArrayList<>(List.of("test", "mult", "1", "2")))));
     }
 
     /**
-     * Run a function sync (will run if {@link Settings#async} is false or when {@link StrInput#sync()} is true).
+     * Run a function sync (will run if {@link StrSettings#async} is false or when {@link StrInput#sync()} is true).
      *
      * @param runnable the runnable to run
      */
     @Override
-    public void runSync(Runnable runnable) {
+    public void runSync(@NotNull Runnable runnable) {
         runnable.run();
     }
 }

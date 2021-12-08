@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +17,12 @@
  */
 package nl.codevs.strinput.system.virtual;
 
+import nl.codevs.strinput.system.api.Env;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrInput;
 import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +62,7 @@ public interface StrVirtual {
      * @param center the command system
      * @return true if this virtual ran successfully
      */
-    boolean run(List<String> arguments, StrUser user, StrCenter center);
+    boolean run(List<String> arguments);
 
     /**
      * Send help for this virtual to a user.
@@ -116,7 +120,15 @@ public interface StrVirtual {
         if (Objects.equals(getAnnotation().permission(), StrInput.NO_PERMISSION)) {
             return true;
         } else {
-            return user.hasPermission(getAnnotation().permission());
+            return user.hasPermission(getPath() + "." + getAnnotation().permission());
+        }
+    }
+
+    @NotNull default String getPermission() {
+        if (getParent() != null) {
+            return getParent().getPermission() + "." + capitalToLine(getParent().getPermission());
+        } else {
+            return capitalToLine(getAnnotation().permission());
         }
     }
 
@@ -125,17 +137,47 @@ public interface StrVirtual {
      * @param string The string to convert 'IMineDiamondsForFun'
      * @return The converted string 'i-mine-diamonds-for-fun'
      */
-    @NotNull default String capitalToLine(String string) {
+    @NotNull default String capitalToLine(@NotNull String string) {
+        if (string.isBlank()) {
+            return string;
+        }
         char[] chars = string.toCharArray();
         StringBuilder name = new StringBuilder();
-        for (char aChar : chars) {
-            if (Character.isUpperCase(aChar)) {
-                name.append("-").append(Character.toLowerCase(aChar));
+        name.append(Character.toLowerCase(chars[0]));
+        if (chars.length == 1) {
+            return name.toString();
+        }
+        for (int i = 1; i < chars.length; i++) {
+            if (Character.isUpperCase(chars[i])) {
+                name.append("-").append(Character.toLowerCase(chars[i]));
             } else {
-                name.append(aChar);
+                name.append(chars[i]);
             }
         }
         String result = name.toString();
         return result.startsWith("-") ? result.substring(1) : result;
     }
+
+    /**
+     * Send a debug message with additional information about the node in its prefix.
+     * @param str the {@link Str} message to send
+     */
+    default void debug(@NotNull Str str) {
+        center().debug(new Str(getName(), C.B).a(new Str(": ", C.G)).a(str.copy()));
+    }
+
+    /**
+     * @return The sender of the command, the user.
+     */
+    @NotNull default StrUser user() {
+        return Env.UserContext.get();
+    }
+
+    /**
+     * @return The command center running the system.
+     */
+    @NotNull default StrCenter center() {
+        return Env.CenterContext.get();
+    }
+
 }

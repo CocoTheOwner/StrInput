@@ -1,7 +1,7 @@
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.api.StrCenter;
+import nl.codevs.strinput.system.api.Env;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -30,7 +30,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(World.class);
     }
 
@@ -48,7 +48,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      */
     @Override
     public @NotNull World parse(@NotNull String text) throws Throwable {
-        if (!((SpigotUser) StrCenter.UserContext.get()).isPlayer()) {
+        if (!((SpigotUser) Env.UserContext.get()).isPlayer()) {
             throw new StrParseException(World.class, text, "User is not a player");
         }
         List<World> options = getPossibilities(text);

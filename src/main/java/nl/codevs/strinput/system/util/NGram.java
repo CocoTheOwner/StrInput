@@ -25,7 +25,10 @@ public class NGram {
      * @param options the options to match with
      * @return the [0, 1] match degree
      */
-    public static double[] ngramMatching(String input, List<String> options) {
+    public static double[] ngramMatching(
+            @NotNull String input,
+            @NotNull List<String> options
+    ) {
         int max = nGramMatch(input, input);
         return options.stream().mapToDouble(o -> (double) nGramMatch(input, o) / max).toArray();
     }
@@ -39,7 +42,10 @@ public class NGram {
      * @param target string 2
      * @return match score between 0 and 1
      */
-    public static int nGramMatch(String source, String target) {
+    public static int nGramMatch(
+            @NotNull String source,
+            @NotNull String target
+    ) {
 
         source = source.toLowerCase(Locale.ROOT);
         target = target.toLowerCase(Locale.ROOT);
@@ -80,37 +86,53 @@ public class NGram {
      * @return an array with the elements of {@code strVirtualList}, in sorted order.
      */
     @Contract(mutates = "param2")
-    public static @NotNull List<StrVirtual> sortByNGram(String input, List<StrVirtual> strVirtualList, double threshold) {
+    public static @NotNull List<StrVirtual> sortByNGram(
+            @NotNull String input,
+            @NotNull List<StrVirtual> strVirtualList,
+            double threshold
+    ) {
 
         // Get names and virtuals
-        List<String> names = new ArrayList<>();
-        List<StrVirtual> virtuals = new ArrayList<>();
-        ConcurrentHashMap<String, Double> scores = new ConcurrentHashMap<>();
+        int amount = strVirtualList.stream().mapToInt(v -> v.getNames().size()).sum();
+
+        StrVirtual[] virtuals = new StrVirtual[amount];
+        String[] names = new String[amount];
+
+        int index = 0;
         for (StrVirtual strVirtual : strVirtualList) {
             for (String name : strVirtual.getNames()) {
-                names.add(name);
-                virtuals.add(strVirtual);
-                scores.put(strVirtual.getName(), 0d);
+                virtuals[index] = strVirtual;
+                names[index] = name;
+                index++;
             }
+        }
+
+        if (amount != index) {
+            throw new IllegalStateException("Amount " + amount + " not equal to index " + input);
         }
 
         // Results array, 1:1 with names
-        double[] results = NGram.ngramMatching(input, names);
+        double[] results = NGram.ngramMatching(input, List.of(names));
 
         // Ordered list of virtual nodes
-        for (int i = 0; i < results.length; i++) {
-            StrVirtual virtual = virtuals.get(i);
-            if (scores.get(virtual.getName()) < results[i]) {
-                scores.put(virtual.getName(), results[i]);
+        ConcurrentHashMap<StrVirtual, Double> scores = new ConcurrentHashMap<>();
+        for (int i = 0; i < amount; i++) {
+            if (!scores.containsKey(virtuals[i]) || scores.get(virtuals[i]) < results[i]) {
+                scores.put(virtuals[i], results[i]);
             }
         }
 
+        scores.forEach((v, s) -> System.out.println(v.getName() + " -> " + s));
+
         // Get & sort
-        strVirtualList
+        strVirtualList = strVirtualList
                 .stream()
-                .filter(v -> scores.get(v.getName()) >= threshold)
-                .collect(Collectors.toList())
-                .sort(Comparator.comparingDouble(v -> -scores.get(v.getName())));
+                .filter(v -> scores.get(v) >= threshold)
+                .collect(Collectors.toList());
+        strVirtualList.sort(Comparator.comparingInt(v -> v.getName().length()));
+        strVirtualList.sort(Comparator.comparingDouble(v -> -scores.get(v)));
+
+
         return strVirtualList;
     }
 }

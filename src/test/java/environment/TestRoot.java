@@ -1,5 +1,6 @@
 /*
- * This file is part of the Strinput distribution (https://github.com/CocoTheOwner/Strinput).
+ * This file is part of the Strinput distribution.
+ * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,6 +51,22 @@ public class TestRoot implements StrCategory {
 
     @StrInput(name = "mult", description = "Multiply two integers")
     public void multiplication(
+            @Param(
+                    description = "The first integer",
+                    aliases = "i1",
+                    name = "input1"
+            ) Integer i1,
+            @Param(
+                    description = "The second integer",
+                    aliases = "i2",
+                    name = "input2"
+            ) Integer i2
+    ) {
+        multResult = i1 * i2;
+    }
+
+    @StrInput(name = "multi", description = "Multiply two integers")
+    public void multiplications(
             @Param(
                     description = "The first integer",
                     aliases = "i1",
