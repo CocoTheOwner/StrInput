@@ -17,9 +17,9 @@
  */
 package environment;
 
-import nl.codevs.strinput.system.api.Param;
-import nl.codevs.strinput.system.api.StrCategory;
-import nl.codevs.strinput.system.api.StrInput;
+import nl.codevs.strinput.system.Param;
+import nl.codevs.strinput.system.StrCategory;
+import nl.codevs.strinput.system.StrInput;
 
 /**
  * StrCategory test implementation.

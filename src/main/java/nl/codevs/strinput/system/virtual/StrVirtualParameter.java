@@ -17,11 +17,11 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.StrCenter;
+import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.AtomicCache;
-import nl.codevs.strinput.system.api.Param;
+import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.Contract;

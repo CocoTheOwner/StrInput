@@ -17,8 +17,8 @@
  */
 package environment;
 
-import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.StrCenter;
+import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 

@@ -17,10 +17,10 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.api.Env;
-import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.api.StrInput;
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.StrCenter;
+import nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;

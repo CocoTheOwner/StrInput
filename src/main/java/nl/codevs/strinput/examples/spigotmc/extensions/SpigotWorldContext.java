@@ -18,7 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;

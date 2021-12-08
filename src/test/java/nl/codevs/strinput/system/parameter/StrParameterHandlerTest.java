@@ -18,9 +18,8 @@
 package nl.codevs.strinput.system.parameter;
 
 import environment.TestCenter;
-import nl.codevs.strinput.system.api.Env;
-import nl.codevs.strinput.system.api.StrCenter;
-import nl.codevs.strinput.system.parameter.StrParameterHandler;
+import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.StrCenter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

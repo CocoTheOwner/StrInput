@@ -17,7 +17,7 @@
  */
 package nl.codevs.strinput.system.context;
 
-import nl.codevs.strinput.system.api.StrUser;
+import nl.codevs.strinput.system.StrUser;
 import org.jetbrains.annotations.NotNull;
 
 /**

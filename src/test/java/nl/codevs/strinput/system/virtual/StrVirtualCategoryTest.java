@@ -19,11 +19,9 @@ package nl.codevs.strinput.system.virtual;
 
 import environment.TestCenter;
 import environment.TestRoot;
-import nl.codevs.strinput.system.api.Env;
+import nl.codevs.strinput.system.Env;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import javax.management.InstanceAlreadyExistsException;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -18,7 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.api.Env;
+import nl.codevs.strinput.system.Env;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
