@@ -33,5 +33,6 @@ public class DiscordCommands implements DiscordCommandCategory {
     @StrInput(name = "ping", description = "pong!")
     public void ping() {
         message().reply("Pong!").queue();
+        message().addReaction(":smiley:").queue(); // TODO: Check this works
     }
 }

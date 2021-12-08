@@ -11,9 +11,17 @@ import javax.security.auth.login.LoginException;
 
 public class DiscordBot extends ListenerAdapter {
 
-    private static final DiscordCenter center = new DiscordCenter();
+    /**
+     * Command center.
+     */
+    private static final DiscordCenter CENTER = new DiscordCenter();
 
-    public static void main(String[] args) throws LoginException {
+    /**
+     * Main method.
+     * @param args arguments
+     * @throws LoginException if the bot token isn't working
+     */
+    public static void main(final String[] args) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(args[0]);
 
         // Enable the bulk delete event
@@ -33,8 +41,12 @@ public class DiscordBot extends ListenerAdapter {
         builder.build();
     }
 
+    /**
+     * When a message is received.
+     * @param event the received event
+     */
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        center.onCommand(event);
+    public void onMessageReceived(@NotNull final MessageReceivedEvent event) {
+        CENTER.onCommand(event);
     }
 }

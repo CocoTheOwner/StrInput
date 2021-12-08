@@ -17,7 +17,9 @@
  */
 package nl.codevs.strinput.examples.discord;
 
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Message;
 import nl.codevs.strinput.system.StrCategory;
 
 /**

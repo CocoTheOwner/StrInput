@@ -524,7 +524,7 @@ public abstract class StrCenter {
         }
 
         @Override
-        public void sendMessage(@NotNull Str message) {
+        public void sendMessage(@NotNull final Str message) {
             System.out.println(message.toHumanReadable());
         }
 
@@ -534,7 +534,7 @@ public abstract class StrCenter {
         }
 
         @Override
-        public void playSound(@NotNull StrSoundEffect sfx) {
+        public void playSound(@NotNull final StrSoundEffect sfx) {
 
         }
 
@@ -544,7 +544,7 @@ public abstract class StrCenter {
         }
 
         @Override
-        public boolean hasPermission(@NotNull String permission) {
+        public boolean hasPermission(@NotNull final String permission) {
             return true;
         }
     };

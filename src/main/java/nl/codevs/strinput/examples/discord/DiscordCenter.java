@@ -19,7 +19,6 @@ package nl.codevs.strinput.examples.discord;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrCenter;
-import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +28,7 @@ import java.util.List;
 
 public class DiscordCenter extends StrCenter {
     /**
-     * Create a new command center.<br>
-     * Make sure to point command calls to {@link #onCommand(List, StrUser)}
+     * Create a new command center.
      */
     public DiscordCenter() {
         super(
@@ -52,7 +50,7 @@ public class DiscordCenter extends StrCenter {
      * @param runnable the runnable to run
      */
     @Override
-    public void runSync(@NotNull Runnable runnable) {
+    public void runSync(@NotNull final Runnable runnable) {
         runnable.run();
     }
 
@@ -60,9 +58,11 @@ public class DiscordCenter extends StrCenter {
      * Run commands.
      * @param event the event.
      */
-    public void onCommand(MessageReceivedEvent event) {
+    public void onCommand(final MessageReceivedEvent event) {
         DiscordUser user = DiscordUser.of(event);
         user.channel().sendTyping().queue();
-        super.onCommand(List.of(event.getMessage().getContentRaw().split(" ")), user);
+        super.onCommand(List.of(
+                event.getMessage().getContentRaw().split(" ")
+        ), user);
     }
 }

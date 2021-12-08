@@ -19,7 +19,6 @@ package nl.codevs.strinput.examples.discord;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrUser;
@@ -29,17 +28,23 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Example implementation of a Discord user.
  * @param user the underlying Discord user
+ * @param channel the channel the message was sent in
+ * @param message the message that the user sent
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public record DiscordUser(User user, MessageChannel channel, Message message) implements StrUser {
+public record DiscordUser(
+        User user,
+        MessageChannel channel,
+        Message message
+) implements StrUser {
 
     /**
      * Get a Discord user from an event.
      * @param event the event
      * @return the Discord User
      */
-    public static DiscordUser of(MessageReceivedEvent event) {
+    public static DiscordUser of(final MessageReceivedEvent event) {
         return new DiscordUser(
                 event.getAuthor(),
                 event.getChannel(),
@@ -68,11 +73,11 @@ public record DiscordUser(User user, MessageChannel channel, Message message) im
     /**
      * Send a message to the user.
      *
-     * @param message the message to send
+     * @param msg the message to send
      */
     @Override
-    public void sendMessage(@NotNull Str message) {
-        channel().sendMessage(strToString(message)).queue();
+    public void sendMessage(@NotNull final Str msg) {
+        channel().sendMessage(strToString(msg)).queue();
     }
 
     /**
@@ -89,7 +94,7 @@ public record DiscordUser(User user, MessageChannel channel, Message message) im
      * @param sfx the sound effect type
      */
     @Override
-    public void playSound(@NotNull StrSoundEffect sfx) {
+    public void playSound(@NotNull final StrSoundEffect sfx) {
 
     }
 
@@ -112,19 +117,19 @@ public record DiscordUser(User user, MessageChannel channel, Message message) im
      * @return true if permitted.
      */
     @Override
-    public boolean hasPermission(@NotNull String permission) {
+    public boolean hasPermission(@NotNull final String permission) {
         return true;
     }
 
     /**
      * Turn a {@link Str} to a string.
      *
-     * @param message the Str message to convert
+     * @param msg the Str message to convert
      * @return the string
      * TODO Implement colors
      */
-    private @NotNull String strToString(@NotNull final Str message) {
+    private @NotNull String strToString(@NotNull final Str msg) {
         // TODO: Implement clickables, hovering, colors, gradients
-        return message.toHumanReadable();
+        return msg.toHumanReadable();
     }
 }
