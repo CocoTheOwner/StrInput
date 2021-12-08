@@ -76,8 +76,8 @@ public class TestCenter extends StrCenter {
         );
 
         // Set async to false so we can run tests sync
-        Env.settings().async = false;
-        Env.settings().settingsCommands = false;
+        getSettings().async = false;
+        getSettings().settingsCommands = false;
     }
 
     public static void main(String[] args) {
