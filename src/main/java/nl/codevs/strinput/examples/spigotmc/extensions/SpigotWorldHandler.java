@@ -19,7 +19,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      * @return a list of possibilities
      */
     @Override
-    public List<World> getPossibilities() {
+    public @NotNull List<World> getPossibilities() {
         return Bukkit.getWorlds();
     }
 
@@ -78,7 +78,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      * @return a list of possibilities
      */
     @Override
-    public List<World> getPossibilities(String input) {
+    public @NotNull List<World> getPossibilities(@NotNull String input) {
         final String i = input.toLowerCase(Locale.ROOT);
         return getPossibilities().stream().filter(w -> w.getName().toLowerCase(Locale.ROOT).startsWith(i)).collect(Collectors.toList());
     }

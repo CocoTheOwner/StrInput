@@ -28,7 +28,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * Spigot user implementation
+ * Spigot user implementation.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
@@ -41,7 +41,7 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      * @return a list of possibilities
      */
     @Override
-    public List<Player> getPossibilities() {
+    public @NotNull List<Player> getPossibilities() {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
     }
 
@@ -60,23 +60,34 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      *
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Player parse(@NotNull String text) throws Throwable {
+    public @NotNull Player parse(@NotNull final String text) throws Throwable {
         List<Player> options = getPossibilities(text);
         if (options.size() == 0) {
-            throw new StrParseException(Player.class, text, "No options found for input");
+            throw new StrParseException(
+                    Player.class,
+                    text,
+                    "No options found for input"
+            );
         } else if (options.size() == 1) {
             return options.get(0);
         } else {
-            throw new StrWhichException(Player.class, text, options);
+            throw new StrWhichException(
+                    Player.class,
+                    text,
+                    options
+            );
         }
     }
 
@@ -87,18 +98,23 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return getPossibilities().get(RANDOM.nextInt(getPossibilities().size())).getName();
+        return getPossibilities().get(
+                RANDOM.nextInt(getPossibilities().size())
+        ).getName();
     }
 
     /**
-     * Get all possible values for this type, filtered with some input string.<br>
+     * Get all possible values for this type,
+     * filtered with some input string.
      *
      * @param input the input string to filter by
      * @return a list of possibilities
      */
     @Override
-    public List<Player> getPossibilities(String input) {
+    public @NotNull List<Player> getPossibilities(@NotNull final String input) {
         final String i = input.toLowerCase(Locale.ROOT);
-        return getPossibilities().stream().filter(player -> player.getName().toLowerCase(Locale.ROOT).startsWith(i)).collect(Collectors.toList());
+        return getPossibilities().stream().filter(
+                p -> p.getName().toLowerCase(Locale.ROOT).startsWith(i)
+        ).collect(Collectors.toList());
     }
 }

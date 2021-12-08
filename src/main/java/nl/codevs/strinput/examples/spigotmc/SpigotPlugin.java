@@ -22,25 +22,33 @@ import nl.codevs.strinput.system.text.Str;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.management.InstanceAlreadyExistsException;
 
 /**
- * A Spigot plugin example
+ * A Spigot plugin example.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public class SpigotPlugin extends JavaPlugin implements CommandExecutor, Listener {
+public final class SpigotPlugin extends JavaPlugin
+        implements CommandExecutor, Listener {
+
+    /**
+     * Command system for this system.
+     */
     private static SpigotCenter commandSystem;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(
+            @NotNull final CommandSender sender,
+            @NotNull final Command command,
+            @NotNull final String label,
+            @NotNull final String[] args
+    ) {
         return commandSystem.onCommand(sender, command, label, args);
     }
 
@@ -54,7 +62,9 @@ public class SpigotPlugin extends JavaPlugin implements CommandExecutor, Listene
             );
         } catch (InstanceAlreadyExistsException e) {
             e.printStackTrace();
-            new SpigotConsole().sendMessage(new Str("The command system is already running!"));
+            new SpigotConsole().sendMessage(
+                    new Str("The command system is already running!")
+            );
         }
     }
 }

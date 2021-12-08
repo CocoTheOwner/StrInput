@@ -35,7 +35,7 @@ public final class DoubleHandler implements StrParameterHandler<Double> {
      * @return a list of possibilities
      */
     @Override
-    public List<Double> getPossibilities() {
+    public @NotNull List<Double> getPossibilities() {
         return null;
     }
 

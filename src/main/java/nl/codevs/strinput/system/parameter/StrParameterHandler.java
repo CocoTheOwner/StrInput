@@ -44,7 +44,7 @@ public interface StrParameterHandler<T> {
      * Do not specify lists of very high length (10^6)
      * @return a list of possibilities
      */
-    List<T> getPossibilities();
+    @NotNull List<T> getPossibilities();
 
     /**
      * Get all possible values for this type,
@@ -52,7 +52,7 @@ public interface StrParameterHandler<T> {
      * @param input the input string to filter by
      * @return a list of possibilities
      */
-    default List<T> getPossibilities(String input) {
+    @NotNull default List<T> getPossibilities(@NotNull final String input) {
         final String fin = input.trim();
         if (input.isEmpty()) {
             return getPossibilities();
@@ -89,7 +89,7 @@ public interface StrParameterHandler<T> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
-    @NotNull T parse(@NotNull String text) throws Throwable;
+    @NotNull T parse(@NotNull final String text) throws Throwable;
 
     /**
      * Safely parse.<br>
