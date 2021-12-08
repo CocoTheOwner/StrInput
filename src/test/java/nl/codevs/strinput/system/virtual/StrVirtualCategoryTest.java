@@ -25,6 +25,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.management.InstanceAlreadyExistsException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -49,6 +52,8 @@ class StrVirtualCategoryTest {
     }
 
     @Test
-    void run() {
+    void runOne() {
+        new StrVirtualCategory(null, new TestRoot()).run(new ArrayList<>(List.of("mult", "2", "3")));
+        assertEquals(6, TestRoot.multResult);
     }
 }
