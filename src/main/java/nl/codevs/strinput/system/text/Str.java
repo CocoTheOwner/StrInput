@@ -225,7 +225,7 @@ public class Str {
      */
     public Str(
             @NotNull final String text,
-            @NotNull final Runnable runOnClick) {
+            @Nullable final Runnable runOnClick) {
         this(text, C.X, runOnClick);
     }
 
@@ -240,8 +240,8 @@ public class Str {
     public Str(
             @NotNull final C startColor,
             @NotNull final C endColor,
-            @NotNull final Runnable runOnClick,
-            @NotNull final Str showOnHover
+            @Nullable final Runnable runOnClick,
+            @Nullable final Str showOnHover
     ) {
         this("", startColor, endColor, runOnClick, showOnHover);
     }
@@ -255,7 +255,7 @@ public class Str {
     public Str(
             @NotNull final String text,
             @NotNull final C color,
-            @NotNull final Runnable runOnClick
+            @Nullable final Runnable runOnClick
     ) {
         this(text, color, C.X, runOnClick);
     }
@@ -270,7 +270,7 @@ public class Str {
     public Str(
             @NotNull final C startColor,
             @NotNull final C endColor,
-            @NotNull final Runnable runOnClick
+            @Nullable final Runnable runOnClick
     ) {
         this("", startColor, endColor, runOnClick, null);
     }
@@ -287,7 +287,7 @@ public class Str {
             @NotNull final String text,
             @NotNull final C startColor,
             @NotNull final C endColor,
-            @NotNull final Runnable runOnClick
+            @Nullable final Runnable runOnClick
     ) {
         this(text, startColor, endColor, runOnClick, null);
     }
@@ -338,8 +338,8 @@ public class Str {
      */
     public Str(
             @NotNull final C color,
-            @NotNull final Runnable runOnClick,
-            @NotNull final Str showOnHover
+            @Nullable final Runnable runOnClick,
+            @Nullable final Str showOnHover
     ) {
         this("", color, C.X, runOnClick, showOnHover);
     }
@@ -385,9 +385,9 @@ public class Str {
      */
     public Str(
             @NotNull final C color,
-            @NotNull final Runnable runOnClick,
-            @NotNull final Str showOnHover,
-            @NotNull final Str last
+            @Nullable final Runnable runOnClick,
+            @Nullable final Str showOnHover,
+            @Nullable final Str last
     ) {
         this("", color, C.X, runOnClick, showOnHover, last);
     }
