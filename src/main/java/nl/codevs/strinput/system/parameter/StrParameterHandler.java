@@ -89,7 +89,7 @@ public interface StrParameterHandler<T> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
-    @NotNull T parse(@NotNull final String text) throws Throwable;
+    @NotNull T parse(@NotNull String text) throws Throwable;
 
     /**
      * Safely parse.<br>

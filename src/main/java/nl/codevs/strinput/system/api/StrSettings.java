@@ -16,17 +16,38 @@ import java.io.IOException;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-@StrInput(description = "StrInput settings", aliases = "stri", name = "strinput", permission = "strinput")
+@StrInput(
+        description = "StrInput settings",
+        aliases = "stri",
+        name = "strinput",
+        permission = "strinput"
+)
 public class StrSettings implements StrCategory {
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    /**
+     * Gson for string-to-class and class-to-string conversion.
+     */
+    private static final Gson GSON =
+            new GsonBuilder().setPrettyPrinting().create();
+
+    /**
+     * The last time the settings file was modified
+     * (to check for re-saving).
+     */
     private static long lastChanged;
+
+    /**
+     * The file the settings are stored in.
+     */
     private static File file;
 
     /**
      * Debug message prefix.
      * Cannot be modified by commands.
      */
-    public static Str debugPrefix = new Str(C.R).a("[").a(C.G).a("StrInput").a(C.R).a("] ").a(C.X);
+    public static Str debugPrefix = new Str(C.R).a("[")
+            .a(C.G).a("StrInput")
+            .a(C.R).a("] ")
+            .a(C.X);
 
     @StrInput(description = "Which threshold should be met for command matching using our improved N-Gram search algorithm?")
     public void setMatchThreshold(
@@ -160,12 +181,12 @@ public class StrSettings implements StrCategory {
         try {
             if (!file.exists() || file.length() == 0) {
                 file.getParentFile().mkdirs();
-                StrSettings new_ = new StrSettings();
+                StrSettings newSettings = new StrSettings();
                 FileWriter f = new FileWriter(file);
-                gson.toJson(new_, StrSettings.class, f);
+                GSON.toJson(newSettings, StrSettings.class, f);
                 f.close();
                 console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
-                return new_;
+                return newSettings;
             }
             console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
             return new Gson().fromJson(new FileReader(file), StrSettings.class);
@@ -184,12 +205,12 @@ public class StrSettings implements StrCategory {
     public void saveToConfig(File file, StrUser console) {
         try {
             FileWriter f = new FileWriter(file);
-            gson.toJson(this, StrSettings.class, f);
+            GSON.toJson(this, StrSettings.class, f);
             f.close();
             console.sendMessage(new Str(C.G).a("Saved StrInput Settings"));
             lastChanged = file.lastModified();
         } catch (IOException e) {
-            console.sendMessage(new Str("Failed to save config: \n" + gson.toJson(this)));
+            console.sendMessage(new Str("Failed to save config: \n" + GSON.toJson(this)));
             e.printStackTrace();
         }
     }
