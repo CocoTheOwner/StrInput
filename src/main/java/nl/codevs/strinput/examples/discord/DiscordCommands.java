@@ -17,7 +17,6 @@
  */
 package nl.codevs.strinput.examples.discord;
 
-import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.StrInput;
 
 /**
@@ -26,10 +25,13 @@ import nl.codevs.strinput.system.StrInput;
  * @since v0.1
  */
 @StrInput(name = "strinput", description = "example commands", aliases = "str")
-public class DiscordCommands implements StrCategory {
+public class DiscordCommands implements DiscordCommandCategory {
 
+    /**
+     * Ping the user.
+     */
     @StrInput(name = "ping", description = "pong!")
     public void ping() {
-
+        message().reply("Pong!").queue();
     }
 }

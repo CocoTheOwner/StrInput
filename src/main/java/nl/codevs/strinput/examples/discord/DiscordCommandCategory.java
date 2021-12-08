@@ -17,11 +17,8 @@
  */
 package nl.codevs.strinput.examples.discord;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.*;
 import nl.codevs.strinput.system.StrCategory;
-import net.dv8tion.jda.api.entities.User;
 
 /**
  * Discord command category with auxiliary commands.
@@ -47,5 +44,12 @@ public interface DiscordCommandCategory extends StrCategory {
         } else {
             return ((DiscordUser) user()).channel();
         }
+    }
+
+    /**
+     * @return The message that was sent.
+     */
+    default Message message() {
+        return ((DiscordUser) user()).message();
     }
 }

@@ -17,6 +17,7 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
@@ -55,9 +56,13 @@ public class DiscordCenter extends StrCenter {
         runnable.run();
     }
 
-    @Override
-    public void onCommand(@NotNull List<String> command, @NotNull StrUser user) {
-        ((DiscordUser) user).channel().sendTyping().queue();
-        super.onCommand(command, user);
+    /**
+     * Run commands.
+     * @param event the event.
+     */
+    public void onCommand(MessageReceivedEvent event) {
+        DiscordUser user = DiscordUser.of(event);
+        user.channel().sendTyping().queue();
+        super.onCommand(List.of(event.getMessage().getContentRaw().split(" ")), user);
     }
 }

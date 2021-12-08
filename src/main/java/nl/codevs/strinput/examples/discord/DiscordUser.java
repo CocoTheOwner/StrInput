@@ -17,9 +17,11 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +32,20 @@ import org.jetbrains.annotations.NotNull;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public record DiscordUser(User user, MessageChannel channel) implements StrUser {
+public record DiscordUser(User user, MessageChannel channel, Message message) implements StrUser {
+
+    /**
+     * Get a Discord user from an event.
+     * @param event the event
+     * @return the Discord User
+     */
+    public static DiscordUser of(MessageReceivedEvent event) {
+        return new DiscordUser(
+                event.getAuthor(),
+                event.getChannel(),
+                event.getMessage()
+        );
+    }
 
     /**
      * Get the underlying Discord user.
