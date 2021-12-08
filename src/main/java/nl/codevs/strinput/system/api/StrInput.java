@@ -24,7 +24,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for commands (methods) and categories (classes).<br>
- * Note that while all settings are optional, {@link #name()} should be specified on a category.
+ * Note that while all settings are optional,
+ * {@link #name()} should be specified on a category.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
@@ -50,26 +51,33 @@ public @interface StrInput {
     String DEFAULT_NAME = "";
 
     /**
-     * The name of this command, which is the Method's name by default
+     * The name of this command, which is the Method's name by default.
      * @return the name of the command / category
      */
     String name() default DEFAULT_NAME;
 
     /**
-     * The aliases of this parameter (instead of just the {@link #name() name} (if specified) or Method Name (name of method))<br>
-     * Can be initialized as just a string (ex. "alias") or as an array (ex. {"alias1", "alias2"})<br>
-     * If someone uses /plugin foo, and you specify alias="f" here, /plugin f will do the exact same.
+     * The aliases of this parameter (instead of just the {@link #name() name}
+     * (if specified) or Method Name (name of method))<br>
+     * Can be initialized as just a string (ex. "alias")
+     * or as an array (ex. {"alias1", "alias2"})<br>
+     * If someone uses /plugin foo, and you specify alias="f" here,
+     * /plugin f will do the exact same.
+     *
+     * @return the aliases of this {@link StrInput}
      */
     String[] aliases() default "";
 
     /**
      * The description of this command.<br>
      * Is {@link #DEFAULT_DESCRIPTION} by default
+     * @return the description of this {@link StrInput}
      */
     String description() default DEFAULT_DESCRIPTION;
 
     /**
-     * The permissions class that gives the required permission for this command.<p>
+     * The permissions class that gives
+     * the required permission for this command.<p>
      * By default, it requires no permissions
      * @return The permission node for this decree command
      */
@@ -78,6 +86,8 @@ public @interface StrInput {
     /**
      * If the node's functions MUST be run in sync, set this to true.<br>
      * Defaults to false
+     *
+     * @return true if this category's commands or command should be run in sync
      */
     boolean sync() default false;
 }

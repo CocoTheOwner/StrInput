@@ -44,12 +44,12 @@ public class TestCenter extends StrCenter {
                 new File("testSettings"),
                 new StrUser() {
                     @Override
-                    public String getName() {
+                    public @NotNull String getName() {
                         return "Console";
                     }
 
                     @Override
-                    public void sendMessage(Str message) {
+                    public void sendMessage(@NotNull Str message) {
                         System.out.println(message.toHumanReadable());
                     }
 
@@ -59,7 +59,7 @@ public class TestCenter extends StrCenter {
                     }
 
                     @Override
-                    public void playSound(StrSoundEffect sfx) {
+                    public void playSound(@NotNull StrSoundEffect sfx) {
 
                     }
 
@@ -69,7 +69,7 @@ public class TestCenter extends StrCenter {
                     }
 
                     @Override
-                    public boolean hasPermission(String permission) {
+                    public boolean hasPermission(@NotNull String permission) {
                         return true;
                     }
                 },

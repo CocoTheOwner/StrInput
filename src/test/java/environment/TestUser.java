@@ -20,6 +20,7 @@ package environment;
 import nl.codevs.strinput.system.api.StrCenter;
 import nl.codevs.strinput.system.api.StrUser;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class TestUser implements StrUser {
      * @return the name of the user
      */
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "testUser";
     }
 
@@ -51,7 +52,7 @@ public class TestUser implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(Str message) {
+    public void sendMessage(@NotNull Str message) {
         System.out.println(message.toHumanReadable());
         messages.add(message.toHumanReadable());
     }
@@ -70,7 +71,7 @@ public class TestUser implements StrUser {
      * @param sfx the sound effect type
      */
     @Override
-    public void playSound(StrSoundEffect sfx) {
+    public void playSound(@NotNull StrSoundEffect sfx) {
 
     }
 
@@ -92,7 +93,7 @@ public class TestUser implements StrUser {
      * @return true if permitted.
      */
     @Override
-    public boolean hasPermission(String permission) {
+    public boolean hasPermission(@NotNull String permission) {
         return true;
     }
 

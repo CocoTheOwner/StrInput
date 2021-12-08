@@ -17,25 +17,58 @@
  */
 package nl.codevs.strinput.system.text;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Messages passing through the system.<br>
- * Has additional properties such as colors, on-click events and hovering.<br><br>
+ * Has additional properties such as colors,
+ * on-click events and hovering.<br><br>
  *
- * Note that the actual text of this component is stored in {@link #content}.<br>
- * The way to read-out strings is by going back to {@link #previous} and getting its content, and then back to...<br>
- * which contains other related string components (in order) with potentially different values and properties.
+ * Note that the actual text of this component
+ * is stored in {@link #content}.<br>
+ * The way to read-out strings is by going back to
+ * {@link #previous} and getting its content, and then back to...<br>
+ * which contains other related string components (in order)
+ * with potentially different values and properties.
  *
  * @author Sjoerd van de Goor
  * @since v0.1
  */
 public class Str {
 
+    /**
+     * Runnable that should be run when this is clicked.
+     */
     private final Runnable onClick;
+
+    /**
+     * Another {@link Str} that should be
+     * displayed when hovering over this text.
+     */
     private final Str onHover;
+
+    /**
+     * The main color of this text.
+     */
     private final C mainColor;
+
+    /**
+     * If {@link C#X} then {@link #mainColor}
+     * is the only color and full color of this {@link Str}.
+     * Otherwise, this is the color at the end
+     * of the text, i.e. the end of the gradient.
+     */
     private final C gradientColor;
 
+    /**
+     * The previous {@link Str} in the chain. Can be null.
+     */
     private Str previous;
+
+    /**
+     * The string content of this {@link Str}.
+     */
     private String content;
 
     /**
@@ -47,8 +80,10 @@ public class Str {
     }
 
     /**
-     * This is the end color of the gradient. The first color is found in {@link #mainColor}.<br>
-     * Make sure to check {@link #isGradient()} to ensure this {@link Str} is actually gradient.
+     * This is the end color of the gradient.
+     * The first color is found in {@link #mainColor}.<br>
+     * Make sure to check {@link #isGradient()}
+     * to ensure this {@link Str} is actually gradient.
      * @return the end color of the gradient
      */
     public C getGradientColor() {
@@ -68,7 +103,14 @@ public class Str {
      * @return a new Str without hover
      */
     public Str resetHover() {
-        return new Str("", getMainColor(), getGradientColor(), getOnClick(), null, this);
+        return new Str(
+                "",
+                getMainColor(),
+                getGradientColor(),
+                getOnClick(),
+                null,
+                this
+        );
     }
 
     /**
@@ -100,7 +142,14 @@ public class Str {
      * @return a new Str without on-click
      */
     public Str resetClick() {
-        return new Str("", getMainColor(), getGradientColor(), null, getOnHover(), this);
+        return new Str(
+                "",
+                getMainColor(),
+                getGradientColor(),
+                null,
+                getOnHover(),
+                this
+        );
     }
 
     /**
@@ -123,7 +172,7 @@ public class Str {
      * Create a new {@link Str} string.
      * @param text the initial text content
      */
-    public Str(String text) {
+    public Str(@NotNull final String text) {
         this(text, C.X);
     }
 
@@ -131,7 +180,7 @@ public class Str {
      * Create a new {@link Str} string.
      * @param color the starting color
      */
-    public Str(C color) {
+    public Str(@NotNull final C color) {
         this("", color);
     }
 
@@ -140,16 +189,17 @@ public class Str {
      * @param text the initial text content
      * @param color the starting color
      */
-    public Str(String text, C color) {
+    public Str(@NotNull final String text, @NotNull final C color) {
         this(text, color, C.X);
     }
 
     /**
      * Create a new {@link Str} string.
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      */
-    public Str(C startColor, C endColor) {
+    public Str(@NotNull final C startColor, @NotNull final C endColor) {
         this("", startColor, endColor);
     }
 
@@ -157,9 +207,14 @@ public class Str {
      * Create a new {@link Str} string.
      * @param text the initial text content
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      */
-    public Str(String text, C startColor, C endColor) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C startColor,
+            @NotNull final C endColor
+    ) {
         this(text, startColor, endColor, (Runnable) null);
     }
 
@@ -168,18 +223,26 @@ public class Str {
      * @param text the initial text content
      * @param runOnClick the {@link Runnable} to run when this is clicked
      */
-    public Str(String text, Runnable runOnClick) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final Runnable runOnClick) {
         this(text, C.X, runOnClick);
     }
 
     /**
      * Create a new {@link Str} string.
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param runOnClick the {@link Runnable} to run when this is clicked
      * @param showOnHover what to display on hover
      */
-    public Str(C startColor, C endColor, Runnable runOnClick, Str showOnHover) {
+    public Str(
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @NotNull final Runnable runOnClick,
+            @NotNull final Str showOnHover
+    ) {
         this("", startColor, endColor, runOnClick, showOnHover);
     }
 
@@ -189,17 +252,26 @@ public class Str {
      * @param color the starting color
      * @param runOnClick the {@link Runnable} to run when this is clicked
      */
-    public Str(String text, C color, Runnable runOnClick) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C color,
+            @NotNull final Runnable runOnClick
+    ) {
         this(text, color, C.X, runOnClick);
     }
 
     /**
      * Create a new {@link Str} string.
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param runOnClick the {@link Runnable} to run when this is clicked
      */
-    public Str(C startColor, C endColor, Runnable runOnClick) {
+    public Str(
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @NotNull final Runnable runOnClick
+    ) {
         this("", startColor, endColor, runOnClick, null);
     }
 
@@ -207,10 +279,16 @@ public class Str {
      * Create a new {@link Str} string.
      * @param text the initial text content
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param runOnClick the {@link Runnable} to run when this is clicked
      */
-    public Str(String text, C startColor, C endColor, Runnable runOnClick) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @NotNull final Runnable runOnClick
+    ) {
         this(text, startColor, endColor, runOnClick, null);
     }
 
@@ -219,7 +297,10 @@ public class Str {
      * @param text the initial text content
      * @param showOnHover what to display on hover
      */
-    public Str(String text, Str showOnHover) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final Str showOnHover
+    ) {
         this(text, C.X, showOnHover);
     }
 
@@ -229,7 +310,11 @@ public class Str {
      * @param color the starting color
      * @param showOnHover what to display on hover
      */
-    public Str(String text, C color, Str showOnHover) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C color,
+            @NotNull final Str showOnHover
+    ) {
         this(text, color, C.X, showOnHover);
     }
 
@@ -238,7 +323,10 @@ public class Str {
      * @param color the starting color
      * @param showOnHover what to display on hover
      */
-    public Str(C color, Str showOnHover) {
+    public Str(
+            @NotNull final C color,
+            @NotNull final Str showOnHover
+    ) {
         this("", color, C.X, showOnHover);
     }
 
@@ -248,7 +336,11 @@ public class Str {
      * @param runOnClick the {@link Runnable} to run when this is clicked
      * @param showOnHover what to display on hover
      */
-    public Str(C color, Runnable runOnClick, Str showOnHover) {
+    public Str(
+            @NotNull final C color,
+            @NotNull final Runnable runOnClick,
+            @NotNull final Str showOnHover
+    ) {
         this("", color, C.X, runOnClick, showOnHover);
     }
 
@@ -256,20 +348,31 @@ public class Str {
      * Create a new {@link Str} string.
      * @param text the initial text content
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param showOnHover what to display on hover
      */
-    public Str(String text, C startColor, C endColor, Str showOnHover) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @NotNull final Str showOnHover
+    ) {
         this(text, startColor, endColor, null, showOnHover);
     }
 
     /**
      * Create a new {@link Str} string.
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param showOnHover what to display on hover
      */
-    public Str(C startColor, C endColor, Str showOnHover) {
+    public Str(
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @NotNull final Str showOnHover
+    ) {
         this("", startColor, endColor, null, showOnHover);
     }
 
@@ -278,19 +381,33 @@ public class Str {
      * @param color the starting color
      * @param runOnClick the {@link Runnable} to run when this is clicked
      * @param showOnHover what to display on hover
+     * @param last the previous {@link Str} in the series
      */
-    public Str(C color, Runnable runOnClick, Str showOnHover, Str last) {
+    public Str(
+            @NotNull final C color,
+            @NotNull final Runnable runOnClick,
+            @NotNull final Str showOnHover,
+            @NotNull final Str last
+    ) {
         this("", color, C.X, runOnClick, showOnHover, last);
     }
 
     /**
      * Create a new {@link Str} string.
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param runOnClick the {@link Runnable} to run when this is clicked
      * @param showOnHover what to display on hover
+     * @param last the previous {@link Str} in the series
      */
-    public Str(C startColor, C endColor, Runnable runOnClick, Str showOnHover, Str last) {
+    public Str(
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @Nullable final Runnable runOnClick,
+            @Nullable final Str showOnHover,
+            @Nullable final Str last
+    ) {
         this("", startColor, endColor, runOnClick, showOnHover, last);
     }
 
@@ -298,11 +415,18 @@ public class Str {
      * Create a new {@link Str} string.
      * @param text the initial text content
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param runOnClick the {@link Runnable} to run when this is clicked
      * @param showOnHover what to display on hover
      */
-    public Str(String text, C startColor, C endColor, Runnable runOnClick, Str showOnHover) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @Nullable final Runnable runOnClick,
+            @Nullable final Str showOnHover
+    ) {
         this(text, startColor, endColor, runOnClick, showOnHover, null);
     }
 
@@ -310,12 +434,20 @@ public class Str {
      * Create a new {@link Str} string.
      * @param text the initial text content
      * @param startColor the starting color
-     * @param endColor the end color of the gradient ({@link C#X} if non-gradient)
+     * @param endColor the end color of the gradient
+     *                ({@link C#X} if non-gradient)
      * @param runOnClick the {@link Runnable} to run when this is clicked
      * @param showOnHover what to display on hover
      * @param last the previous {@link Str} in the series
      */
-    public Str(String text, C startColor, C endColor, Runnable runOnClick, Str showOnHover, Str last) {
+    public Str(
+            @NotNull final String text,
+            @NotNull final C startColor,
+            @NotNull final C endColor,
+            @Nullable final Runnable runOnClick,
+            @Nullable final Str showOnHover,
+            @Nullable final Str last
+    ) {
         content = text;
         mainColor = startColor;
         gradientColor = endColor;
@@ -329,7 +461,7 @@ public class Str {
      * @param newText the next text string(s)
      * @return this
      */
-    public Str add(String... newText) {
+    public @NotNull Str add(@NotNull final String... newText) {
         content += String.join(" ", newText);
         return this;
     }
@@ -339,7 +471,7 @@ public class Str {
      * @param newText the next text string(s)
      * @return this
      */
-    public Str a(String... newText){
+    public @NotNull Str a(@NotNull final String... newText) {
         return add(newText);
     }
 
@@ -348,7 +480,7 @@ public class Str {
      * @param newText the new text component
      * @return this
      */
-    public Str add(Str newText) {
+    public @NotNull Str add(@NotNull final Str newText) {
         Str last = newText;
         while (last.getPrevious() != null) {
             last = last.getPrevious();
@@ -361,7 +493,7 @@ public class Str {
      * @param newText the new text component(s)
      * @return this
      */
-    public Str a(Str newText) {
+    public @NotNull Str a(@NotNull final Str newText) {
         return add(newText);
     }
 
@@ -371,7 +503,7 @@ public class Str {
      * @param color the color to add
      * @return the {@link Str}
      */
-    public Str add(C color) {
+    public @NotNull Str add(@NotNull final C color) {
         return add(color, C.X);
     }
     /**
@@ -380,18 +512,22 @@ public class Str {
      * @param color the color to add
      * @return the {@link Str}
      */
-    public Str a(C color) {
+    public @NotNull Str a(@NotNull final C color) {
         return add(color);
     }
 
     /**
-     * Add a new color gradient, which will affect text added from here on out.<br>
+     * Add a new color gradient,
+     * which will affect text added from here on out.<br>
      * This keeps any hover or on-click effect the previous node may have.
      * @param startColor the start of the gradient color
      * @param endColor the end of the gradient color
      * @return the {@link Str}
      */
-    public Str add(C startColor, C endColor) {
+    public @NotNull Str add(
+            @NotNull final C startColor,
+            @NotNull final C endColor
+    ) {
         return new Str("", startColor, endColor, onClick, onHover, this);
     }
 
@@ -401,28 +537,53 @@ public class Str {
      *
      * @return a string representation of the object.
      */
-    public String toHumanReadable() {
-        return previous == null ? content : previous.toHumanReadable() + content;
+    public @NotNull String toHumanReadable() {
+        if (previous == null) {
+            return content;
+        } else {
+            return previous.toHumanReadable() + content;
+        }
     }
 
 
     /**
-     * Make a copy of this {@link Str} to prevent previous copies from being modified.
+     * Make a copy of this {@link Str}
+     * to prevent previous copies from being modified.
+     *
+     * @return a copy of this
      */
-    public Str copy() {
+    public @NotNull Str copy() {
         return copy(true);
     }
 
     /**
-     * Make a copy of this {@link Str} to prevent previous copies from being modified.
+     * Make a copy of this {@link Str}
+     * to prevent previous copies from being modified.
      * @param deep also makes copies of previous nodes
+     *
+     * @return the last (right-most) node in the chain;
+     * a copy of the {@link Str} this was run on.
      */
-    public Str copy(boolean deep) {
+    public @NotNull Str copy(final boolean deep) {
         if (deep && getPrevious() != null) {
             Str deeper = getPrevious().copy(true);
-            return new Str(content, mainColor, gradientColor, onClick, onHover, deeper);
+            return new Str(
+                    content,
+                    mainColor,
+                    gradientColor,
+                    onClick,
+                    onHover,
+                    deeper
+            );
         } else {
-            return new Str(content, mainColor, gradientColor, onClick, onHover, previous);
+            return new Str(
+                    content,
+                    mainColor,
+                    gradientColor,
+                    onClick,
+                    onHover,
+                    previous
+            );
         }
     }
 }

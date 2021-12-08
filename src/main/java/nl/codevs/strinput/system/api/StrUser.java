@@ -35,13 +35,13 @@ public interface StrUser {
      * The name of the user (something to identify them by).
      * @return the name of the user
      */
-    String getName();
+    @NotNull String getName();
 
     /**
      * Send a message to the user.
      * @param message the message to send
      */
-    void sendMessage(@NotNull final Str message);
+    void sendMessage(@NotNull Str message);
 
     /**
      * @return whether this user supports clickable {@link Str}s.
@@ -50,10 +50,11 @@ public interface StrUser {
 
     /**
      * Send multiple messages to the user.<br>
-     * Overwrite {@link #sendMessage(List)} instead of this, as this points there.
+     * Overwrite {@link #sendMessage(List)}
+     * instead of this, as this points there.
      * @param messages the messages to send
      */
-    default void sendMessage(Str[] messages) {
+    default void sendMessage(@NotNull final Str[] messages) {
         sendMessage(Arrays.asList(messages));
     }
 
@@ -61,20 +62,22 @@ public interface StrUser {
      * Send multiple messages to the user. Uses a loop of {@link #sendMessage}.
      * @param messages the messages to send
      */
-    default void sendMessage(List<Str> messages) {
+    default void sendMessage(@NotNull final List<Str> messages) {
         for (Str message : messages) {
             sendMessage(message);
         }
     }
 
     /**
-     * Play a sound effect
+     * Play a sound effect.
      * @param sfx the sound effect type
      */
-    void playSound(StrSoundEffect sfx);
+    void playSound(@NotNull StrSoundEffect sfx);
 
     /**
-     * If this sender supports context, i.e. has values it stores for getting data automatically (instead of specifying it in commands).
+     * If this sender supports context,
+     * i.e. has values it stores for getting data automatically
+     * (instead of specifying it in commands).
      *
      * @return true if the user supports context
      */
@@ -85,7 +88,7 @@ public interface StrUser {
      * @param permission the permissions node
      * @return true if permitted.
      */
-    boolean hasPermission(String permission);
+    boolean hasPermission(@NotNull String permission);
 
     /**
      * Sound effects.
@@ -93,12 +96,10 @@ public interface StrUser {
     enum StrSoundEffect {
         /**
          * Successful tab.
-         * TODO: Implement tab
          */
         SUCCESSFUL_TAB,
         /**
          * Failed tab.
-         * TODO: Implement tab
          */
         FAILED_TAB,
         /**

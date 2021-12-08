@@ -263,7 +263,7 @@ public abstract class StrCenter {
      *
      * @param runnable the runnable to run
      */
-    public abstract void runSync(@NotNull final Runnable runnable);
+    public abstract void runSync(@NotNull Runnable runnable);
 
     /**
      * List this command system including

@@ -31,26 +31,27 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SpigotWorldContext implements StrContextHandler<World> {
     /**
-     * The type this context handler handles
+     * The type this context handler handles.
      *
-     * @param type
+     * @param type the type to check for support
      *
      * @return the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(World.class);
     }
 
     /**
-     * The handler for this context. Can use any data found in the user object for context derivation.
+     * The handler for this context.
+     * Can use any data found in the user object for context derivation.
      *
      * @param user the user whose data may be used
      *
      * @return the value in the assigned type
      */
     @Override
-    public @NotNull World handle(@NotNull StrUser user) {
+    public @NotNull World handle(@NotNull final StrUser user) {
         return ((SpigotUser) user).getPlayer().getWorld();
     }
 }

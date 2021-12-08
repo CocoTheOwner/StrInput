@@ -38,26 +38,41 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      * Parse a string to this type.<br>
      * You can throw:
      * <ul>
-     *     <li>{@link StrWhichException} to indicate multiple options (ambiguity)</li>
-     *     <li>{@link StrParseException} to indicate parsing problems</li>
+     *     <li>{@link StrWhichException}
+     *     to indicate multiple options (ambiguity)</li>
+     *     <li>{@link StrParseException}
+     *     to indicate parsing problems</li>
      * </ul>
      *
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails. (Exceptions don't have to be caught in the parser)
+     * @throws Throwable when something else fails.
+     * (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull World parse(@NotNull String text) throws Throwable {
+    public @NotNull World parse(@NotNull final String text) throws Throwable {
         if (!((SpigotUser) Env.UserContext.get()).isPlayer()) {
-            throw new StrParseException(World.class, text, "User is not a player");
+            throw new StrParseException(
+                    World.class,
+                    text,
+                    "User is not a player"
+            );
         }
         List<World> options = getPossibilities(text);
         if (options.size() == 0) {
-            throw new StrParseException(World.class, text, "No options found for input");
+            throw new StrParseException(
+                    World.class,
+                    text,
+                    "No options found for input"
+            );
         } else if (options.size() == 1) {
             return options.get(0);
         } else {
-            throw new StrWhichException(World.class, text, options);
+            throw new StrWhichException(
+                    World.class,
+                    text,
+                    options
+            );
         }
     }
 
@@ -68,18 +83,23 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      */
     @Override
     public @NotNull String getRandomDefault() {
-        return getPossibilities().get(RANDOM.nextInt(getPossibilities().size())).getName();
+        return getPossibilities().get(
+                RANDOM.nextInt(getPossibilities().size())
+        ).getName();
     }
 
     /**
-     * Get all possible values for this type, filtered with some input string.<br>
+     * Get all possible values for this type,
+     * filtered with some input string.
      *
      * @param input the input string to filter by
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<World> getPossibilities(@NotNull String input) {
+    public @NotNull List<World> getPossibilities(@NotNull final String input) {
         final String i = input.toLowerCase(Locale.ROOT);
-        return getPossibilities().stream().filter(w -> w.getName().toLowerCase(Locale.ROOT).startsWith(i)).collect(Collectors.toList());
+        return getPossibilities().stream().filter(
+                w -> w.getName().toLowerCase(Locale.ROOT).startsWith(i)
+        ).collect(Collectors.toList());
     }
 }

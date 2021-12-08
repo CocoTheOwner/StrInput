@@ -35,7 +35,7 @@ public class SpigotConsole implements StrUser {
      * @return the name of the user
      */
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "StrInput console sender";
     }
 
