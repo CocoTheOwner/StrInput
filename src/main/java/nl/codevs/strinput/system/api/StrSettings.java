@@ -21,11 +21,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * StrInput settings.
@@ -39,7 +41,7 @@ import java.io.IOException;
         name = "strinput",
         permission = "strinput"
 )
-public class StrSettings implements StrCategory {
+public final class StrSettings implements StrCategory {
     /**
      * Gson for string-to-class and class-to-string conversion.
      */
@@ -55,16 +57,63 @@ public class StrSettings implements StrCategory {
     /**
      * The file the settings are stored in.
      */
-    private static File file;
+    private final File settingsFile;
 
     /**
      * Debug message prefix.
      * Cannot be modified by commands.
      */
-    public static Str debugPrefix = new Str(C.R).a("[")
+    public Str debugPrefix = new Str(C.R).a("[")
             .a(C.G).a("StrInput")
             .a(C.R).a("] ")
             .a(C.X);
+
+    /**
+     * Create a new configuration.
+     * @param file the settings file
+     * @throws IllegalArgumentException if the file does not exist
+     */
+    public StrSettings(@NotNull final File file)
+            throws IllegalArgumentException {
+        if (!file.exists()) {
+            throw new IllegalArgumentException();
+        }
+        this.settingsFile = file;
+    }
+
+    @StrInput(description = "How many times should a user re-try picking an option?")
+    public void setPickingAmount(
+            @Param(
+                    description = "The amount of times the user can pick an option",
+                    defaultValue = "3",
+                    name = "times"
+            )
+                    int times
+    ) {
+        pickingAmount = times;
+        user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("option picking amount ").a(C.G).a("to: ").a(C.B).a(String.valueOf(pickingAmount)));
+    }
+    /**
+     * The amount of time (in seconds) the user has to pick an option.
+     */
+    public int pickingAmount;
+
+    @StrInput(description = "How much time (in seconds) should user have for picking an option?")
+    public void setPickingTimeout(
+            @Param(
+                    description = "The picking timeout time in seconds",
+                    defaultValue = "15",
+                    name = "time"
+            )
+                    int time
+    ) {
+        pickingTimeout = time;
+        user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("option picking time ").a(C.G).a("to: ").a(C.B).a(String.valueOf(pickingTimeout)));
+    }
+    /**
+     * The amount of time (in seconds) the user has to pick an option.
+     */
+    public long pickingTimeout;
 
     @StrInput(description = "Which threshold should be met for command matching using our improved N-Gram search algorithm?")
     public void setMatchThreshold(
@@ -79,8 +128,16 @@ public class StrSettings implements StrCategory {
         user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("matching threshold ").a(C.G).a("to: ").a(C.B).a(String.valueOf(matchThreshold)));
     }
 
+    /**
+     * The threshold that should be met when matching using
+     * {@link nl.codevs.strinput.system.util.NGram#ngramMatching(String, List)}.
+     */
     public double matchThreshold = 0.1;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "Should users with the 'strinput' permission be able to use commands to change settings?")
     public void setSettingsCommands(
             @Param(
@@ -94,8 +151,15 @@ public class StrSettings implements StrCategory {
         user().sendMessage(new Str(C.G).a("After a restart, ").a(C.B).a("settings commands ").a(C.G).a("will be: ").a(C.B).a(String.valueOf(settingsCommands)));
     }
 
+    /**
+     * Whether to allow users to send commands to change settings.
+     */
     public boolean settingsCommands = true;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "Should commands be ran in async or sync (does not overwrite the 'sync' setting in individual StrInputs)")
     public void setAsync(
             @Param(
@@ -111,6 +175,10 @@ public class StrSettings implements StrCategory {
 
     public boolean async;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "When entering arguments, should people be allowed to enter 'null'?")
     public void allowNullInput(
             @Param(
@@ -126,6 +194,10 @@ public class StrSettings implements StrCategory {
 
     public boolean allowNullInput = false;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "Whether to send debug messages or not")
     public void debug(
             @Param(
@@ -141,6 +213,10 @@ public class StrSettings implements StrCategory {
 
     public boolean debug = false;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "Whether to send debug messages on the time command running took")
     public void setDebugTime(
             @Param(
@@ -156,6 +232,10 @@ public class StrSettings implements StrCategory {
 
     public boolean debugTime;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "Whether to debug matching or not. This is also ran on tab completion.")
     public void debugMatching(
             @Param(
@@ -171,6 +251,10 @@ public class StrSettings implements StrCategory {
 
     public boolean debugMatching = true;
 
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
     @StrInput(description = "Auto-pick the first option when multiple exist?")
     public void pickFirstOnMultiple(
             @Param(
@@ -184,28 +268,49 @@ public class StrSettings implements StrCategory {
         user().sendMessage(new Str(C.G).a("Set ").a(C.B).a("pick first on multiple ").a(C.G).a("to: ").a(String.valueOf(pickFirstOnMultiple)));
     }
 
+    /**
+     * Whether to pick the first option when multiple are available.
+     * Effectively not giving the user the option to pick.
+     */
     public boolean pickFirstOnMultiple = false;
 
     /**
-     * Load a new StrInput file from json
+     * @return Whether to pick the first option when multiple are available.<br>
+     * Effectively not giving the user the option to pick.
+     */
+    public boolean isPickFirstOnMultiple() {
+        return pickFirstOnMultiple;
+    }
+
+    /**
+     * Load a new StrInput file from json.
      *
-     * @param file    the file to read json from
+     * @param file the file to read json from
+     * @param console the console to send debug to
      * @return the new {@link StrSettings}
      */
-    public static StrSettings fromConfigJson(File file, StrUser console) {
-        StrSettings.file = file;
+    public static StrSettings fromConfigJson(
+            @NotNull final File file,
+            @NotNull final StrUser console
+    ) {
         lastChanged = file.lastModified();
         try {
             if (!file.exists() || file.length() == 0) {
                 file.getParentFile().mkdirs();
-                StrSettings newSettings = new StrSettings();
+                StrSettings newSettings = new StrSettings(file);
                 FileWriter f = new FileWriter(file);
                 GSON.toJson(newSettings, StrSettings.class, f);
                 f.close();
-                console.sendMessage(new Str(C.G).a("Made new StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
+                console.sendMessage(new Str(C.G).a("Made new StrInput config (")
+                        .a(C.B).a(file.getParent().replace("\\", "/")
+                                + "/" + file.getName())
+                        .a(C.G).a(")"));
                 return newSettings;
             }
-            console.sendMessage(new Str(C.G).a("Loaded existing StrInput config (").a(C.B).a(file.getParent().replace("\\", "/") + "/" + file.getName()).a(C.G).a(")"));
+            console.sendMessage(new Str(C.G)
+                    .a("Loaded existing StrInput config (")
+                    .a(C.B).a(file.getParent().replace("\\", "/")
+                            + "/" + file.getName()).a(C.G).a(")"));
             return new Gson().fromJson(new FileReader(file), StrSettings.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -214,45 +319,51 @@ public class StrSettings implements StrCategory {
     }
 
     /**
-     * Save the config to a file.
+     * Save the config to {@link #settingsFile}.
      *
-     * @param file the file path
      * @param console the console to send debug messages to
      */
-    public void saveToConfig(File file, StrUser console) {
+    public void saveToConfig(
+            @NotNull final StrUser console
+    ) {
         try {
-            FileWriter f = new FileWriter(file);
+            FileWriter f = new FileWriter(settingsFile);
             GSON.toJson(this, StrSettings.class, f);
             f.close();
             console.sendMessage(new Str(C.G).a("Saved StrInput Settings"));
-            lastChanged = file.lastModified();
+            lastChanged = settingsFile.lastModified();
         } catch (IOException e) {
-            console.sendMessage(new Str("Failed to save config: \n" + GSON.toJson(this)));
+            console.sendMessage(new Str("Failed to save config: \n"
+                    + GSON.toJson(this)));
             e.printStackTrace();
         }
     }
 
     /**
-     * Hotload settings from file
+     * Hotload settings from file.
+     *
+     * @param console the console user to send debug to
      *
      * @return the new settings
      */
-    public StrSettings hotload(StrUser console) {
+    public StrSettings hotload(
+            @NotNull final StrUser console
+    ) {
 
         // Load file
-        StrSettings fileSettings = fromConfigJson(file, console);
+        StrSettings fileSettings = fromConfigJson(settingsFile, console);
         assert fileSettings != null;
 
         // File is newer
-        if (lastChanged != file.lastModified()) {
-            lastChanged = file.lastModified();
+        if (lastChanged != settingsFile.lastModified()) {
+            lastChanged = settingsFile.lastModified();
             console.sendMessage(new Str(C.G).a("Hotloaded StrInput Settings"));
             return fileSettings;
         }
 
         // In-memory settings are newer
         if (!fileSettings.equals(this)) {
-            saveToConfig(file, console);
+            saveToConfig(console);
         }
         return this;
     }

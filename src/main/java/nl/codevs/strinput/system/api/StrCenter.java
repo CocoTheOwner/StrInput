@@ -237,7 +237,7 @@ public abstract class StrCenter {
      * @param message the debug message(s)
      */
     public void debug(final Str message) {
-        console.sendMessage(StrSettings.debugPrefix.copy().a(message));
+        console.sendMessage(settings.debugPrefix.copy().a(message));
     }
 
     /**
