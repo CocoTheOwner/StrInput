@@ -54,17 +54,10 @@ public final class SpigotPlugin extends JavaPlugin
 
     @Override
     public void onEnable() {
-        try {
-            commandSystem = new SpigotCenter(
-                    this,
-                    new SpigotConsole(),
-                    new SpigotCommands()
-            );
-        } catch (InstanceAlreadyExistsException e) {
-            e.printStackTrace();
-            new SpigotConsole().sendMessage(
-                    new Str("The command system is already running!")
-            );
-        }
+        commandSystem = new SpigotCenter(
+                this,
+                new SpigotConsole(),
+                new SpigotCommands()
+        );
     }
 }
