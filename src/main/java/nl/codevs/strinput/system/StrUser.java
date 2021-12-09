@@ -49,13 +49,24 @@ public interface StrUser {
     boolean supportsClickables();
 
     /**
-     * Send multiple messages to the user.<br>
-     * Overwrite {@link #sendMessage(List)}
-     * instead of this, as this points there.
-     * @param messages the messages to send
+     * Send multiple messages to the user.
+     * @param messages the message(s) to send
      */
-    default void sendMessage(@NotNull final Str[] messages) {
-        sendMessage(Arrays.asList(messages));
+    default void sendMessage(@NotNull final Str... messages) {
+        for (Str message : messages) {
+            sendMessage(message);
+        }
+    }
+
+    /**
+     * Send messages to the user.
+     *
+     * @param messages the message(s) to send
+     */
+    default void sendMessage(@NotNull final String... messages) {
+        for (String message : messages) {
+            sendMessage(new Str(message));
+        }
     }
 
     /**
@@ -121,7 +132,7 @@ public interface StrUser {
         /**
          * When a user has to pick an option.
          */
-        PICK_OPTION;
+        PICK_OPTION
     }
 
 }

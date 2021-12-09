@@ -251,6 +251,16 @@ public class StrCenter {
     }
 
     /**
+     * Send a debug message.
+     * @param message the debug message(s)
+     */
+    public void debug(final String message) {
+        if (settings.isDebug()) {
+            console.sendMessage(settings.getDebugPrefix().copy().a(message));
+        }
+    }
+
+    /**
      * Run a function sync (on the main thread, when needed).
      *
      * @param runnable the runnable to run
