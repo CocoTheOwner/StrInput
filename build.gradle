@@ -4,6 +4,11 @@ apply plugin: 'maven-publish'
 group 'com.github.cocoTheOwner'
 version 'v0.1'
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 repositories {
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
@@ -20,11 +25,9 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:22.0.0'
-    implementation 'org.projectlombok:lombok:1.18.22'
     implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'net.dv8tion:JDA:4.4.0_350'
-    implementation 'com.google.guava:guava:31.0.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
@@ -36,7 +39,7 @@ test {
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        mavenJava (MavenPublication) {
             groupId = 'com.github.cocoTheOwner'
             artifactId = 'StrInput'
             version = 'v0.1'

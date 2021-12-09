@@ -476,7 +476,7 @@ public abstract class StrCenter {
         }
 
         /**
-         * Exception for when no context handlers exist.
+         * Exception thrown when no context handlers could be found.
          *
          * @author Sjoerd van de Goor
          * @since v0.1
