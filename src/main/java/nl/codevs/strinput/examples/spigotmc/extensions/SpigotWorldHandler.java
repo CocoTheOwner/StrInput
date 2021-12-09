@@ -36,7 +36,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<World> getPossibilities() {
+    public List<World> getPossibilities() {
         return Bukkit.getWorlds();
     }
 

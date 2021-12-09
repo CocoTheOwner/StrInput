@@ -14,7 +14,7 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<User> getPossibilities() {
+    public List<User> getPossibilities() {
         return null;
     }
 

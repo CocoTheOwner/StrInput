@@ -41,7 +41,7 @@ public class SpigotPlayerHandler implements StrParameterHandler<Player> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Player> getPossibilities() {
+    public List<Player> getPossibilities() {
         return new ArrayList<>(Bukkit.getOnlinePlayers());
     }
 
