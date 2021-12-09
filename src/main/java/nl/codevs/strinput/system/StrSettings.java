@@ -217,7 +217,7 @@ public final class StrSettings implements StrCategory {
     /**
      * Whether to allow users to send commands to change settings.
      */
-    private boolean settingsCommands = true;
+    private boolean settingsCommands = false;
 
     /**
      * @return true if users are allowed to send commands to change settings
