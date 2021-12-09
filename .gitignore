@@ -4,3 +4,5 @@
 # Do not gitignore /gradle/
 # We need gradle-wrapper.properties!
 testSettings/strsettings.json
+
+token.txt
