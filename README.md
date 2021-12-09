@@ -67,7 +67,7 @@ public class CustomUser implements StrUser {
 ```
 
 ## Command Center
-The command center is an instance of [StrCenter](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCenter.html).__
+The command center is an instance of [StrCenter](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCenter.html).
 You provide in the constructor at least a settings directory and one (or more) class instances (implementing [StrCategory](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCategory.html)), which are your root commands. Additionally, you can (as shown in [Setup (advanced)](#setup-(advanced))) optionally specify a console [StrUser](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrUser.html) (which by default simply uses `System.out.println()`), extra [StrParameterHandlers](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/parameter/StrParameterHandler.html) and [StrContextHandlers](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/context/StrContextHandler.html). It is advisable to store the command system in a main class (such as in the Spigot example, [SpigotPlugin](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html)).
 
 ```java
