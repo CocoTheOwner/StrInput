@@ -26,6 +26,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Parameter handler for {@link Member}s.
+ *
+ * @author Sjoerd van de Goor
+ * @since v0.2
+ */
 public class DiscordMemberHandler implements StrParameterHandler<Member> {
 
     /**

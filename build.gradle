@@ -33,6 +33,20 @@ test {
     useJUnitPlatform()
 }
 
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.cocoTheOwner'
+            artifactId = 'StrInput'
+            version = 'v0.1'
+
+            from components.java
+        }
+    }
+}
+
+
 compileJava {
     options.compilerArgs << '-parameters'
 }

@@ -161,7 +161,7 @@ public class Str {
     }
 
     /**
-     * Reset color (creates a new {@link Str} without color & color gradient).
+     * Reset color (creates a new {@link Str} without color and color gradient).
      * @return a new Str without color
      */
     public Str resetColor() {

@@ -65,8 +65,6 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      * </ul>
      * @param text the string to parse
      * @return an instance of this type parsed from the string
-     * @throws Throwable when something else fails.
-     * (Exceptions don't have to be caught in the parser)
      */
     @Override
     public @NotNull Boolean parse(

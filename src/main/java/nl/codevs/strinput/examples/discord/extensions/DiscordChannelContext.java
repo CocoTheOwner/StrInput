@@ -25,6 +25,11 @@ import nl.codevs.strinput.system.context.StrContextHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Context handler for {@link MessageChannel}s.
+ * @author Sjoerd van de Goor
+ * @since v0.2
+ */
 public class DiscordChannelContext implements StrContextHandler<MessageChannel> {
     /**
      * The type this context handler handles.

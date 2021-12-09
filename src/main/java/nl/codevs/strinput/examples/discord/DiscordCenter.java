@@ -29,6 +29,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@link StrCenter} for Discord.
+ *
+ * @author Sjoerd van de Goor
+ * @since v0.2
+ */
 public class DiscordCenter extends StrCenter {
 
     /**
@@ -39,6 +45,7 @@ public class DiscordCenter extends StrCenter {
 
     /**
      * Create a new command center.
+     * @param jda the JDA created for this center
      */
     public DiscordCenter(JDA jda) {
         super(

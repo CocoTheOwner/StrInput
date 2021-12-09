@@ -15,10 +15,22 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Discord bot implementation.
+ * @author Sjoerd van de Goor
+ * @since v0.2
+ */
 public class DiscordBot extends ListenerAdapter {
 
+    /**
+     * Bot instance.
+     */
     public static DiscordBot BOT;
 
+    /**
+     * Main method.
+     * @param args runtime arguments
+     */
     public static void main(final String[] args) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("token.txt"));
@@ -54,6 +66,9 @@ public class DiscordBot extends ListenerAdapter {
      * @param token the bot token
      * @param prefix command prefix
      * @param activityCommand command to display in activity
+     *
+     * @throws LoginException if login fails
+     * @throws InterruptedException if waiting for JDA setup fails
      */
     public DiscordBot(String token, String prefix, String activityCommand) throws LoginException, InterruptedException {
         this.token = token;
@@ -70,6 +85,9 @@ public class DiscordBot extends ListenerAdapter {
      * @param activityCommand command to display in activity
      *
      * @throws LoginException if the bot token isn't working
+     * @throws InterruptedException if the setup fails
+     *
+     * @return the set-up JDA
      */
     public JDA setup(String token, String prefix, String activityCommand) throws LoginException, InterruptedException {
         JDABuilder builder = JDABuilder.createDefault(token);

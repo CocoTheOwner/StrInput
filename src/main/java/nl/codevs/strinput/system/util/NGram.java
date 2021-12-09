@@ -106,7 +106,7 @@ public final class NGram {
 
     /**
      * Sort a list of virtual nodes by n-gram match to a string input.<br>
-     * {@code strVirtualList} is sorted & returned.<br>
+     * {@code strVirtualList} is sorted and returned.<br>
      * The best match (highest n-gram score) is first, and the lowest last.
      * @param input the input string for matching (source)
      * @param strVirtualList the list of virtual nodes to sort.

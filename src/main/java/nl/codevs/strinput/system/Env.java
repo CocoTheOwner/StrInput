@@ -67,7 +67,7 @@ public final class Env {
     }
 
     /**
-     * Add the {@link StrCenter} to the context map & removes dead threads.
+     * Add the {@link StrCenter} to the context map and removes dead threads.
      *
      * @param center the center
      */
@@ -76,7 +76,7 @@ public final class Env {
     }
 
     /**
-     * Add the {@link StrUser} to the context map & removes dead threads.
+     * Add the {@link StrUser} to the context map and removes dead threads.
      *
      * @param user the user
      */
@@ -122,7 +122,7 @@ public final class Env {
         }
 
         /**
-         * Add the {@link StrUser} to the context map & removes dead threads.
+         * Add the {@link StrUser} to the context map and removes dead threads.
          *
          * @param user the user
          */
@@ -173,7 +173,7 @@ public final class Env {
         }
 
         /**
-         * Add the {@link StrCenter} to the context map & removes dead threads.
+         * Add the {@link StrCenter} to the context map and removes dead threads.
          *
          * @param center the center
          */

@@ -43,6 +43,7 @@ public class DiscordCommands implements DiscordCommandCategory {
 
     /**
      * Reply with a text channel.
+     * @param channel the channel to reply with
      */
     @StrInput(name = "channel", description = "Reply with a channel")
     public void channel(
@@ -57,6 +58,7 @@ public class DiscordCommands implements DiscordCommandCategory {
 
     /**
      * Reply with a user.
+     * @param user the user to mention
      */
     @StrInput(name = "user", description = "Reply with a user")
     public void user(

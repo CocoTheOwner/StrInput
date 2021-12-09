@@ -23,6 +23,12 @@ import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Context handler for {@link User}s.
+ *
+ * @author Sjoerd van de Goor
+ * @since v0.2
+ */
 public class DiscordUserContext implements StrContextHandler<User> {
     /**
      * The type this context handler handles.

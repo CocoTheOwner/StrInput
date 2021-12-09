@@ -28,6 +28,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+/**
+ * Parameter handler for {@link World}s.
+ * @author Sjoerd van de Goor
+ * @since v0.2
+ */
 public class SpigotWorldHandler implements StrParameterHandler<World> {
     /**
      * Get all possible values for this type.<br>
