@@ -35,7 +35,7 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Float> getPossibilities() {
+    public List<Float> getPossibilities() {
         return null;
     }
 

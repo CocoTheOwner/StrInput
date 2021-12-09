@@ -35,7 +35,7 @@ public final class ShortHandler implements StrParameterHandler<Short> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Short> getPossibilities() {
+    public List<Short> getPossibilities() {
         return null;
     }
 

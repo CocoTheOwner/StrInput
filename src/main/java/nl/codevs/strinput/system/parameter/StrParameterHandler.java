@@ -44,7 +44,7 @@ public interface StrParameterHandler<T> {
      * Do not specify lists of very high length (10^6)
      * @return a list of possibilities
      */
-    @NotNull List<T> getPossibilities();
+    List<T> getPossibilities();
 
     /**
      * Get all possible values for this type,

@@ -36,7 +36,7 @@ public final class StringHandler implements StrParameterHandler<String> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<String> getPossibilities() {
+    public List<String> getPossibilities() {
         return null;
     }
 

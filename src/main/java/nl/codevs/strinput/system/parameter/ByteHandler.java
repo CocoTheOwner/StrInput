@@ -36,7 +36,7 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Byte> getPossibilities() {
+    public List<Byte> getPossibilities() {
         return null;
     }
 

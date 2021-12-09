@@ -35,7 +35,7 @@ public final class LongHandler implements StrParameterHandler<Long> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Long> getPossibilities() {
+    public List<Long> getPossibilities() {
         return null;
     }
 

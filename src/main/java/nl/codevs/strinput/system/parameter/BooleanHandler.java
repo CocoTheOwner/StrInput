@@ -38,7 +38,7 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Boolean> getPossibilities() {
+    public List<Boolean> getPossibilities() {
         return Arrays.asList(true, false);
     }
 

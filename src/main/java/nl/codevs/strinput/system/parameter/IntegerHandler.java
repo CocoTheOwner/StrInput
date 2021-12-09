@@ -36,7 +36,7 @@ public final class IntegerHandler implements StrParameterHandler<Integer> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<Integer> getPossibilities() {
+    public List<Integer> getPossibilities() {
         return null;
     }
 
