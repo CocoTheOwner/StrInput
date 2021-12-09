@@ -18,12 +18,10 @@
 package nl.codevs.strinput.examples.discord;
 
 import net.dv8tion.jda.api.entities.IMentionable;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
-import nl.codevs.strinput.system.text.Str;
 
 import java.util.stream.Collectors;
 

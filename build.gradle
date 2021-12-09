@@ -1,9 +1,8 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'java'
+apply plugin: 'maven-publish'
 
-group 'nl.codevs'
-version '0.1'
+group 'com.github.cocoTheOwner'
+version 'v0.1'
 
 repositories {
     maven {
@@ -25,6 +24,7 @@ dependencies {
     implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'net.dv8tion:JDA:4.4.0_350'
+    implementation 'com.google.guava:guava:31.0.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
