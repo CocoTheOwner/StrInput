@@ -1,33 +1,85 @@
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import nl.codevs.strinput.system.StrInput;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class DiscordBot extends ListenerAdapter {
+
+    public static DiscordBot BOT;
+
+    public static void main(final String[] args) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("token.txt"));
+            assert DiscordCommands.class.isAnnotationPresent(StrInput.class);
+            BOT = new DiscordBot(reader.readLine(), "!", DiscordCommands.class.getDeclaredAnnotation(StrInput.class).name());
+        } catch (LoginException | InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Command center.
      */
-    private static final DiscordCenter CENTER = new DiscordCenter();
+    private final DiscordCenter center;
+
+    /**
+     * The bot token.
+     */
+    private final String token;
+
+    /**
+     * Command prefix.
+     */
+    private final String prefix;
+
+    /**
+     * JDA.
+     */
+    private final JDA jda;
+
+    /**
+     * Create a new Discord bot.
+     * @param token the bot token
+     * @param prefix command prefix
+     * @param activityCommand command to display in activity
+     */
+    public DiscordBot(String token, String prefix, String activityCommand) throws LoginException, InterruptedException {
+        this.token = token;
+        this.jda = setup(token, prefix, activityCommand);
+        this.center = new DiscordCenter(jda);
+        this.prefix = prefix;
+    }
 
     /**
      * Main method.
-     * @param args arguments
+     *
+     * @param token bot token
+     * @param prefix bot command prefix
+     * @param activityCommand command to display in activity
+     *
      * @throws LoginException if the bot token isn't working
      */
-    public static void main(final String[] args) throws LoginException {
-        JDABuilder builder = JDABuilder.createDefault(args[0]);
+    public JDA setup(String token, String prefix, String activityCommand) throws LoginException, InterruptedException {
+        JDABuilder builder = JDABuilder.createDefault(token);
 
         // Enable the bulk delete event
         builder.setBulkDeleteSplittingEnabled(false);
         // Set activity (like "playing Something")
-        builder.setActivity(Activity.watching("You"));
+        builder.setActivity(Activity.listening(prefix + activityCommand));
+        // Add listener
+        builder.addEventListeners(this);
         // Set intents
         builder.setEnabledIntents(
                 GatewayIntent.DIRECT_MESSAGES,
@@ -35,10 +87,17 @@ public class DiscordBot extends ListenerAdapter {
                 GatewayIntent.DIRECT_MESSAGE_REACTIONS,
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.GUILD_MESSAGE_TYPING,
-                GatewayIntent.GUILD_MESSAGE_REACTIONS
+                GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                GatewayIntent.GUILD_VOICE_STATES,
+                GatewayIntent.GUILD_EMOJIS
         );
 
-        builder.build();
+        return builder.build().awaitReady();
+    }
+
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
+        System.out.println("Setup!");
     }
 
     /**
@@ -47,6 +106,12 @@ public class DiscordBot extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(@NotNull final MessageReceivedEvent event) {
-        CENTER.onCommand(event);
+        if (!event.getMessage().getContentRaw().startsWith(prefix)) {
+            return;
+        }
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+        center.onCommand(event, prefix);
     }
 }

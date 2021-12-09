@@ -157,11 +157,7 @@ public final class NGram {
             }
         }
 
-        scores.forEach((v, s) -> System.out.println(v.getName() + " -> " + s));
-
         // Get & sort
-
-
         return strVirtualList
                 .stream()
                 .filter(v -> scores.get(v) >= threshold)

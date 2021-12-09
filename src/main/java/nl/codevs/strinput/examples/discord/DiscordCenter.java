@@ -17,6 +17,7 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.context.StrContextHandler;
@@ -24,13 +25,21 @@ import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiscordCenter extends StrCenter {
+
+    /**
+     * JDA.
+     */
+    private final JDA jda;
+
+
     /**
      * Create a new command center.
      */
-    public DiscordCenter() {
+    public DiscordCenter(JDA jda) {
         super(
                 new File("settings"),
                 DEFAULT_CONSOLE_USER,
@@ -42,6 +51,7 @@ public class DiscordCenter extends StrCenter {
                 },
                 new DiscordCommands()
         );
+        this.jda = jda;
     }
 
     /**
@@ -55,14 +65,18 @@ public class DiscordCenter extends StrCenter {
     }
 
     /**
-     * Run commands.
-     * @param event the event.
+     * Run commands.<br>
+     * Precondition is that the event's raw content starts with the prefix.
+     * @param event the event
+     * @param prefix command prefix that should be removed
      */
-    public void onCommand(final MessageReceivedEvent event) {
+    public void onCommand(final MessageReceivedEvent event, final String prefix) {
         DiscordUser user = DiscordUser.of(event);
         user.channel().sendTyping().queue();
-        super.onCommand(List.of(
+        ArrayList<String> args = new ArrayList<>(List.of(
                 event.getMessage().getContentRaw().split(" ")
-        ), user);
+        ));
+        args.set(0, args.get(0).substring(prefix.length()));
+        super.onCommand(args, user);
     }
 }

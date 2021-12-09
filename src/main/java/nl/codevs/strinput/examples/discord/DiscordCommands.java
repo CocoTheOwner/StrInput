@@ -24,7 +24,7 @@ import nl.codevs.strinput.system.StrInput;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-@StrInput(name = "strinput", description = "example commands", aliases = "str")
+@StrInput(name = "example", description = "example commands", aliases = "str")
 public class DiscordCommands implements DiscordCommandCategory {
 
     /**
@@ -33,6 +33,5 @@ public class DiscordCommands implements DiscordCommandCategory {
     @StrInput(name = "ping", description = "pong!")
     public void ping() {
         message().reply("Pong!").queue();
-        message().addReaction(":smiley:").queue(); // TODO: Check this works
     }
 }

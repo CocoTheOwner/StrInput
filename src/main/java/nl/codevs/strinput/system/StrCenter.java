@@ -174,7 +174,7 @@ public abstract class StrCenter {
             s.start();
 
             // Hot-load settings
-            settings = settings.hotLoad(settingsFile, user);
+            settings = settings.hotLoad(settingsFile, getConsole());
 
             // Remove empty arguments (spaces)
             List<String> arguments = command.stream().filter(
@@ -198,7 +198,7 @@ public abstract class StrCenter {
                         .a("Failed to run your command!"));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else {
-                user.sendMessage(new Str(C.G)
+                Env.center().debug(new Str(C.G)
                         .a("Successfully ran your command!"));
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
