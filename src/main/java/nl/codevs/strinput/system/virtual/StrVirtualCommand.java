@@ -202,13 +202,15 @@ public final class StrVirtualCommand implements StrVirtual {
             Object value = params.get(parameter);
             finalParams[x++] = value.equals(NULL_PARAM) ? null : value;
         }
-        debug(new Str("Elements that will be parsed ("
-                + finalParams.length + " of "
-                + getParameters().size() + "):")
-        );
-        debug(new Str(Arrays.stream(finalParams)
-                .map(Object::toString)
-                .collect(Collectors.joining(", "))));
+        if (!getParameters().isEmpty()) {
+            debug(new Str("Elements that will be parsed ("
+                    + finalParams.length + " of "
+                    + getParameters().size() + "):")
+            );
+            debug(new Str(Arrays.stream(finalParams)
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "))));
+        }
         StrUser user = user();
         StrCenter center = center();
         Runnable rx = () -> {

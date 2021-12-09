@@ -1,16 +1,15 @@
 package nl.codevs.strinput.examples.discord.extensions;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import nl.codevs.strinput.examples.discord.DiscordUser;
 import nl.codevs.strinput.system.Env;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
-import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -99,9 +98,10 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<User> getPossibilities(@NotNull String input) {
-        return getPossibilities().stream().filter(
-                p -> p.getName().contains(input) || input.contains(String.valueOf(p.getIdLong()))
+    public @NotNull List<User> getPossibilities(@NotNull final String input) {
+        return getPossibilities().stream().filter(p ->
+                p.getName().contains(input.toLowerCase(Locale.ROOT))
+                        || input.contains(String.valueOf(p.getIdLong()))
         ).collect(Collectors.toList());
     }
 }

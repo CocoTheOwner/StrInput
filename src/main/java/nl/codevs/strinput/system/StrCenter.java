@@ -208,7 +208,7 @@ public abstract class StrCenter {
                 debug(new Str(C.G).a("Command sent by ")
                         .a(C.B).a(user.getName())
                         .a(C.G).a(" took ")
-                        .a(C.B).a(String.valueOf(s.getTime()))
+                        .a(C.B).a(s.getTime() + "ms")
                 );
             }
 
@@ -229,24 +229,6 @@ public abstract class StrCenter {
         if (settings.isDebug()) {
             console.sendMessage(settings.getDebugPrefix().copy().a(message));
         }
-    }
-
-    /**
-     * Send a debug message.
-     * @param messages the debug message(s)
-     */
-    public void debug(final @NotNull List<Str> messages) {
-        for (Str message : messages) {
-            debug(message);
-        }
-    }
-
-    /**
-     * Debug a string.
-     * @param message the debug string
-     */
-    public void debug(final String message) {
-        debug(new Str(message));
     }
 
     /**

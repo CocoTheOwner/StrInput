@@ -17,11 +17,15 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.text.Str;
+
+import java.util.stream.Collectors;
 
 /**
  * Example implementation of a category for Discord.
@@ -65,5 +69,19 @@ public class DiscordCommands implements DiscordCommandCategory {
             ) User user
     ) {
         message().reply(user.getAsMention()).queue();
+    }
+
+    /**
+     * Get cached users.
+     */
+    @StrInput(name = "cachedUsers", description = "Get cached users")
+    public void cachedUsers() {
+        message().reply(((DiscordUser) user())
+                .guild()
+                .getMembers()
+                .stream()
+                .map(IMentionable::getAsMention)
+                .collect(Collectors.joining(", "))
+        ).queue();
     }
 }

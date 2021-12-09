@@ -76,7 +76,8 @@ public class DiscordCenter extends StrCenter {
      */
     public void onCommand(final MessageReceivedEvent event, final String prefix) {
         DiscordUser user = DiscordUser.of(event);
-        user.channel().sendTyping().queue();
+        assert user.channel() != null;
+        user.channel().sendTyping().complete();
         ArrayList<String> args = new ArrayList<>(List.of(
                 event.getMessage().getContentRaw().split(" ")
         ));
