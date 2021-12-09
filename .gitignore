@@ -1,9 +1,10 @@
 /.gradle/
 /build/
 /.idea/
+/settings/
+/testSettings/
+token.txt
+
+
 # Do not gitignore /gradle/
 # We need gradle-wrapper.properties!
-testSettings/strsettings.json
-
-
-token.txt
