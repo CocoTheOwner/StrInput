@@ -1,20 +1,17 @@
 package nl.codevs.strinput.examples.discord.extensions;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.IMentionable;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.TextChannel;
 import nl.codevs.strinput.examples.discord.DiscordUser;
 import nl.codevs.strinput.system.Env;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
-import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class DiscordUserHandler implements StrParameterHandler<User> {
+public class DiscordTextChannelHandler implements StrParameterHandler<TextChannel> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -22,13 +19,12 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      * @return a list of possibilities
      */
     @Override
-    public List<User> getPossibilities() {
-
+    public List<TextChannel> getPossibilities() {
         Guild guild = ((DiscordUser) Env.user()).guild();
         if (guild == null) {
             return null;
         }
-        return guild.getMembers().stream().map(Member::getUser).collect(Collectors.toList());
+        return guild.getTextChannels();
     }
 
     /**
@@ -38,8 +34,8 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
-        return type.equals(User.class);
+    public boolean supports(@NotNull final Class<?> type) {
+        return type.isAssignableFrom(TextChannel.class);
     }
 
     /**
@@ -58,21 +54,23 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      *                   (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull User parse(@NotNull String text) throws Throwable {
-        List<User> options = getPossibilities(text);
+    public @NotNull TextChannel parse(
+            @NotNull final String text
+    ) throws Throwable {
+        List<TextChannel> options = getPossibilities(text);
 
-        if (options.isEmpty()) {
-            throw new StrParseException(DiscordUserHandler.class, text, "No options found for input!");
+        if (options.size() == 0) {
+            throw new StrParseException(DiscordTextChannelHandler.class, text, "No options for input");
         }
 
         if (options.size() > 1) {
-            List<User> filteredOptions = options.stream().filter(o -> o.getName().equals(text)).toList();
+            List<TextChannel> filteredOptions = options.stream().filter(o -> o.getName().equals(text)).toList();
             if (filteredOptions.size() == 1) {
                 return filteredOptions.get(0);
             } else if (filteredOptions.size() > 1) {
-                throw new StrWhichException(DiscordUserHandler.class, text, filteredOptions);
+                throw new StrWhichException(DiscordTextChannelHandler.class, text, filteredOptions);
             } else {
-                throw new StrWhichException(DiscordUserHandler.class, text, options);
+                throw new StrWhichException(DiscordTextChannelHandler.class, text, options);
             }
         }
 
@@ -88,7 +86,7 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
     public @NotNull String getRandomDefault() {
         return getPossibilities().get(
                 new Random().nextInt(getPossibilities().size() - 1)
-        ).getName();
+        ).getAsMention();
     }
 
     /**
@@ -99,9 +97,11 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      * @return a list of possibilities
      */
     @Override
-    public @NotNull List<User> getPossibilities(@NotNull String input) {
+    public @NotNull List<TextChannel> getPossibilities(
+            @NotNull final String input
+    ) {
         return getPossibilities().stream().filter(
-                p -> p.getName().contains(input) || input.contains(String.valueOf(p.getIdLong()))
+                c -> c.getName().contains(input)
         ).collect(Collectors.toList());
     }
 }

@@ -15,30 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package nl.codevs.strinput.system.context;
+package nl.codevs.strinput.examples.discord.extensions;
 
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import nl.codevs.strinput.examples.discord.DiscordUser;
 import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.context.StrContextHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * StrUserContext handler.<br>
- * These handlers make use of a provided {@link StrUser} to deduct a value.
- *
- * @param <T> the type to handle in context.
- * @author Sjoerd van de Goor
- * @since v0.1
- */
-public interface StrContextHandler<T> {
-
+public class DiscordChannelContext implements StrContextHandler<MessageChannel> {
     /**
      * The type this context handler handles.
      *
      * @param type The type to check for support
-     *
      * @return the type
      */
-    boolean supports(@NotNull Class<?> type);
+    @Override
+    public boolean supports(@NotNull Class<?> type) {
+        return MessageChannel.class.isAssignableFrom(type);
+    }
 
     /**
      * The handler for this context.<br>
@@ -48,20 +45,12 @@ public interface StrContextHandler<T> {
      *     <li>Adding fields to the user implementation, and then</li>
      *     <li>Casting this {@code user} to the new type.</li>
      * </ol>
+     *
      * @param user the user whose data may be used (can be casted)
      * @return the value in the assigned type
      */
-    @Nullable T handle(@NotNull StrUser user);
-
-    /**
-     * Convert this context to a string.
-     *
-     * @param string result of {@link #handle(StrUser)},
-     *              which should be parsed to a string
-     *
-     * @return result of conversion
-     */
-    @NotNull default String toString(@NotNull final T string) {
-        return string.toString();
+    @Override
+    public @Nullable TextChannel handle(@NotNull StrUser user) {
+        return ((DiscordUser) user).channel();
     }
 }

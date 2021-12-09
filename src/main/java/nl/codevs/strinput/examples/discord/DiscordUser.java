@@ -17,26 +17,27 @@
  */
 package nl.codevs.strinput.examples.discord;
 
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Example implementation of a Discord user.
  * @param user the underlying Discord user
- * @param channel the channel the message was sent in
+ * @param channel the channel the message was sent in. Null if not in a guild.
  * @param message the message that the user sent
+ * @param guild the guild in which the message was sent. Null if not in a guild.
  * @author Sjoerd van de Goor
  * @since v0.1
  */
 public record DiscordUser(
-        User user,
-        MessageChannel channel,
-        Message message
+        @NotNull User user,
+        @Nullable TextChannel channel,
+        @NotNull Message message,
+        @Nullable Guild guild
 ) implements StrUser {
 
     /**
@@ -47,8 +48,9 @@ public record DiscordUser(
     public static DiscordUser of(final MessageReceivedEvent event) {
         return new DiscordUser(
                 event.getAuthor(),
-                event.getChannel(),
-                event.getMessage()
+                event.getTextChannel(),
+                event.getMessage(),
+                event.getGuild()
         );
     }
 

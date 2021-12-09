@@ -17,6 +17,7 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Message;
@@ -38,7 +39,7 @@ public interface DiscordCommandCategory extends StrCategory {
     }
 
     /**
-     * @return The world of the player (null if not a player).
+     * @return The channel of the message (null if not in a guild).
      */
     default MessageChannel channel() {
         if (((DiscordUser) user()).channel() == null) {

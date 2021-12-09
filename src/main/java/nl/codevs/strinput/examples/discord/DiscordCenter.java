@@ -19,6 +19,7 @@ package nl.codevs.strinput.examples.discord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import nl.codevs.strinput.examples.discord.extensions.*;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -44,10 +45,13 @@ public class DiscordCenter extends StrCenter {
                 new File("settings"),
                 DEFAULT_CONSOLE_USER,
                 new StrParameterHandler[]{
-
+                        new DiscordTextChannelHandler(),
+                        new DiscordMemberHandler(),
+                        new DiscordUserHandler()
                 },
                 new StrContextHandler[]{
-
+                        new DiscordChannelContext(),
+                        new DiscordUserContext()
                 },
                 new DiscordCommands()
         );

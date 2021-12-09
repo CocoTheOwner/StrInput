@@ -109,7 +109,7 @@ public abstract class StrCenter {
                 + "/strsettings.json");
 
         // Create settings and sender
-        settings = StrSettings.fromConfigJson(settingsFile, consoleUser);
+        settings = StrSettings.fromConfigJson(settingsFile, this);
         console = consoleUser;
 
         // Handlers
@@ -174,7 +174,7 @@ public abstract class StrCenter {
             s.start();
 
             // Hot-load settings
-            settings = settings.hotLoad(settingsFile, getConsole());
+            settings = settings.hotLoad(settingsFile, this);
 
             // Remove empty arguments (spaces)
             List<String> arguments = command.stream().filter(

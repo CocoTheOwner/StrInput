@@ -605,9 +605,13 @@ public final class StrVirtualCommand implements StrVirtual {
                     continue;
                 }
                 Object contextValue = handler.handle(user());
-                debug(new Str(C.G).a("Context value for ").a(C.B).a(option.getName()).a(C.G).a(" set to: " + handler.handle(user())));
-                params.put(option, contextValue);
-                options.remove(option);
+                if (contextValue == null) {
+                    debug(new Str(C.R).a("Parameter: ").a(C.B).a(option.getName()).a(C.R).a(" not fulfilled due to context handler returning null."));
+                } else {
+                    debug(new Str(C.G).a("Context value for ").a(C.B).a(option.getName()).a(C.G).a(" set to: " + contextValue));
+                    params.put(option, contextValue);
+                    options.remove(option);
+                }
             } else if (parseExceptionArgs.containsKey(option)) {
                 debug(new Str(C.R).a("Parameter: ").a(C.B).a(option.getName()).a(C.R).a(" not fulfilled due to parseException: " + parseExceptionArgs.get(option).getMessage()));
             }

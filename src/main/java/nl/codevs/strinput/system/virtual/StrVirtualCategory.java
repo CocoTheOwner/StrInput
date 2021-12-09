@@ -149,7 +149,6 @@ public final class StrVirtualCategory implements StrVirtual {
      */
     @Override
     public boolean run(@NotNull final List<String> arguments) {
-        debug(new Str("Running...", C.G));
         if (arguments.size() == 0) {
             debug(new Str("Sending help to user"));
             help(user());
@@ -162,7 +161,7 @@ public final class StrVirtualCategory implements StrVirtual {
         options = options.stream().filter(
                 o -> o.doesMatchUser(user())
         ).collect(Collectors.toList());
-        if (n != 0) {
+        if (n - options.size() != 0) {
             debug(new Str(C.B).a(
                     "Virtual" + getName() + " filtered out "
                             + (n - options.size()) + " options!"
@@ -177,12 +176,17 @@ public final class StrVirtualCategory implements StrVirtual {
                 Env.settings().getMatchThreshold()
         );
 
-        for (StrVirtual strVirtual : opt) {
-            debug(new Str(C.B).a(strVirtual.getName()));
-        }
+        debug(new Str("Options: ", C.G)
+                .a(new Str(opt
+                        .stream()
+                        .map(o -> String.join("/", o.getNames()))
+                        .collect(Collectors.joining(", ")),
+                        C.B)
+                )
+        );
 
         debug(new Str(C.G).a(
-                "Virtual " + getName() + " attempting to find a match in "
+                "Attempting to find a match in "
                         + options.size() + " options with input: " + next)
         );
         for (StrVirtual option : opt) {

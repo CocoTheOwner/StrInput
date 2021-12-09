@@ -17,6 +17,10 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
 
 /**
@@ -33,5 +37,33 @@ public class DiscordCommands implements DiscordCommandCategory {
     @StrInput(name = "ping", description = "pong!")
     public void ping() {
         message().reply("Pong!").queue();
+    }
+
+    /**
+     * Reply with a text channel.
+     */
+    @StrInput(name = "channel", description = "Reply with a channel")
+    public void channel(
+            @Param(
+                    name = "channel",
+                    description = "The channel to reply with",
+                    contextual = true
+            ) TextChannel channel
+    ) {
+        message().reply(channel.getAsMention()).queue();
+    }
+
+    /**
+     * Reply with a user.
+     */
+    @StrInput(name = "user", description = "Reply with a user")
+    public void user(
+            @Param(
+                    name = "user",
+                    description = "The user to reply with",
+                    contextual = true
+            ) User user
+    ) {
+        message().reply(user.getAsMention()).queue();
     }
 }

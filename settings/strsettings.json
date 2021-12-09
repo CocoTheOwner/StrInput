@@ -25,7 +25,7 @@
   "settingsCommands": true,
   "async": true,
   "allowNullInput": false,
-  "debug": false,
+  "debug": true,
   "debugTime": true,
   "debugMatching": true,
   "pickFirstOnMultiple": false
