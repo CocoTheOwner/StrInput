@@ -46,7 +46,6 @@ public class DiscordCenter extends StrCenter {
      */
     private final JDA jda;
 
-
     /**
      * Create a new command center.
      * @param discordJDA the JDA created for this center
@@ -67,16 +66,6 @@ public class DiscordCenter extends StrCenter {
                 new DiscordCommands()
         );
         this.jda = discordJDA;
-    }
-
-    /**
-     * Run a function sync (on the main thread, when needed).
-     *
-     * @param runnable the runnable to run
-     */
-    @Override
-    public void runSync(@NotNull final Runnable runnable) {
-        runnable.run();
     }
 
     /**

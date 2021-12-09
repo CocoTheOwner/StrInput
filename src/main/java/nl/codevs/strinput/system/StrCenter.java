@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public abstract class StrCenter {
+public class StrCenter {
 
     /**
      * Settings for this command system.
@@ -154,6 +154,25 @@ public abstract class StrCenter {
     }
 
     /**
+     * Create a new command center.<br>
+     * Make sure to point command calls to {@link #onCommand(List, StrUser)}
+     * @param settingsFolder the settings folder for this system
+     *                      (settings file stored as {@code strconfig.json})
+     * @param rootCommands array of root commands
+     *                    (usually only 1, your main command)
+     */
+    public StrCenter(
+            @NotNull final File settingsFolder,
+            @NotNull final StrCategory... rootCommands
+    ) {
+        this(
+                settingsFolder,
+                DEFAULT_CONSOLE_USER,
+                rootCommands
+        );
+    }
+
+    /**
      * Command receiver.
      * @param command the command to parse
      * @param user the user that sent the command
@@ -236,7 +255,9 @@ public abstract class StrCenter {
      *
      * @param runnable the runnable to run
      */
-    public abstract void runSync(@NotNull Runnable runnable);
+    public void runSync(@NotNull Runnable runnable) {
+        runnable.run();
+    }
 
     /**
      * List this command system including

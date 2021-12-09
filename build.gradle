@@ -42,6 +42,9 @@ publishing {
     }
 }
 
+javadoc {
+    destinationDir file("docs")
+}
 
 compileJava {
     options.compilerArgs << '-parameters'
