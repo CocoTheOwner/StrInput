@@ -18,9 +18,10 @@
 package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.StrInput;
-import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.StrCenter;
+import nl.codevs.strinput.system.StrSettings;
+import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.Env;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -55,11 +56,6 @@ public final class StrVirtualCommand implements StrVirtual {
      * Null parameter.
      */
     private static final int NULL_PARAM = Integer.MAX_VALUE - 69420;
-
-    /**
-     * Newline.
-     */
-    private static final Str NEW_LINE = new Str(C.X).a("\n");
 
     /**
      * Command parameters.
@@ -281,7 +277,7 @@ public final class StrVirtualCommand implements StrVirtual {
          * It is the only way this can be done functionally.
          *
          * Note that despite the great amount of loops,
-         * the average runtime is still ~O(log(n)).
+         * the average runtime is still O(log(n)).
          * This is because of the ever-decreasing number of
          * arguments & options that are already matched.
          *
@@ -298,22 +294,114 @@ public final class StrVirtualCommand implements StrVirtual {
         > parseExceptionArgs = new ConcurrentHashMap<>();
 
         List<StrVirtualParameter> options = getParameters();
-        List<String> dashBooleanArgs = new ArrayList<>();
+        List<String> dashArgs = new ArrayList<>();
         List<String> keylessArgs = new ArrayList<>();
         List<String> keyedArgs = new ArrayList<>();
         List<String> nullArgs = new ArrayList<>();
         List<String> badArgs = new ArrayList<>();
 
+        fillLists(
+                args,
+                dashArgs,
+                keyedArgs,
+                keylessArgs,
+                nullArgs,
+                badArgs
+        );
+
+        parseKeyedArgs(
+                keyedArgs,
+                options,
+                params,
+                badArgs,
+                parseExceptionArgs
+        );
+
+        parseNullArgs(
+                nullArgs,
+                params,
+                options
+        );
+
+        parseDashArgs(
+                dashArgs,
+                params,
+                options
+        );
+
+        parseKeylessArgs(
+                keylessArgs,
+                params,
+                options,
+                parseExceptionArgs,
+                badArgs
+        );
+
+        parseRemaining(
+                options,
+                params,
+                parseExceptionArgs,
+                badArgs
+        );
+
+        debug(
+                params,
+                options,
+                keyedArgs,
+                keylessArgs,
+                nullArgs,
+                dashArgs,
+                badArgs,
+                parseExceptionArgs
+        );
+
+        return validateParameters(
+                params,
+                parseExceptionArgs
+        ) ? params : null;
+    }
+
+    /**
+     * Split up a set of arguments into lists for future parsing.
+     * Args are split-up as follows ({@code ~text -> listName})
+     * <ul>
+     *     <li>{@code -text -> dashArgs}</li>
+     *     <li>{@code text -> keylessArgs}</li>
+     *     <li>{@code =value -> keylessArgs}</li>
+     *     <li>{@code key=value -> keyedArgs}</li>
+     *     <li>{@code key=text= -> badArgs}</li>
+     *     <li>{@code key= -> badArgs}</li>
+     *     <li>{@code null -> nullArgs} -
+     *     only if {@link StrSettings#isAllowNullInput()}</li>
+     * </ul>
+     * @param args the initial arguments
+     * @param dashArgs arguments prefixed with '-'
+     * @param keyedArgs arguments of format 'key=value'
+     * @param keylessArgs arguments of format 'value'
+     * @param nullArgs arguments equal to 'null'
+     * @param badArgs other arguments
+     */
+    private void fillLists(
+            @NotNull final List<String> args,
+            @NotNull final List<String> dashArgs,
+            @NotNull final List<String> keyedArgs,
+            @NotNull final List<String> keylessArgs,
+            @NotNull final List<String> nullArgs,
+            @NotNull final List<String> badArgs
+    ) {
         // Split args into correct corresponding handlers
         for (String arg : args) {
 
-            // These are handled later, after other fulfilled options will already have been matched
-            ArrayList<String> splitArg = new ArrayList<>(List.of(arg.split("=")));
+            // These are handled later,
+            // after other fulfilled options
+            // will already have been matched
+            ArrayList<String> splitArg =
+                    new ArrayList<>(List.of(arg.split("=")));
 
             if (splitArg.size() == 1) {
 
                 if (arg.startsWith("-")) {
-                    dashBooleanArgs.add(arg.substring(1));
+                    dashArgs.add(arg.substring(1));
                 } else {
                     keylessArgs.add(arg);
                 }
@@ -330,99 +418,445 @@ public final class StrVirtualCommand implements StrVirtual {
                 splitArg = new ArrayList<>(List.of(arg.split("=")));
 
                 if (splitArg.size() == 2) {
-                    debug(new Str(C.R).a("Parameter fixed by replacing '==' with '=' (new arg: ").a(C.B).a(arg).a(C.R).a(")"));
+                    debug(new Str(C.R).a(
+                                    "Parameter fixed by replacing"
+                                            + " '==' with '=' (new arg: ")
+                            .a(C.B).a(arg).a(C.R).a(")")
+                    );
+                    keyedArgs.add(arg);
                 } else {
                     badArgs.add(arg);
-                    continue;
                 }
+                continue;
             }
 
-            if (Env.settings().isAllowNullInput() && splitArg.get(1).equalsIgnoreCase("null")) {
+            if (Env.settings().isAllowNullInput()
+                    && splitArg.get(1).equalsIgnoreCase("null")) {
                 debug(new Str(C.G).a("Null parameter added: ").a(C.B).a(arg));
                 nullArgs.add(splitArg.get(0));
                 continue;
             }
 
             if (splitArg.get(0).isEmpty()) {
-                debug(new Str(C.R).a("Parameter key has empty value (full arg: ").a(C.B).a(arg).a(C.R).a(")"));
-                badArgs.add(arg);
+                debug(new Str(C.R)
+                        .a("Parameter key has empty value (full arg: ")
+                        .a(C.B).a(arg).a(C.R).a(")"));
+                while (!arg.startsWith("=")) {
+                    arg = arg.substring(1);
+                }
+                keylessArgs.add(arg);
                 continue;
             }
 
             if (splitArg.get(1).isEmpty()) {
-                debug(new Str(C.R).a("Parameter key: ").a(C.B).a(splitArg.get(0)).a(C.R).a(" has empty value (full arg: ").a(C.B).a(arg).a(C.R).a(")").a(C.R));
+                debug(new Str(C.R).a("Parameter key: ")
+                        .a(C.B).a(splitArg.get(0))
+                        .a(C.R).a(" has empty value (full arg: ")
+                        .a(C.B).a(arg)
+                        .a(C.R).a(")"));
                 badArgs.add(arg);
                 continue;
             }
 
             keyedArgs.add(arg);
         }
+    }
 
-        // Quick equals
-        looping: for (String arg : new ArrayList<>(keyedArgs)) {
-            String key = arg.split("\\Q=\\E")[0];
-            String value = arg.split("\\Q=\\E")[1];
-            for (StrVirtualParameter option : options) {
-                if (option.getNames().contains(key)) {
-                    if (parseParamInto(params, badArgs, parseExceptionArgs, option, value)) {
-                        options.remove(option);
-                        keyedArgs.remove(arg);
+    /**
+     * Send debug messages for parameters.
+     * @param params parameter mapping
+     * @param options remaining options
+     * @param keyedArgs remaining keyed arguments
+     * @param keylessArgs remaining keyless arguments
+     * @param nullArgs remaining null-param arguments
+     * @param dashArgs remaining -arguments
+     * @param badArgs bad arguments
+     * @param parseExceptionArgs arguments that ran into parse exceptions
+     */
+    private void debug(
+            @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
+                    params,
+            @NotNull final List<StrVirtualParameter> options,
+            @NotNull final List<String> keyedArgs,
+            @NotNull final List<String> keylessArgs,
+            @NotNull final List<String> nullArgs,
+            @NotNull final List<String> dashArgs,
+            @NotNull final List<String> badArgs,
+            @NotNull final ConcurrentHashMap<
+                    StrVirtualParameter,
+                    StrParameterHandler.StrParseException
+            > parseExceptionArgs
+    ) {
+        // Prevent debug if not required
+        if (!Env.center().getSettings().isDebug()) {
+            return;
+        }
+
+        // Convert nullArgs
+        for (int i = 0; i < nullArgs.size(); i++) {
+            nullArgs.set(i, nullArgs.get(i) + "=null");
+        }
+
+        // Debug
+        if (Env.settings().isAllowNullInput()) {
+            debug(new Str(nullArgs.isEmpty() ? C.G : C.R)
+                    .a("Unmatched null argument"
+                            + (nullArgs.size() == 1 ? "" : "s") + ": ")
+                    .a(new Str(!nullArgs.isEmpty()
+                            ? String.join(", ", nullArgs)
+                            : "NONE",
+                            C.B)
+                    ));
+        }
+        debug(new Str(keylessArgs.isEmpty() ? C.G : C.R)
+                .a("Unmatched keyless argument"
+                        + (keylessArgs.size() == 1 ? "" : "s") + ": ")
+                .a(new Str(!keylessArgs.isEmpty()
+                        ? String.join(", ", keylessArgs)
+                        : "NONE", C.B)
+                ));
+        debug(new Str(keyedArgs.isEmpty() ? C.G : C.R)
+                .a("Unmatched keyed argument"
+                        + (keyedArgs.size() == 1 ? "" : "s") + ": ")
+                .a(new Str(!keyedArgs.isEmpty()
+                        ? String.join(", ", keyedArgs)
+                        : "NONE", C.B)
+                ));
+        debug(new Str(badArgs.isEmpty() ? C.G : C.R)
+                .a("Bad argument"
+                        + (badArgs.size() == 1 ? "" : "s") + ": ")
+                .a(new Str(!badArgs.isEmpty()
+                        ? String.join(", ", badArgs)
+                        : "NONE", C.B)
+                ));
+        debug(new Str(parseExceptionArgs.isEmpty() ? C.G : C.R)
+                .a("Failed argument"
+                        + (parseExceptionArgs.size() == 1 ? "" : "s")
+                        + (parseExceptionArgs.isEmpty() ? ": NONE" : ":\n")
+                ));
+        if (!parseExceptionArgs.isEmpty()) {
+            debug(new Str(String.join(
+                    ", ",
+                    parseExceptionArgs
+                            .values()
+                            .stream()
+                            .map(Throwable::getMessage)
+                            .toList()
+            )));
+        }
+        debug(new Str(options.isEmpty() ? C.G : C.R)
+                .a("Unfulfilled parameter"
+                        + (options.size() == 1 ? "" : "s") + ": ")
+                .a(new Str(!options.isEmpty()
+                                ? String.join(
+                                ", ", options
+                                        .stream()
+                                        .map(StrVirtualParameter::getName)
+                                        .toList()
+                        )
+                                : "NONE", C.B)
+                ));
+        debug(new Str(dashArgs.isEmpty() ? C.G : C.R)
+                .a("Unfulfilled -boolean parameter"
+                        + (dashArgs.size() == 1 ? "" : "s") + ": ")
+                .a(new Str(!dashArgs.isEmpty()
+                        ? String.join(", ", dashArgs)
+                        : "NONE", C.B)
+                ));
+
+        List<Str> mappings = new ArrayList<>();
+        mappings.add(new Str(C.G).a("Parameter mapping:"));
+        params.forEach((param, object) -> mappings.add(new Str(C.G)
+                        .a("\u0009 - (")
+                        .a(C.B)
+                        .a(param.getType().getSimpleName())
+                        .a(C.G)
+                        .a(") ")
+                        .a(C.B)
+                        .a(param.getName())
+                        .a(C.G)
+                        .a(" -> ")
+                        .a(C.B)
+                        .a(object.toString()
+                                .replace(String.valueOf(NULL_PARAM), "null"))
+                )
+        );
+        options.forEach(param -> mappings.add(new Str(C.G)
+                .a("\u0009 - (")
+                .a(C.B)
+                .a(param.getType().getSimpleName())
+                .a(C.G)
+                .a(") ")
+                .a(C.B)
+                .a(param.getName())
+                .a(C.G)
+                .a(" -> ")
+                .a(C.R)
+                .a("NONE")));
+
+        for (Str mapping : mappings) {
+            debug(mapping);
+        }
+    }
+
+    /**
+     * Parse remaining options by getting default & contextual values.
+     * @param options remaining options
+     * @param params parameter mapping
+     * @param parseExceptionArgs parameters that ran into parse exceptions
+     * @param badArgs bad arguments
+     */
+    private void parseRemaining(
+            @NotNull final List<StrVirtualParameter> options,
+            @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
+                    params,
+            @NotNull final ConcurrentHashMap<
+                    StrVirtualParameter,
+                    StrParameterHandler.StrParseException
+            > parseExceptionArgs,
+            @NotNull final List<String> badArgs
+    ) {
+        for (StrVirtualParameter option : new ArrayList<>(options)) {
+            if (option.hasDefault()) {
+                parseExceptionArgs.remove(option);
+                try {
+                    Object val = option.getDefaultValue();
+                    params.put(option, val == null ? NULL_PARAM : val);
+                    options.remove(option);
+                } catch (StrParameterHandler.StrParseException e) {
+                    debug(new Str(C.R).a("Default value ")
+                            .a(C.B).a(option.getDefault())
+                            .a(C.R).a(" could not be parsed to ")
+                            .a(option.getType().getSimpleName()));
+                    debug(new Str(C.R).a("Reason: ").a(C.B).a(e.getMessage()));
+                } catch (StrParameterHandler.StrWhichException e) {
+                    debug(new Str(C.R).a("Default value ")
+                            .a(C.B).a(option.getDefault())
+                            .a(C.R).a(" returned multiple options"));
+                    options.remove(option);
+                    if (Env.settings().isPickFirstOnMultiple()
+                            || user().supportsClickables()) {
+                        debug(new Str(C.G)
+                                .a("Adding the first option for parameter ")
+                                .a(C.B).a(option.getName()));
+                        params.put(option, e.getOptions().get(0));
+                    } else {
+                        Object result = pickValidOption(e.getOptions(), option);
+                        if (result == null) {
+                            badArgs.add(option.getDefault());
+                        } else {
+                            params.put(option, result);
+                        }
                     }
+                }
+            } else if (option.isContextual() && user().supportsContext()) {
+                parseExceptionArgs.remove(option);
+                StrContextHandler<?> handler;
+                try {
+                    handler = StrCenter.ContextHandling
+                            .getContextHandler(option.getType());
+                } catch (StrCenter.ContextHandling
+                        .StrNoContextHandlerException e) {
+                    debug(new Str(C.R)
+                            .a("Parameter "
+                                    + option.getName()
+                                    + " marked as contextual without"
+                                    + " available context handler ("
+                                    + option.getType().getSimpleName() + ")."));
+                    user().sendMessage(new Str(C.R)
+                            .a("Parameter ")
+                            .a(C.B).a(option.help(user()))
+                            .a(C.R).a(" marked as contextual without"
+                                    + " available context handler ("
+                                    + option.getType().getSimpleName()
+                                    + "). Please context your admin.")
+                    );
+                    e.printStackTrace();
+                    continue;
+                }
+                Object contextValue = handler.handle(user());
+                if (contextValue == null) {
+                    debug(new Str(C.R).a("Parameter: ")
+                            .a(C.B).a(option.getName())
+                            .a(C.R).a(" not fulfilled due to context"
+                                    + " handler returning null."));
+                } else {
+                    debug(new Str(C.G).a("Context value for ")
+                            .a(C.B).a(option.getName())
+                            .a(C.G).a(" set to: " + contextValue));
+                    params.put(option, contextValue);
+                    options.remove(option);
+                }
+            } else if (parseExceptionArgs.containsKey(option)) {
+                debug(new Str(C.R).a("Parameter: ")
+                        .a(C.B).a(option.getName())
+                        .a(C.R).a(" not fulfilled due to parseException: "
+                                + parseExceptionArgs.get(option).getMessage()));
+            }
+        }
+    }
+
+    /**
+     * Parse keyless arguments.
+     * @param keylessArgs the keyless arguments
+     * @param params parameter mapping
+     * @param options parameter options
+     * @param parseExceptionArgs parameters that ran into parse exceptions
+     * @param badArgs bad arguments
+     */
+    private void parseKeylessArgs(
+            @NotNull final List<String> keylessArgs,
+            @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
+                    params,
+            @NotNull final List<StrVirtualParameter> options,
+            @NotNull final ConcurrentHashMap<
+                    StrVirtualParameter,
+                    StrParameterHandler.StrParseException
+            > parseExceptionArgs,
+            @NotNull final List<String> badArgs
+    ) {
+        // Keyless arguments
+        looping: for (StrVirtualParameter option : new ArrayList<>(options)) {
+
+            for (String keylessArg : new ArrayList<>(keylessArgs)) {
+
+                if (Env.settings().isAllowNullInput()
+                        && keylessArg.equalsIgnoreCase("null")) {
+                    debug(new Str(C.G).a("Null parameter added: ")
+                            .a(C.B).a(keylessArg));
+                    params.put(option, NULL_PARAM);
                     continue looping;
                 }
-            }
-        }
 
-        // Ignored case
-        looping: for (String arg : new ArrayList<>(keyedArgs)) {
-            String key = arg.split("\\Q=\\E")[0];
-            String value = arg.split("\\Q=\\E")[1];
-            for (StrVirtualParameter option : options) {
-                for (String name : option.getNames()) {
-                    if (name.equalsIgnoreCase(key)) {
-                        if (parseParamInto(params, badArgs, parseExceptionArgs, option, value)) {
-                            options.remove(option);
-                            keyedArgs.remove(arg);
+                try {
+                    Object result = option.getHandler().parseSafe(keylessArg);
+                    parseExceptionArgs.remove(option);
+                    options.remove(option);
+                    keylessArgs.remove(keylessArg);
+                    params.put(option, result);
+                    continue looping;
+
+                } catch (StrParameterHandler.StrParseException e) {
+                    parseExceptionArgs.put(option, e);
+                } catch (StrParameterHandler.StrWhichException e) {
+                    parseExceptionArgs.remove(option);
+                    options.remove(option);
+                    keylessArgs.remove(keylessArg);
+
+                    if (Env.settings().isPickFirstOnMultiple()
+                            || user().supportsClickables()) {
+                        params.put(option, e.getOptions().get(0));
+                    } else {
+                        Object result = pickValidOption(e.getOptions(), option);
+                        if (result == null) {
+                            badArgs.add(keylessArg);
+                        } else {
+                            params.put(option, result);
                         }
                         continue looping;
+                    }
+                } catch (Throwable e) {
+                    // This exception is actually something that is broken
+                    debug(new Str(C.R).a("Parsing ")
+                            .a(C.B).a(keylessArg)
+                            .a(C.R).a(" into ")
+                            .a(C.B).a(option.getName())
+                            .a(C.R).a(" failed because of: ")
+                            .a(C.B).a(e.getMessage())
+                    );
+                    e.printStackTrace();
+                    debug(new Str(C.R).a("If you see a handler"
+                                    + " in the stacktrace that we (")
+                            .a(C.G).a("StrInput")
+                            .a(C.R).a(") wrote, please report this bug to us.")
+                    );
+                    debug(new Str(C.R)
+                            .a("If you see a custom handler of your own,"
+                                    + " there is an issue with it.")
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Parse -arguments.
+     * @param dashArgs -arguments
+     * @param params parameter mapping
+     * @param options parameter options
+     */
+    private void parseDashArgs(
+            @NotNull final List<String> dashArgs,
+            @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
+                    params,
+            @NotNull final List<StrVirtualParameter> options
+    ) {
+        for (StrVirtualParameter option : new ArrayList<>(options)) {
+            if (option.getHandler().supports(boolean.class)) {
+
+                // Quick equals
+                for (String dashBooleanArg : new ArrayList<>(dashArgs)) {
+                    if (option.getNames().contains(dashBooleanArg)) {
+                        params.put(option, true);
+                        dashArgs.remove(dashBooleanArg);
+                        options.remove(option);
+                    }
+                }
+
+                // Ignored case equals
+                looping: for (String dashBooleanArg
+                        : new ArrayList<>(dashArgs)) {
+                    for (String name : option.getNames()) {
+                        if (name.equalsIgnoreCase(dashBooleanArg)) {
+                            params.put(option, true);
+                            dashArgs.remove(dashBooleanArg);
+                            options.remove(option);
+                            continue looping;
+                        }
+                    }
+                }
+
+                // Name contains key (key substring of name)
+                looping: for (String dashBooleanArg
+                        : new ArrayList<>(dashArgs)) {
+                    for (String name : option.getNames()) {
+                        if (name.contains(dashBooleanArg)) {
+                            params.put(option, true);
+                            dashArgs.remove(dashBooleanArg);
+                            options.remove(option);
+                            continue looping;
+                        }
+                    }
+                }
+
+                // Key contains name (name substring of key)
+                looping: for (String dashBooleanArg
+                        : new ArrayList<>(dashArgs)) {
+                    for (String name : option.getNames()) {
+                        if (dashBooleanArg.contains(name)) {
+                            params.put(option, true);
+                            dashArgs.remove(dashBooleanArg);
+                            options.remove(option);
+                            continue looping;
+                        }
                     }
                 }
             }
         }
+    }
 
-        // Name contains key (key substring of name)
-        looping: for (String arg : new ArrayList<>(keyedArgs)) {
-            String key = arg.split("\\Q=\\E")[0];
-            String value = arg.split("\\Q=\\E")[1];
-            for (StrVirtualParameter option : options) {
-                for (String name : option.getNames()) {
-                    if (name.contains(key)) {
-                        if (parseParamInto(params, badArgs, parseExceptionArgs, option, value)) {
-                            options.remove(option);
-                            keyedArgs.remove(arg);
-                        }
-                        continue looping;
-                    }
-                }
-            }
-        }
+    /**
+     * Parse null arguments
+     * @param nullArgs null arguments
+     * @param params parameter mapping
+     * @param options parameter options
+     */
+    private void parseNullArgs(
+            @NotNull final List<String> nullArgs,
+            @NotNull final ConcurrentHashMap<StrVirtualParameter, Object> params,
+            @NotNull final List<StrVirtualParameter> options
+    ) {
 
-        // Key contains name (name substring of key)
-        looping: for (String arg : new ArrayList<>(keyedArgs)) {
-            String key = arg.split("\\Q=\\E")[0];
-            String value = arg.split("\\Q=\\E")[1];
-            for (StrVirtualParameter option : options) {
-                for (String name : option.getNames()) {
-                    if (key.contains(name)) {
-                        if (parseParamInto(params, badArgs, parseExceptionArgs, option, value)) {
-                            options.remove(option);
-                            keyedArgs.remove(arg);
-                        }
-                        continue looping;
-                    }
-                }
-            }
-        }
 
         // Quick equals null
         looping: for (String key : new ArrayList<>(nullArgs)) {
@@ -477,205 +911,117 @@ public final class StrVirtualCommand implements StrVirtual {
                 }
             }
         }
+    }
 
-        // Keyless arguments
-        looping: for (StrVirtualParameter option : new ArrayList<>(options)) {
-            if (option.getHandler().supports(boolean.class)) {
+    /**
+     * Parse keyed arguments
+     * @param keyedArgs keyed arguments
+     * @param options parameter options
+     * @param params parameter mapping
+     * @param badArgs bad arguments
+     * @param parseExceptionArgs arguments that ran into parse exceptions
+     */
+    private void parseKeyedArgs(
+            @NotNull final List<String> keyedArgs,
+            @NotNull final List<StrVirtualParameter> options,
+            @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
+                    params,
+            @NotNull final List<String> badArgs,
+            @NotNull final ConcurrentHashMap<
+                    StrVirtualParameter,
+                    StrParameterHandler.StrParseException
+            > parseExceptionArgs
+    ) {
 
-                // Quick equals
-                for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
-                    if (option.getNames().contains(dashBooleanArg)) {
-                        params.put(option, true);
-                        dashBooleanArgs.remove(dashBooleanArg);
+        // Quick equals
+        looping: for (String arg : new ArrayList<>(keyedArgs)) {
+            String key = arg.split("\\Q=\\E")[0];
+            String value = arg.split("\\Q=\\E")[1];
+            for (StrVirtualParameter option : options) {
+                if (option.getNames().contains(key)) {
+                    if (parseParamInto(
+                            params,
+                            badArgs,
+                            parseExceptionArgs,
+                            option,
+                            value
+                    )) {
                         options.remove(option);
+                        keyedArgs.remove(arg);
                     }
-                }
-
-                // Ignored case equals
-                for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
-                    for (String name : option.getNames()) {
-                        if (name.equalsIgnoreCase(dashBooleanArg)) {
-                            params.put(option, true);
-                            dashBooleanArgs.remove(dashBooleanArg);
-                            options.remove(option);
-                        }
-                    }
-                }
-
-                // Name contains key (key substring of name)
-                for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
-                    for (String name : option.getNames()) {
-                        if (name.contains(dashBooleanArg)) {
-                            params.put(option, true);
-                            dashBooleanArgs.remove(dashBooleanArg);
-                            options.remove(option);
-                        }
-                    }
-                }
-
-                // Key contains name (name substring of key)
-                for (String dashBooleanArg : new ArrayList<>(dashBooleanArgs)) {
-                    for (String name : option.getNames()) {
-                        if (dashBooleanArg.contains(name)) {
-                            params.put(option, true);
-                            dashBooleanArgs.remove(dashBooleanArg);
-                            options.remove(option);
-                        }
-                    }
+                    continue looping;
                 }
             }
+        }
 
-            for (String keylessArg : new ArrayList<>(keylessArgs)) {
-
-                if (Env.settings().isAllowNullInput() && keylessArg.equalsIgnoreCase("null")) {
-                    debug(new Str(C.G).a("Null parameter added: ").a(C.B).a(keylessArg));
-                    params.put(option, NULL_PARAM);
-                    continue looping;
-                }
-
-                try {
-                    Object result = option.getHandler().parseSafe(keylessArg);
-                    parseExceptionArgs.remove(option);
-                    options.remove(option);
-                    keylessArgs.remove(keylessArg);
-                    params.put(option, result);
-                    continue looping;
-
-                } catch (StrParameterHandler.StrParseException e) {
-                    parseExceptionArgs.put(option, e);
-                } catch (StrParameterHandler.StrWhichException e) {
-                    parseExceptionArgs.remove(option);
-                    options.remove(option);
-                    keylessArgs.remove(keylessArg);
-
-                    if (Env.settings().isPickFirstOnMultiple() || user().supportsClickables()) {
-                        params.put(option, e.getOptions().get(0));
-                    } else {
-                        Object result = pickValidOption(e.getOptions(), option);
-                        if (result == null) {
-                            badArgs.add(keylessArg);
-                        } else {
-                            params.put(option, result);
+        // Ignored case
+        looping: for (String arg : new ArrayList<>(keyedArgs)) {
+            String key = arg.split("\\Q=\\E")[0];
+            String value = arg.split("\\Q=\\E")[1];
+            for (StrVirtualParameter option : options) {
+                for (String name : option.getNames()) {
+                    if (name.equalsIgnoreCase(key)) {
+                        if (parseParamInto(
+                                params,
+                                badArgs,
+                                parseExceptionArgs,
+                                option,
+                                value
+                        )) {
+                            options.remove(option);
+                            keyedArgs.remove(arg);
                         }
                         continue looping;
                     }
-                } catch (Throwable e) {
-                    // This exception is actually something that is broken
-                    debug(new Str(C.R).a("Parsing ").a(C.B).a(keylessArg).a(C.R).a(" into ").a(C.B).a(option.getName()).a(C.R).a(" failed because of: ").a(C.B).a(e.getMessage()));
-                    e.printStackTrace();
-                    debug(new Str(C.R).a("If you see a handler in the stacktrace that we (").a(C.G).a("StrInput").a(C.R).a(") wrote, please report this bug to us."));
-                    debug(new Str(C.R).a("If you see a custom handler of your own, there is an issue with it."));
                 }
             }
         }
 
-        // Remaining parameters
-        for (StrVirtualParameter option : new ArrayList<>(options)) {
-            if (option.hasDefault()) {
-                parseExceptionArgs.remove(option);
-                try {
-                    Object val = option.getDefaultValue();
-                    params.put(option, val == null ? NULL_PARAM : val);
-                    options.remove(option);
-                } catch (StrParameterHandler.StrParseException e) {
-                    debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" could not be parsed to ").a(option.getType().getSimpleName()));
-                    debug(new Str(C.R).a("Reason: ").a(C.B).a(e.getMessage()));
-                } catch (StrParameterHandler.StrWhichException e) {
-                    debug(new Str(C.R).a("Default value ").a(C.B).a(option.getDefault()).a(C.R).a(" returned multiple options"));
-                    options.remove(option);
-                    if (Env.settings().isPickFirstOnMultiple() || user().supportsClickables()) {
-                        debug(new Str(C.G).a("Adding the first option for parameter ").a(C.B).a(option.getName()));
-                        params.put(option, e.getOptions().get(0));
-                    } else {
-                        Object result = pickValidOption(e.getOptions(), option);
-                        if (result == null) {
-                            badArgs.add(option.getDefault());
-                        } else {
-                            params.put(option, result);
+        // Name contains key (key substring of name)
+        looping: for (String arg : new ArrayList<>(keyedArgs)) {
+            String key = arg.split("\\Q=\\E")[0];
+            String value = arg.split("\\Q=\\E")[1];
+            for (StrVirtualParameter option : options) {
+                for (String name : option.getNames()) {
+                    if (name.contains(key)) {
+                        if (parseParamInto(
+                                params,
+                                badArgs,
+                                parseExceptionArgs,
+                                option,
+                                value
+                        )) {
+                            options.remove(option);
+                            keyedArgs.remove(arg);
                         }
+                        continue looping;
                     }
                 }
-            } else if (option.isContextual() && user().supportsContext()) {
-                parseExceptionArgs.remove(option);
-                StrContextHandler<?> handler;
-                try {
-                    handler = StrCenter.ContextHandling.getContextHandler(option.getType());
-                } catch (StrCenter.ContextHandling.StrNoContextHandlerException e) {
-                    debug(new Str(C.R).a("Parameter " + option.getName() + " marked as contextual without available context handler (" + option.getType().getSimpleName() + ")."));
-                    user().sendMessage(new Str(C.R).a("Parameter ").a(C.B).a(option.help(user())).a(C.R).a(" marked as contextual without available context handler (" + option.getType().getSimpleName() + "). Please context your admin."));
-                    e.printStackTrace();
-                    continue;
-                }
-                Object contextValue = handler.handle(user());
-                if (contextValue == null) {
-                    debug(new Str(C.R).a("Parameter: ").a(C.B).a(option.getName()).a(C.R).a(" not fulfilled due to context handler returning null."));
-                } else {
-                    debug(new Str(C.G).a("Context value for ").a(C.B).a(option.getName()).a(C.G).a(" set to: " + contextValue));
-                    params.put(option, contextValue);
-                    options.remove(option);
-                }
-            } else if (parseExceptionArgs.containsKey(option)) {
-                debug(new Str(C.R).a("Parameter: ").a(C.B).a(option.getName()).a(C.R).a(" not fulfilled due to parseException: " + parseExceptionArgs.get(option).getMessage()));
             }
         }
 
-        // Convert nullArgs
-        for (int i = 0; i < nullArgs.size(); i++) {
-            nullArgs.set(i, nullArgs.get(i) + "=null");
+        // Key contains name (name substring of key)
+        looping: for (String arg : new ArrayList<>(keyedArgs)) {
+            String key = arg.split("\\Q=\\E")[0];
+            String value = arg.split("\\Q=\\E")[1];
+            for (StrVirtualParameter option : options) {
+                for (String name : option.getNames()) {
+                    if (key.contains(name)) {
+                        if (parseParamInto(
+                                params,
+                                badArgs,
+                                parseExceptionArgs,
+                                option,
+                                value
+                        )) {
+                            options.remove(option);
+                            keyedArgs.remove(arg);
+                        }
+                        continue looping;
+                    }
+                }
+            }
         }
-
-        // Debug
-        if (Env.settings().isAllowNullInput()) {
-            debug(new Str(nullArgs.isEmpty() ? C.G : C.R)        .a("Unmatched null argument" +        (nullArgs.size() == 1           ? "" : "s") + ": ").a(new Str(!nullArgs.isEmpty()           ? String.join(", ", nullArgs) : "NONE", C.B)));
-        }
-        debug(new Str(keylessArgs.isEmpty() ? C.G : C.R)         .a("Unmatched keyless argument" +     (keylessArgs.size() == 1        ? "" : "s") + ": ").a(new Str(!keylessArgs.isEmpty()        ? String.join(", ", keylessArgs) : "NONE", C.B)));
-        debug(new Str(keyedArgs.isEmpty() ? C.G : C.R)           .a("Unmatched keyed argument" +       (keyedArgs.size() == 1          ? "" : "s") + ": ").a(new Str(!keyedArgs.isEmpty()          ? String.join(", ", keyedArgs) : "NONE", C.B)));
-        debug(new Str(badArgs.isEmpty() ? C.G : C.R)             .a("Bad argument" +                   (badArgs.size() == 1            ? "" : "s") + ": ").a(new Str(!badArgs.isEmpty()            ? String.join(", ", badArgs) : "NONE", C.B)));
-        debug(new Str(parseExceptionArgs.isEmpty() ? C.G : C.R)  .a("Failed argument" +                (parseExceptionArgs.size() == 1 ? "" : "s") + (parseExceptionArgs.isEmpty() ? ": NONE" : ":\n")));
-        if (!parseExceptionArgs.isEmpty()) {
-            debug(new Str(String.join(", ", parseExceptionArgs.values().stream().map(Throwable::getMessage).toList())));
-        }
-        debug(new Str(options.isEmpty() ? C.G : C.R)             .a("Unfulfilled parameter" +          (options.size() == 1            ? "" : "s") + ": ").a(new Str(!options.isEmpty()            ? String.join(", ", options.stream().map(StrVirtualParameter::getName).toList()) : "NONE", C.B)));
-        debug(new Str(dashBooleanArgs.isEmpty() ? C.G : C.R)     .a("Unfulfilled -boolean parameter" + (dashBooleanArgs.size() == 1    ? "" : "s") + ": ").a(new Str(!dashBooleanArgs.isEmpty()    ? String.join(", ", dashBooleanArgs) : "NONE", C.B)));
-
-        List<Str> mappings = new ArrayList<>();
-        mappings.add(new Str(C.G).a("Parameter mapping:"));
-        params.forEach((param, object) -> mappings.add(new Str(C.G)
-                .a("\u0009 - (")
-                .a(C.B)
-                .a(param.getType().getSimpleName())
-                .a(C.G)
-                .a(") ")
-                .a(C.B)
-                .a(param.getName())
-                .a(C.G)
-                .a(" -> ")
-                .a(C.B)
-                .a(object.toString()
-                        .replace(String.valueOf(NULL_PARAM), "null"))
-                )
-        );
-        options.forEach(param -> mappings.add(new Str(C.G)
-                .a("\u0009 - (")
-                .a(C.B)
-                .a(param.getType().getSimpleName())
-                .a(C.G)
-                .a(") ")
-                .a(C.B)
-                .a(param.getName())
-                .a(C.G)
-                .a(" -> ")
-                .a(C.R)
-                .a("NONE")));
-
-        for (Str mapping : mappings) {
-            debug(mapping);
-        }
-
-        return validateParameters(
-                params,
-                parseExceptionArgs
-        ) ? params : null;
     }
 
     /**
@@ -825,7 +1171,8 @@ public final class StrVirtualCommand implements StrVirtual {
         } catch (StrParameterHandler.StrWhichException e) {
             debug(new Str(C.R).a("Value ")
                     .a(C.B).a(value).a(C.R).a(" returned multiple options"));
-            if (Env.settings().isPickFirstOnMultiple() || user().supportsClickables()) {
+            if (Env.settings().isPickFirstOnMultiple()
+                    || user().supportsClickables()) {
                 debug(new Str(C.G).a("Adding: ")
                         .a(C.B).a(e.getOptions().get(0).toString()));
                 params.put(option, e.getOptions().get(0));
