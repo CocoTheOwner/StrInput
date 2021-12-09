@@ -30,7 +30,8 @@ import org.jetbrains.annotations.Nullable;
  * @author Sjoerd van de Goor
  * @since v0.2
  */
-public class DiscordChannelContext implements StrContextHandler<MessageChannel> {
+public class DiscordChannelContext
+        implements StrContextHandler<MessageChannel> {
     /**
      * The type this context handler handles.
      *
@@ -38,7 +39,7 @@ public class DiscordChannelContext implements StrContextHandler<MessageChannel> 
      * @return the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return MessageChannel.class.isAssignableFrom(type);
     }
 
@@ -55,7 +56,7 @@ public class DiscordChannelContext implements StrContextHandler<MessageChannel> 
      * @return the value in the assigned type
      */
     @Override
-    public @Nullable TextChannel handle(@NotNull StrUser user) {
+    public @Nullable TextChannel handle(@NotNull final StrUser user) {
         return ((DiscordUser) user).channel();
     }
 }

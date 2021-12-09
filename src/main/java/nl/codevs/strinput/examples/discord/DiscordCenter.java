@@ -19,7 +19,11 @@ package nl.codevs.strinput.examples.discord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import nl.codevs.strinput.examples.discord.extensions.*;
+import nl.codevs.strinput.examples.discord.extensions.DiscordChannelContext;
+import nl.codevs.strinput.examples.discord.extensions.DiscordMemberHandler;
+import nl.codevs.strinput.examples.discord.extensions.DiscordTextChannelHandler;
+import nl.codevs.strinput.examples.discord.extensions.DiscordUserContext;
+import nl.codevs.strinput.examples.discord.extensions.DiscordUserHandler;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -45,9 +49,9 @@ public class DiscordCenter extends StrCenter {
 
     /**
      * Create a new command center.
-     * @param jda the JDA created for this center
+     * @param discordJDA the JDA created for this center
      */
-    public DiscordCenter(JDA jda) {
+    public DiscordCenter(final JDA discordJDA) {
         super(
                 new File("settings"),
                 DEFAULT_CONSOLE_USER,
@@ -62,7 +66,7 @@ public class DiscordCenter extends StrCenter {
                 },
                 new DiscordCommands()
         );
-        this.jda = jda;
+        this.jda = discordJDA;
     }
 
     /**
@@ -81,7 +85,10 @@ public class DiscordCenter extends StrCenter {
      * @param event the event
      * @param prefix command prefix that should be removed
      */
-    public void onCommand(final MessageReceivedEvent event, final String prefix) {
+    public void onCommand(
+            final MessageReceivedEvent event,
+            final String prefix
+    ) {
         DiscordUser user = DiscordUser.of(event);
         assert user.channel() != null;
         user.channel().sendTyping().complete();

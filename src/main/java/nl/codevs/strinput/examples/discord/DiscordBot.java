@@ -25,7 +25,15 @@ public class DiscordBot extends ListenerAdapter {
     /**
      * Bot instance.
      */
-    public static DiscordBot BOT;
+    private static DiscordBot bot;
+
+    /**
+     * Get the bot.
+     * @return the bot
+     */
+    public static DiscordBot getBot() {
+        return bot;
+    }
 
     /**
      * Main method.
@@ -33,9 +41,17 @@ public class DiscordBot extends ListenerAdapter {
      */
     public static void main(final String[] args) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("token.txt"));
+            BufferedReader reader = new BufferedReader(
+                    new FileReader("token.txt")
+            );
             assert DiscordCommands.class.isAnnotationPresent(StrInput.class);
-            BOT = new DiscordBot(reader.readLine(), "!", DiscordCommands.class.getDeclaredAnnotation(StrInput.class).name());
+            bot = new DiscordBot(
+                    reader.readLine(),
+                    "!",
+                    DiscordCommands.class.getDeclaredAnnotation(
+                            StrInput.class
+                    ).name()
+            );
         } catch (LoginException | InterruptedException | IOException e) {
             e.printStackTrace();
         }
@@ -63,25 +79,29 @@ public class DiscordBot extends ListenerAdapter {
 
     /**
      * Create a new Discord bot.
-     * @param token the bot token
-     * @param prefix command prefix
+     * @param authToken the bot authToken
+     * @param commandPrefix command prefix
      * @param activityCommand command to display in activity
      *
      * @throws LoginException if login fails
      * @throws InterruptedException if waiting for JDA setup fails
      */
-    public DiscordBot(String token, String prefix, String activityCommand) throws LoginException, InterruptedException {
-        this.token = token;
-        this.jda = setup(token, prefix, activityCommand);
+    public DiscordBot(
+            @NotNull final String authToken,
+            @NotNull final String commandPrefix,
+            @NotNull final String activityCommand
+    ) throws LoginException, InterruptedException {
+        this.token = authToken;
+        this.jda = setup(authToken, commandPrefix, activityCommand);
         this.center = new DiscordCenter(jda);
-        this.prefix = prefix;
+        this.prefix = commandPrefix;
     }
 
     /**
      * Main method.
      *
-     * @param token bot token
-     * @param prefix bot command prefix
+     * @param authToken bot token
+     * @param commandPrefix bot command prefix
      * @param activityCommand command to display in activity
      *
      * @throws LoginException if the bot token isn't working
@@ -89,13 +109,19 @@ public class DiscordBot extends ListenerAdapter {
      *
      * @return the set-up JDA
      */
-    public JDA setup(String token, String prefix, String activityCommand) throws LoginException, InterruptedException {
-        JDABuilder builder = JDABuilder.createDefault(token);
+    public JDA setup(
+            @NotNull final String authToken,
+            @NotNull final String commandPrefix,
+            @NotNull final String activityCommand
+    ) throws LoginException, InterruptedException {
+        JDABuilder builder = JDABuilder.createDefault(authToken);
 
         // Enable the bulk delete event
         builder.setBulkDeleteSplittingEnabled(false);
         // Set activity (like "playing Something")
-        builder.setActivity(Activity.listening(prefix + activityCommand));
+        builder.setActivity(Activity.listening(
+                commandPrefix + activityCommand
+        ));
         // Add listener
         builder.addEventListeners(this);
         // Set intents
@@ -113,8 +139,12 @@ public class DiscordBot extends ListenerAdapter {
         return builder.build().awaitReady();
     }
 
+    /**
+     * Print a quick message when the {@link ReadyEvent} is triggered.
+     * @param event the ready event
+     */
     @Override
-    public void onReady(@NotNull ReadyEvent event) {
+    public void onReady(@NotNull final ReadyEvent event) {
         System.out.println("Setup!");
     }
 

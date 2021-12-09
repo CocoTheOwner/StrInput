@@ -37,7 +37,7 @@ public class DiscordUserContext implements StrContextHandler<User> {
      * @return the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(User.class);
     }
 
@@ -54,7 +54,7 @@ public class DiscordUserContext implements StrContextHandler<User> {
      * @return the value in the assigned type
      */
     @Override
-    public @NotNull User handle(@NotNull StrUser user) {
+    public @NotNull User handle(@NotNull final StrUser user) {
         return ((DiscordUser) user).getUser();
     }
 }

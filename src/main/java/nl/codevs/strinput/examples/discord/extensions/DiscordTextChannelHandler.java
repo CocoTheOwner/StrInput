@@ -34,7 +34,8 @@ import java.util.stream.Collectors;
  * @author Sjoerd van de Goor
  * @since v0.2
  */
-public class DiscordTextChannelHandler implements StrParameterHandler<TextChannel> {
+public class DiscordTextChannelHandler
+        implements StrParameterHandler<TextChannel> {
     /**
      * Get all possible values for this type.<br>
      * Do not specify lists of very high length (10^6)
@@ -83,17 +84,31 @@ public class DiscordTextChannelHandler implements StrParameterHandler<TextChanne
         List<TextChannel> options = getPossibilities(text);
 
         if (options.size() == 0) {
-            throw new StrParseException(DiscordTextChannelHandler.class, text, "No options for input");
+            throw new StrParseException(
+                    DiscordTextChannelHandler.class,
+                    text,
+                    "No options for input"
+            );
         }
 
         if (options.size() > 1) {
-            List<TextChannel> filteredOptions = options.stream().filter(o -> o.getName().equals(text)).toList();
+            List<TextChannel> filteredOptions = options.stream().filter(
+                    o -> o.getName().equals(text)
+            ).toList();
             if (filteredOptions.size() == 1) {
                 return filteredOptions.get(0);
             } else if (filteredOptions.size() > 1) {
-                throw new StrWhichException(DiscordTextChannelHandler.class, text, filteredOptions);
+                throw new StrWhichException(
+                        DiscordTextChannelHandler.class,
+                        text,
+                        filteredOptions
+                );
             } else {
-                throw new StrWhichException(DiscordTextChannelHandler.class, text, options);
+                throw new StrWhichException(
+                        DiscordTextChannelHandler.class,
+                        text,
+                        options
+                );
             }
         }
 

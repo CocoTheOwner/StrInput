@@ -51,7 +51,7 @@ public class DiscordCommands implements DiscordCommandCategory {
                     name = "channel",
                     description = "The channel to reply with",
                     contextual = true
-            ) TextChannel channel
+            ) final TextChannel channel
     ) {
         message().reply(channel.getAsMention()).queue();
     }
@@ -66,7 +66,7 @@ public class DiscordCommands implements DiscordCommandCategory {
                     name = "user",
                     description = "The user to reply with",
                     contextual = true
-            ) User user
+            ) final User user
     ) {
         message().reply(user.getAsMention()).queue();
     }

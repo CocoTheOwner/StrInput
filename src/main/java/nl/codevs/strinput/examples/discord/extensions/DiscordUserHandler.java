@@ -50,7 +50,11 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
         if (guild == null) {
             return null;
         }
-        return guild.getMembers().stream().map(Member::getUser).collect(Collectors.toList());
+        return guild
+                .getMembers()
+                .stream()
+                .map(Member::getUser)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -60,7 +64,7 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(User.class);
     }
 
@@ -80,21 +84,35 @@ public class DiscordUserHandler implements StrParameterHandler<User> {
      *                   (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull User parse(@NotNull String text) throws Throwable {
+    public @NotNull User parse(@NotNull final String text) throws Throwable {
         List<User> options = getPossibilities(text);
 
         if (options.isEmpty()) {
-            throw new StrParseException(DiscordUserHandler.class, text, "No options found for input!");
+            throw new StrParseException(
+                    DiscordUserHandler.class,
+                    text,
+                    "No options found for input!"
+            );
         }
 
         if (options.size() > 1) {
-            List<User> filteredOptions = options.stream().filter(o -> o.getName().equals(text)).toList();
+            List<User> filteredOptions = options.stream().filter(
+                    o -> o.getName().equals(text)
+            ).toList();
             if (filteredOptions.size() == 1) {
                 return filteredOptions.get(0);
             } else if (filteredOptions.size() > 1) {
-                throw new StrWhichException(DiscordUserHandler.class, text, filteredOptions);
+                throw new StrWhichException(
+                        DiscordUserHandler.class,
+                        text,
+                        filteredOptions
+                );
             } else {
-                throw new StrWhichException(DiscordUserHandler.class, text, options);
+                throw new StrWhichException(
+                        DiscordUserHandler.class,
+                        text,
+                        options
+                );
             }
         }
 

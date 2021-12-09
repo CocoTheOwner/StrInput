@@ -52,7 +52,7 @@ public class DiscordMemberHandler implements StrParameterHandler<Member> {
      * @return true if it supports the type
      */
     @Override
-    public boolean supports(@NotNull Class<?> type) {
+    public boolean supports(@NotNull final Class<?> type) {
         return type.equals(Member.class);
     }
 
@@ -72,17 +72,25 @@ public class DiscordMemberHandler implements StrParameterHandler<Member> {
      *                   (Exceptions don't have to be caught in the parser)
      */
     @Override
-    public @NotNull Member parse(@NotNull String text) throws Throwable {
+    public @NotNull Member parse(@NotNull final String text) throws Throwable {
         Message m = ((DiscordUser) Env.user()).message();
 
         if (!m.isFromGuild()) {
-            throw new StrParseException(DiscordMemberHandler.class, text, "Message not sent in a guild so no users available");
+            throw new StrParseException(
+                    DiscordMemberHandler.class,
+                    text,
+                    "Message not sent in a guild so no users available"
+            );
         }
 
         Member result = m.getGuild().getMemberByTag(text);
 
         if (result == null) {
-            throw new StrParseException(DiscordMemberHandler.class, text, "Member with that tag could not be found!");
+            throw new StrParseException(
+                    DiscordMemberHandler.class,
+                    text,
+                    "Member with that tag could not be found!"
+            );
         }
 
         return result;

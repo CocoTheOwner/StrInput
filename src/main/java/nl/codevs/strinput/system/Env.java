@@ -173,7 +173,8 @@ public final class Env {
         }
 
         /**
-         * Add the {@link StrCenter} to the context map and removes dead threads.
+         * Add the {@link StrCenter}
+         * to the context map and removes dead threads.
          *
          * @param center the center
          */
