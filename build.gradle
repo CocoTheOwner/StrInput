@@ -6,11 +6,6 @@ plugins {
 group 'nl.codevs'
 version 'v0.2'
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 repositories {
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
