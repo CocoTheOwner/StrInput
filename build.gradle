@@ -1,8 +1,10 @@
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-
-group 'com.github.cocoTheOwner'
-version 'v0.1'
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+}
+group 'nl.codevs'
+version 'v0.2'
 
 java {
     withJavadocJar()
@@ -39,11 +41,7 @@ test {
 
 publishing {
     publications {
-        mavenJava (MavenPublication) {
-            groupId = 'com.github.cocoTheOwner'
-            artifactId = 'StrInput'
-            version = 'v0.1'
-
+        mavenJava(MavenPublication) {
             from components.java
         }
     }
