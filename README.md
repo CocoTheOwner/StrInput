@@ -1,6 +1,6 @@
 [license]: https://github.com/CocoTheOwner/Strinput/tree/main/LICENSE.md
 [license-shield]: https://img.shields.io/badge/license-GNU%20GPL%20v3-green
-[docs]: https://github.com/CocoTheOwner/Strinput/blob/main/docs/index.html
+[docs]: https://cocotheowner.github.io/Strinput/index.html
 [docs-shield]: https://img.shields.io/badge/Docs-Github%20Pages-green
 
 [ ![license-shield]][license]
