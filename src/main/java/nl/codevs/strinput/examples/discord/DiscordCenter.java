@@ -43,13 +43,15 @@ public class DiscordCenter extends StrCenter {
 
     /**
      * Create a new command center.
+     * @param settingsFile the directory where the settings should be stored
      * @param categories vararg root categories
      */
     public DiscordCenter(
+            @NotNull final File settingsFile,
             @NotNull final StrCategory... categories
     ) {
         super(
-        new File("settings"),
+                settingsFile,
                 DEFAULT_CONSOLE_USER,
                 new StrParameterHandler<?>[0],
                 new StrContextHandler<?>[0],

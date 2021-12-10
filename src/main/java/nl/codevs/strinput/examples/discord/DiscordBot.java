@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class DiscordBot extends ListenerAdapter {
                     DiscordCommands.class.getDeclaredAnnotation(
                             StrInput.class
                     ).name(),
-                    new DiscordCenter(new DiscordCommands())
+                    new DiscordCenter(new File("discordSettings"), new DiscordCommands())
             );
         } catch (LoginException | InterruptedException | IOException e) {
             e.printStackTrace();
