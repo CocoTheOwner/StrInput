@@ -1,6 +1,5 @@
 package nl.codevs.strinput.examples.discord;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -23,19 +22,6 @@ import java.io.IOException;
 public class DiscordBot extends ListenerAdapter {
 
     /**
-     * Bot instance.
-     */
-    private static DiscordBot bot;
-
-    /**
-     * Get the bot.
-     * @return the bot
-     */
-    public static DiscordBot getBot() {
-        return bot;
-    }
-
-    /**
      * Main method.
      * @param args runtime arguments
      */
@@ -45,12 +31,13 @@ public class DiscordBot extends ListenerAdapter {
                     new FileReader("token.txt")
             );
             assert DiscordCommands.class.isAnnotationPresent(StrInput.class);
-            bot = new DiscordBot(
+            new DiscordBot(
                     reader.readLine(),
                     "!",
                     DiscordCommands.class.getDeclaredAnnotation(
                             StrInput.class
-                    ).name()
+                    ).name(),
+                    new DiscordCenter(new DiscordCommands())
             );
         } catch (LoginException | InterruptedException | IOException e) {
             e.printStackTrace();
@@ -63,25 +50,16 @@ public class DiscordBot extends ListenerAdapter {
     private final DiscordCenter center;
 
     /**
-     * The bot token.
-     */
-    private final String token;
-
-    /**
      * Command prefix.
      */
     private final String prefix;
-
-    /**
-     * JDA.
-     */
-    private final JDA jda;
 
     /**
      * Create a new Discord bot.
      * @param authToken the bot authToken
      * @param commandPrefix command prefix
      * @param activityCommand command to display in activity
+     * @param commandCenter the command center
      *
      * @throws LoginException if login fails
      * @throws InterruptedException if waiting for JDA setup fails
@@ -89,11 +67,11 @@ public class DiscordBot extends ListenerAdapter {
     public DiscordBot(
             @NotNull final String authToken,
             @NotNull final String commandPrefix,
-            @NotNull final String activityCommand
+            @NotNull final String activityCommand,
+            @NotNull final DiscordCenter commandCenter
     ) throws LoginException, InterruptedException {
-        this.token = authToken;
-        this.jda = setup(authToken, commandPrefix, activityCommand);
-        this.center = new DiscordCenter(jda);
+        setup(authToken, commandPrefix, activityCommand);
+        this.center = commandCenter;
         this.prefix = commandPrefix;
     }
 
@@ -107,9 +85,8 @@ public class DiscordBot extends ListenerAdapter {
      * @throws LoginException if the bot token isn't working
      * @throws InterruptedException if the setup fails
      *
-     * @return the set-up JDA
      */
-    public JDA setup(
+    public void setup(
             @NotNull final String authToken,
             @NotNull final String commandPrefix,
             @NotNull final String activityCommand
@@ -136,7 +113,7 @@ public class DiscordBot extends ListenerAdapter {
                 GatewayIntent.GUILD_EMOJIS
         );
 
-        return builder.build().awaitReady();
+        builder.build().awaitReady();
     }
 
     /**

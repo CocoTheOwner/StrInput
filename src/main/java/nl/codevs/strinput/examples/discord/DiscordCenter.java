@@ -17,13 +17,13 @@
  */
 package nl.codevs.strinput.examples.discord;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.examples.discord.extensions.DiscordChannelContext;
 import nl.codevs.strinput.examples.discord.extensions.DiscordMemberHandler;
 import nl.codevs.strinput.examples.discord.extensions.DiscordTextChannelHandler;
 import nl.codevs.strinput.examples.discord.extensions.DiscordUserContext;
 import nl.codevs.strinput.examples.discord.extensions.DiscordUserHandler;
+import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -42,15 +42,11 @@ import java.util.List;
 public class DiscordCenter extends StrCenter {
 
     /**
-     * JDA.
-     */
-    private final JDA jda;
-
-    /**
      * Create a new command center.
-     * @param discordJDA the JDA created for this center
      */
-    public DiscordCenter(final JDA discordJDA) {
+    public DiscordCenter(
+            @NotNull final StrCategory... categories
+    ) {
         super(
                 new File("settings"),
                 DEFAULT_CONSOLE_USER,
@@ -63,9 +59,8 @@ public class DiscordCenter extends StrCenter {
                         new DiscordChannelContext(),
                         new DiscordUserContext()
                 },
-                new DiscordCommands()
+                categories
         );
-        this.jda = discordJDA;
     }
 
     /**
