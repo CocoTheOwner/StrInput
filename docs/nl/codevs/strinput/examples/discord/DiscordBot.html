@@ -102,9 +102,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String)">DiscordBot</a></span>&#8203;(@NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken,
+<div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,nl.codevs.strinput.examples.discord.DiscordCenter)">DiscordBot</a></span>&#8203;(@NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken,
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commandPrefix,
- @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityCommand)</code></div>
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityCommand,
+ @NotNull <a href="DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a>&nbsp;commandCenter)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new Discord bot.</div>
 </div>
@@ -122,31 +123,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code>static <a href="DiscordBot.html" title="class in nl.codevs.strinput.examples.discord">DiscordBot</a></code></div>
-<div class="col-second even-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#getBot()">getBot</a></span>()</code></div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#main(java.lang.String%5B%5D)">main</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
 <div class="col-last even-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">
-<div class="block">Get the bot.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#main(java.lang.String%5B%5D)">main</a></span>&#8203;(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table-tab4 method-summary-table">
 <div class="block">Main method.</div>
 </div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onMessageReceived(net.dv8tion.jda.api.events.message.MessageReceivedEvent)">onMessageReceived</a></span>&#8203;(@NotNull net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event)</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onMessageReceived(net.dv8tion.jda.api.events.message.MessageReceivedEvent)">onMessageReceived</a></span>&#8203;(@NotNull net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">When a message is received.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onReady(net.dv8tion.jda.api.events.ReadyEvent)">onReady</a></span>&#8203;(@NotNull net.dv8tion.jda.api.events.ReadyEvent&nbsp;event)</code></div>
-<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onReady(net.dv8tion.jda.api.events.ReadyEvent)">onReady</a></span>&#8203;(@NotNull net.dv8tion.jda.api.events.ReadyEvent&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">Print a quick message when the <code>ReadyEvent</code> is triggered.</div>
 </div>
-<div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>net.dv8tion.jda.api.JDA</code></div>
-<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#setup(java.lang.String,java.lang.String,java.lang.String)">setup</a></span>&#8203;(@NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken,
+<div class="col-first odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#setup(java.lang.String,java.lang.String,java.lang.String)">setup</a></span>&#8203;(@NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken,
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commandPrefix,
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityCommand)</code></div>
-<div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
+<div class="col-last odd-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">Main method.</div>
 </div>
 </div>
@@ -170,14 +166,16 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,nl.codevs.strinput.examples.discord.DiscordCenter)">
 <h3>DiscordBot</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DiscordBot</span>&#8203;<span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commandPrefix,
  @NotNull
- @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityCommand)</span>
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityCommand,
+ @NotNull
+ @NotNull <a href="DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a>&nbsp;commandCenter)</span>
            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/javax/security/auth/login/LoginException.html" title="class or interface in javax.security.auth.login" class="external-link">LoginException</a>,
 <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link">InterruptedException</a></span></div>
 <div class="block">Create a new Discord bot.</div>
@@ -186,6 +184,7 @@ loadScripts(document, 'script');</script>
 <dd><code>authToken</code> - the bot authToken</dd>
 <dd><code>commandPrefix</code> - command prefix</dd>
 <dd><code>activityCommand</code> - command to display in activity</dd>
+<dd><code>commandCenter</code> - the command center</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/javax/security/auth/login/LoginException.html" title="class or interface in javax.security.auth.login" class="external-link">LoginException</a></code> - if login fails</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link">InterruptedException</a></code> - if waiting for JDA setup fails</dd>
@@ -201,17 +200,6 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getBot()">
-<h3>getBot</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="DiscordBot.html" title="class in nl.codevs.strinput.examples.discord">DiscordBot</a></span>&nbsp;<span class="element-name">getBot</span>()</div>
-<div class="block">Get the bot.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>the bot</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="main(java.lang.String[])">
 <h3>main</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">main</span>&#8203;<span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</span></div>
@@ -225,13 +213,13 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setup(java.lang.String,java.lang.String,java.lang.String)">
 <h3>setup</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">net.dv8tion.jda.api.JDA</span>&nbsp;<span class="element-name">setup</span>&#8203;<span class="parameters">(@NotNull
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setup</span>&#8203;<span class="parameters">(@NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commandPrefix,
  @NotNull
  @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;activityCommand)</span>
-                              throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/javax/security/auth/login/LoginException.html" title="class or interface in javax.security.auth.login" class="external-link">LoginException</a>,
+           throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/javax/security/auth/login/LoginException.html" title="class or interface in javax.security.auth.login" class="external-link">LoginException</a>,
 <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link">InterruptedException</a></span></div>
 <div class="block">Main method.</div>
 <dl class="notes">
@@ -239,8 +227,6 @@ loadScripts(document, 'script');</script>
 <dd><code>authToken</code> - bot token</dd>
 <dd><code>commandPrefix</code> - bot command prefix</dd>
 <dd><code>activityCommand</code> - command to display in activity</dd>
-<dt>Returns:</dt>
-<dd>the set-up JDA</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/javax/security/auth/login/LoginException.html" title="class or interface in javax.security.auth.login" class="external-link">LoginException</a></code> - if the bot token isn't working</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link">InterruptedException</a></code> - if the setup fails</dd>

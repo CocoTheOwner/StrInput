@@ -174,7 +174,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/Env.CenterContext.html#%3Cinit%3E()">CenterContext()</a></span> - Constructor for class nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/Env.CenterContext.html" title="class in nl.codevs.strinput.system">Env.CenterContext</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html#channel()">channel()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCommandCategory</a></dt>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCategory.html#channel()">channel()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCategory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordUser.html#channel()">channel()</a></span> - Method in record class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordUser.html" title="class in nl.codevs.strinput.examples.discord">DiscordUser</a></dt>
 <dd>
@@ -214,6 +214,10 @@ loadScripts(document, 'script');</script>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrSettings.html#debug(java.lang.Boolean)">debug(Boolean)</a></span> - Method in class nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrSettings.html" title="class in nl.codevs.strinput.system">StrSettings</a></dt>
 <dd>
 <div class="block">Setting command.</div>
+</dd>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrCenter.html#debug(java.lang.String)">debug(String)</a></span> - Method in class nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrCenter.html" title="class in nl.codevs.strinput.system">StrCenter</a></dt>
+<dd>
+<div class="block">Send a debug message.</div>
 </dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrCenter.html#debug(nl.codevs.strinput.system.text.Str)">debug(Str)</a></span> - Method in class nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrCenter.html" title="class in nl.codevs.strinput.system">StrCenter</a></dt>
 <dd>
@@ -264,15 +268,23 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Discord bot implementation.</div>
 </dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordBot.html#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String)">DiscordBot(String, String, String)</a></span> - Constructor for class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordBot.html" title="class in nl.codevs.strinput.examples.discord">DiscordBot</a></dt>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordBot.html#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,nl.codevs.strinput.examples.discord.DiscordCenter)">DiscordBot(String, String, String, DiscordCenter)</a></span> - Constructor for class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordBot.html" title="class in nl.codevs.strinput.examples.discord">DiscordBot</a></dt>
 <dd>
 <div class="block">Create a new Discord bot.</div>
+</dd>
+<dt><a href="nl/codevs/strinput/examples/discord/DiscordCategory.html" title="interface in nl.codevs.strinput.examples.discord"><span class="type-name-link">DiscordCategory</span></a> - Interface in <a href="nl/codevs/strinput/examples/discord/package-summary.html">nl.codevs.strinput.examples.discord</a></dt>
+<dd>
+<div class="block">Discord command category with auxiliary commands.</div>
 </dd>
 <dt><a href="nl/codevs/strinput/examples/discord/DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord"><span class="type-name-link">DiscordCenter</span></a> - Class in <a href="nl/codevs/strinput/examples/discord/package-summary.html">nl.codevs.strinput.examples.discord</a></dt>
 <dd>
 <div class="block"><a href="nl/codevs/strinput/system/StrCenter.html" title="class in nl.codevs.strinput.system"><code>StrCenter</code></a> for Discord.</div>
 </dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCenter.html#%3Cinit%3E(net.dv8tion.jda.api.JDA)">DiscordCenter(JDA)</a></span> - Constructor for class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a></dt>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCenter.html#%3Cinit%3E(java.io.File,nl.codevs.strinput.system.parameter.StrParameterHandler%5B%5D,nl.codevs.strinput.system.context.StrContextHandler%5B%5D,nl.codevs.strinput.system.StrCategory...)">DiscordCenter(File, StrParameterHandler&lt;?&gt;[], StrContextHandler&lt;?&gt;[], StrCategory...)</a></span> - Constructor for class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a></dt>
+<dd>
+<div class="block">Create a new command center.</div>
+</dd>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCenter.html#%3Cinit%3E(java.io.File,nl.codevs.strinput.system.StrCategory...)">DiscordCenter(File, StrCategory...)</a></span> - Constructor for class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a></dt>
 <dd>
 <div class="block">Create a new command center.</div>
 </dd>
@@ -282,10 +294,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/extensions/DiscordChannelContext.html#%3Cinit%3E()">DiscordChannelContext()</a></span> - Constructor for class nl.codevs.strinput.examples.discord.extensions.<a href="nl/codevs/strinput/examples/discord/extensions/DiscordChannelContext.html" title="class in nl.codevs.strinput.examples.discord.extensions">DiscordChannelContext</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html" title="interface in nl.codevs.strinput.examples.discord"><span class="type-name-link">DiscordCommandCategory</span></a> - Interface in <a href="nl/codevs/strinput/examples/discord/package-summary.html">nl.codevs.strinput.examples.discord</a></dt>
-<dd>
-<div class="block">Discord command category with auxiliary commands.</div>
-</dd>
 <dt><a href="nl/codevs/strinput/examples/discord/DiscordCommands.html" title="class in nl.codevs.strinput.examples.discord"><span class="type-name-link">DiscordCommands</span></a> - Class in <a href="nl/codevs/strinput/examples/discord/package-summary.html">nl.codevs.strinput.examples.discord</a></dt>
 <dd>
 <div class="block">Example implementation of a category for Discord.</div>
@@ -304,7 +312,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/extensions/DiscordTextChannelHandler.html#%3Cinit%3E()">DiscordTextChannelHandler()</a></span> - Constructor for class nl.codevs.strinput.examples.discord.extensions.<a href="nl/codevs/strinput/examples/discord/extensions/DiscordTextChannelHandler.html" title="class in nl.codevs.strinput.examples.discord.extensions">DiscordTextChannelHandler</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html#discordUser()">discordUser()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCommandCategory</a></dt>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCategory.html#discordUser()">discordUser()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCategory</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="nl/codevs/strinput/examples/discord/DiscordUser.html" title="class in nl.codevs.strinput.examples.discord"><span class="type-name-link">DiscordUser</span></a> - Record Class in <a href="nl/codevs/strinput/examples/discord/package-summary.html">nl.codevs.strinput.examples.discord</a></dt>
 <dd>
@@ -418,10 +426,6 @@ loadScripts(document, 'script');</script>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/virtual/StrVirtualCommand.html#getAnnotation()">getAnnotation()</a></span> - Method in class nl.codevs.strinput.system.virtual.<a href="nl/codevs/strinput/system/virtual/StrVirtualCommand.html" title="class in nl.codevs.strinput.system.virtual">StrVirtualCommand</a></dt>
 <dd>
 <div class="block">Get the annotation on the class/method.</div>
-</dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordBot.html#getBot()">getBot()</a></span> - Static method in class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordBot.html" title="class in nl.codevs.strinput.examples.discord">DiscordBot</a></dt>
-<dd>
-<div class="block">Get the bot.</div>
 </dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/virtual/StrVirtualCategory.html#getCommands()">getCommands()</a></span> - Method in class nl.codevs.strinput.system.virtual.<a href="nl/codevs/strinput/system/virtual/StrVirtualCategory.html" title="class in nl.codevs.strinput.system.virtual">StrVirtualCategory</a></dt>
 <dd>
@@ -785,6 +789,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Get the underlying Discord user.</div>
 </dd>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCategory.html#guild()">guild()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCategory</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordUser.html#guild()">guild()</a></span> - Method in record class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordUser.html" title="class in nl.codevs.strinput.examples.discord">DiscordUser</a></dt>
 <dd>
 <div class="block">Returns the value of the <a href="./nl/codevs/strinput/examples/discord/#param-guild"><code>guild</code></a> record component.</div>
@@ -922,6 +928,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:K">K</h2>
 <dl class="index">
+<dt><a href="nl/codevs/strinput/system/k.html" title="class in nl.codevs.strinput.system"><span class="type-name-link">k</span></a> - Class in <a href="nl/codevs/strinput/system/package-summary.html">nl.codevs.strinput.system</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/system/k.html#%3Cinit%3E()">k()</a></span> - Constructor for class nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/k.html" title="class in nl.codevs.strinput.system">k</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/spigotmc/SpigotCommands.html#kill(org.bukkit.entity.Player)">kill(Player)</a></span> - Method in class nl.codevs.strinput.examples.spigotmc.<a href="nl/codevs/strinput/examples/spigotmc/SpigotCommands.html" title="class in nl.codevs.strinput.examples.spigotmc">SpigotCommands</a></dt>
 <dd>
 <div class="block">Kill a player.</div>
@@ -942,7 +952,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Main method.</div>
 </dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html#message()">message()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCommandCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCommandCategory</a></dt>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCategory.html#message()">message()</a></span> - Method in interface nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCategory.html" title="interface in nl.codevs.strinput.examples.discord">DiscordCategory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordUser.html#message()">message()</a></span> - Method in record class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordUser.html" title="class in nl.codevs.strinput.examples.discord">DiscordUser</a></dt>
 <dd>
@@ -1097,17 +1107,17 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Command receiver.</div>
 </dd>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCenter.html#onCommand(net.dv8tion.jda.api.events.message.MessageReceivedEvent,java.lang.String)">onCommand(MessageReceivedEvent, String)</a></span> - Method in class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a></dt>
+<dd>
+<div class="block">Run commands.<br>
+ Precondition is that the event's raw content starts with the prefix.</div>
+</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/spigotmc/SpigotCenter.html#onCommand(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String%5B%5D)">onCommand(CommandSender, Command, String, String[])</a></span> - Method in class nl.codevs.strinput.examples.spigotmc.<a href="nl/codevs/strinput/examples/spigotmc/SpigotCenter.html" title="class in nl.codevs.strinput.examples.spigotmc">SpigotCenter</a></dt>
 <dd>
 <div class="block">Run a spigot command with StrInput.</div>
 </dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html#onCommand(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String%5B%5D)">onCommand(CommandSender, Command, String, String[])</a></span> - Method in class nl.codevs.strinput.examples.spigotmc.<a href="nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html" title="class in nl.codevs.strinput.examples.spigotmc">SpigotPlugin</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordCenter.html#onCommand(net.dv8tion.jda.api.events.message.MessageReceivedEvent,java.lang.String)">onCommand(MessageReceivedEvent, String)</a></span> - Method in class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordCenter.html" title="class in nl.codevs.strinput.examples.discord">DiscordCenter</a></dt>
-<dd>
-<div class="block">Run commands.<br>
- Precondition is that the event's raw content starts with the prefix.</div>
-</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html#onEnable()">onEnable()</a></span> - Method in class nl.codevs.strinput.examples.spigotmc.<a href="nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html" title="class in nl.codevs.strinput.examples.spigotmc">SpigotPlugin</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/examples/discord/DiscordBot.html#onMessageReceived(net.dv8tion.jda.api.events.message.MessageReceivedEvent)">onMessageReceived(MessageReceivedEvent)</a></span> - Method in class nl.codevs.strinput.examples.discord.<a href="nl/codevs/strinput/examples/discord/DiscordBot.html" title="class in nl.codevs.strinput.examples.discord">DiscordBot</a></dt>
@@ -1386,6 +1396,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Save the config to the specified file.</div>
 </dd>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrUser.html#sendMessage(java.lang.String...)">sendMessage(String...)</a></span> - Method in interface nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrUser.html" title="interface in nl.codevs.strinput.system">StrUser</a></dt>
+<dd>
+<div class="block">Send messages to the user.</div>
+</dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrUser.html#sendMessage(java.util.List)">sendMessage(List&lt;Str&gt;)</a></span> - Method in interface nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrUser.html" title="interface in nl.codevs.strinput.system">StrUser</a></dt>
 <dd>
 <div class="block">Send multiple messages to the user.</div>
@@ -1406,11 +1420,9 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Send a message to the user.</div>
 </dd>
-<dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrUser.html#sendMessage(nl.codevs.strinput.system.text.Str%5B%5D)">sendMessage(Str[])</a></span> - Method in interface nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrUser.html" title="interface in nl.codevs.strinput.system">StrUser</a></dt>
+<dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrUser.html#sendMessage(nl.codevs.strinput.system.text.Str...)">sendMessage(Str...)</a></span> - Method in interface nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrUser.html" title="interface in nl.codevs.strinput.system">StrUser</a></dt>
 <dd>
-<div class="block">Send multiple messages to the user.<br>
- Overwrite <a href="nl/codevs/strinput/system/StrUser.html#sendMessage(java.util.List)"><code>StrUser.sendMessage(List)</code></a>
- instead of this, as this points there.</div>
+<div class="block">Send multiple messages to the user.</div>
 </dd>
 <dt><span class="member-name-link"><a href="nl/codevs/strinput/system/StrSettings.html#setAsync(java.lang.Boolean)">setAsync(Boolean)</a></span> - Method in class nl.codevs.strinput.system.<a href="nl/codevs/strinput/system/StrSettings.html" title="class in nl.codevs.strinput.system">StrSettings</a></dt>
 <dd>

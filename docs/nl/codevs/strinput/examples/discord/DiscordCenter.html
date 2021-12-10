@@ -116,8 +116,16 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(net.dv8tion.jda.api.JDA)">DiscordCenter</a></span>&#8203;(net.dv8tion.jda.api.JDA&nbsp;discordJDA)</code></div>
+<div class="col-constructor-name even-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(java.io.File,nl.codevs.strinput.system.parameter.StrParameterHandler%5B%5D,nl.codevs.strinput.system.context.StrContextHandler%5B%5D,nl.codevs.strinput.system.StrCategory...)">DiscordCenter</a></span>&#8203;(@NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;settingsFile,
+ @NotNull <a href="../../system/parameter/StrParameterHandler.html" title="interface in nl.codevs.strinput.system.parameter">StrParameterHandler</a>&lt;?&gt;[]&nbsp;extraParameterHandlers,
+ @NotNull <a href="../../system/context/StrContextHandler.html" title="interface in nl.codevs.strinput.system.context">StrContextHandler</a>&lt;?&gt;[]&nbsp;extraContextHandlers,
+ @NotNull <a href="../../system/StrCategory.html" title="interface in nl.codevs.strinput.system">StrCategory</a>...&nbsp;categories)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Create a new command center.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><span class="member-name-link"><a href="#%3Cinit%3E(java.io.File,nl.codevs.strinput.system.StrCategory...)">DiscordCenter</a></span>&#8203;(@NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;settingsFile,
+ @NotNull <a href="../../system/StrCategory.html" title="interface in nl.codevs.strinput.system">StrCategory</a>...&nbsp;categories)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Create a new command center.</div>
 </div>
 </div>
@@ -135,8 +143,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onCommand(net.dv8tion.jda.api.events.message.MessageReceivedEvent,java.lang.String)">onCommand</a></span>&#8203;(net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</code></div>
+<div class="col-second even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table"><code><span class="member-name-link"><a href="#onCommand(net.dv8tion.jda.api.events.message.MessageReceivedEvent,java.lang.String)">onCommand</a></span>&#8203;(@NotNull net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event,
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</code></div>
 <div class="col-last even-row-color method-summary-table-tab2 method-summary-table-tab4 method-summary-table">
 <div class="block">Run commands.<br>
  Precondition is that the event's raw content starts with the prefix.</div>
@@ -146,7 +154,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods.inherited.from.class.nl.codevs.strinput.system.StrCenter">Methods inherited from class&nbsp;nl.codevs.strinput.system.<a href="../../system/StrCenter.html" title="class in nl.codevs.strinput.system">StrCenter</a></h3>
-<code><a href="../../system/StrCenter.html#debug(nl.codevs.strinput.system.text.Str)">debug</a>, <a href="../../system/StrCenter.html#getConsole()">getConsole</a>, <a href="../../system/StrCenter.html#getListing(java.lang.String,java.util.List)">getListing</a>, <a href="../../system/StrCenter.html#getSettings()">getSettings</a>, <a href="../../system/StrCenter.html#onCommand(java.util.List,nl.codevs.strinput.system.StrUser)">onCommand</a>, <a href="../../system/StrCenter.html#runSync(java.lang.Runnable)">runSync</a></code></div>
+<code><a href="../../system/StrCenter.html#debug(java.lang.String)">debug</a>, <a href="../../system/StrCenter.html#debug(nl.codevs.strinput.system.text.Str)">debug</a>, <a href="../../system/StrCenter.html#getConsole()">getConsole</a>, <a href="../../system/StrCenter.html#getListing(java.lang.String,java.util.List)">getListing</a>, <a href="../../system/StrCenter.html#getSettings()">getSettings</a>, <a href="../../system/StrCenter.html#onCommand(java.util.List,nl.codevs.strinput.system.StrUser)">onCommand</a>, <a href="../../system/StrCenter.html#runSync(java.lang.Runnable)">runSync</a></code></div>
 <div class="inherited-list">
 <h3 id="methods.inherited.from.class.java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -162,13 +170,38 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.dv8tion.jda.api.JDA)">
+<section class="detail" id="&lt;init&gt;(java.io.File,nl.codevs.strinput.system.StrCategory...)">
 <h3>DiscordCenter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DiscordCenter</span>&#8203;<span class="parameters">(net.dv8tion.jda.api.JDA&nbsp;discordJDA)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DiscordCenter</span>&#8203;<span class="parameters">(@NotNull
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;settingsFile,
+ @NotNull
+ @NotNull <a href="../../system/StrCategory.html" title="interface in nl.codevs.strinput.system">StrCategory</a>...&nbsp;categories)</span></div>
 <div class="block">Create a new command center.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>discordJDA</code> - the JDA created for this center</dd>
+<dd><code>settingsFile</code> - the directory where the settings should be stored</dd>
+<dd><code>categories</code> - vararg root categories</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.io.File,nl.codevs.strinput.system.parameter.StrParameterHandler[],nl.codevs.strinput.system.context.StrContextHandler[],nl.codevs.strinput.system.StrCategory...)">
+<h3>DiscordCenter</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DiscordCenter</span>&#8203;<span class="parameters">(@NotNull
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;settingsFile,
+ @NotNull
+ @NotNull <a href="../../system/parameter/StrParameterHandler.html" title="interface in nl.codevs.strinput.system.parameter">StrParameterHandler</a>&lt;?&gt;[]&nbsp;extraParameterHandlers,
+ @NotNull
+ @NotNull <a href="../../system/context/StrContextHandler.html" title="interface in nl.codevs.strinput.system.context">StrContextHandler</a>&lt;?&gt;[]&nbsp;extraContextHandlers,
+ @NotNull
+ @NotNull <a href="../../system/StrCategory.html" title="interface in nl.codevs.strinput.system">StrCategory</a>...&nbsp;categories)</span></div>
+<div class="block">Create a new command center.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>settingsFile</code> - the directory where the settings should be stored</dd>
+<dd><code>extraParameterHandlers</code> - extra parameter handlers on top of the default discord & java ones</dd>
+<dd><code>extraContextHandlers</code> - extra context handlers on top of the default discord & java ones</dd>
+<dd><code>categories</code> - vararg root categories</dd>
 </dl>
 </section>
 </li>
@@ -183,8 +216,10 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onCommand(net.dv8tion.jda.api.events.message.MessageReceivedEvent,java.lang.String)">
 <h3>onCommand</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onCommand</span>&#8203;<span class="parameters">(net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event,
- <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onCommand</span>&#8203;<span class="parameters">(@NotNull
+ @NotNull net.dv8tion.jda.api.events.message.MessageReceivedEvent&nbsp;event,
+ @NotNull
+ @NotNull <a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;prefix)</span></div>
 <div class="block">Run commands.<br>
  Precondition is that the event's raw content starts with the prefix.</div>
 <dl class="notes">
