@@ -20,7 +20,6 @@ package nl.codevs.strinput.system;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
