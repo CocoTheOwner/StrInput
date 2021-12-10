@@ -25,6 +25,7 @@ import nl.codevs.strinput.examples.discord.extensions.DiscordUserContext;
 import nl.codevs.strinput.examples.discord.extensions.DiscordUserHandler;
 import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.StrCenter;
+import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +51,7 @@ public class DiscordCenter extends StrCenter {
             @NotNull final File settingsFile,
             @NotNull final StrCategory... categories
     ) {
-        super(
+        this(
                 settingsFile,
                 DEFAULT_CONSOLE_USER,
                 new StrParameterHandler<?>[0],
@@ -72,9 +73,41 @@ public class DiscordCenter extends StrCenter {
             @NotNull final StrContextHandler<?>[] extraContextHandlers,
             @NotNull final StrCategory... categories
     ) {
-        super (
+        this(
                 settingsFile,
                 DEFAULT_CONSOLE_USER,
+                extraParameterHandlers,
+                extraContextHandlers,
+                categories
+        );
+        ParameterHandling.register(
+                new DiscordTextChannelHandler(),
+                new DiscordMemberHandler(),
+                new DiscordUserHandler()
+        );
+        ContextHandling.register(
+                new DiscordChannelContext(),
+                new DiscordUserContext()
+        );
+    }
+
+    /**
+     * Create a new command center.
+     * @param settingsFile the directory where the settings should be stored
+     * @param extraParameterHandlers extra parameter handlers on top of the default discord and java ones
+     * @param extraContextHandlers extra context handlers on top of the default discord and java ones
+     * @param categories vararg root categories
+     */
+    public DiscordCenter(
+            @NotNull final File settingsFile,
+            @NotNull final StrUser console,
+            @NotNull final StrParameterHandler<?>[] extraParameterHandlers,
+            @NotNull final StrContextHandler<?>[] extraContextHandlers,
+            @NotNull final StrCategory... categories
+    ) {
+        super(
+                settingsFile,
+                console,
                 extraParameterHandlers,
                 extraContextHandlers,
                 categories
