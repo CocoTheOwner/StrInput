@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 group 'nl.codevs'
-version 'v0.2'
+version '1.3'
 
 repositories {
     maven {
