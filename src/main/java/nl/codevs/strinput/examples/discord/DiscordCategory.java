@@ -17,6 +17,7 @@
  */
 package nl.codevs.strinput.examples.discord;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Message;
@@ -28,7 +29,7 @@ import nl.codevs.strinput.system.StrCategory;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public interface DiscordCommandCategory extends StrCategory {
+public interface DiscordCategory extends StrCategory {
 
     /**
      * @return The player instance of the user (null if not a player).
@@ -46,6 +47,13 @@ public interface DiscordCommandCategory extends StrCategory {
         } else {
             return ((DiscordUser) user()).channel();
         }
+    }
+
+    /**
+     * @return The guild in which the message was sent (null if not in a guid).
+     */
+    default Guild guild() {
+        return ((DiscordUser) user()).guild();
     }
 
     /**

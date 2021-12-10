@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.entities.User;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * @since v0.1
  */
 @StrInput(name = "example", description = "example commands", aliases = "str")
-public class DiscordCommands implements DiscordCommandCategory {
+public class DiscordCommands implements DiscordCategory {
 
     /**
      * Ping the user.
@@ -76,12 +77,13 @@ public class DiscordCommands implements DiscordCommandCategory {
      */
     @StrInput(name = "cachedUsers", description = "Get cached users")
     public void cachedUsers() {
-        message().reply(((DiscordUser) user())
-                .guild()
-                .getMembers()
-                .stream()
-                .map(IMentionable::getAsMention)
-                .collect(Collectors.joining(", "))
+        message().reply(
+                Objects.requireNonNull(
+                                ((DiscordUser) user()).guild()
+                        ).getMembers()
+                        .stream()
+                        .map(IMentionable::getAsMention)
+                        .collect(Collectors.joining(", "))
         ).queue();
     }
 }

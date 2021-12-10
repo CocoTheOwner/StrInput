@@ -43,23 +43,48 @@ public class DiscordCenter extends StrCenter {
 
     /**
      * Create a new command center.
+     * @param categories vararg root categories
      */
     public DiscordCenter(
             @NotNull final StrCategory... categories
     ) {
         super(
-                new File("settings"),
+        new File("settings"),
                 DEFAULT_CONSOLE_USER,
-                new StrParameterHandler[]{
-                        new DiscordTextChannelHandler(),
-                        new DiscordMemberHandler(),
-                        new DiscordUserHandler()
-                },
-                new StrContextHandler[]{
-                        new DiscordChannelContext(),
-                        new DiscordUserContext()
-                },
+                new StrParameterHandler<?>[0],
+                new StrContextHandler<?>[0],
                 categories
+        );
+    }
+
+    /**
+     * Create a new command center.
+     * @param settingsFile the directory where the settings should be stored
+     * @param extraParameterHandlers extra parameter handlers on top of the default discord & java ones
+     * @param extraContextHandlers extra context handlers on top of the default discord & java ones
+     * @param categories vararg root categories
+     */
+    public DiscordCenter(
+            @NotNull final File settingsFile,
+            @NotNull final StrParameterHandler<?>[] extraParameterHandlers,
+            @NotNull final StrContextHandler<?>[] extraContextHandlers,
+            @NotNull final StrCategory... categories
+    ) {
+        super (
+                settingsFile,
+                DEFAULT_CONSOLE_USER,
+                extraParameterHandlers,
+                extraContextHandlers,
+                categories
+        );
+        ParameterHandling.register(
+                new DiscordTextChannelHandler(),
+                new DiscordMemberHandler(),
+                new DiscordUserHandler()
+        );
+        ContextHandling.register(
+                new DiscordChannelContext(),
+                new DiscordUserContext()
         );
     }
 
@@ -70,8 +95,8 @@ public class DiscordCenter extends StrCenter {
      * @param prefix command prefix that should be removed
      */
     public void onCommand(
-            final MessageReceivedEvent event,
-            final String prefix
+            final @NotNull MessageReceivedEvent event,
+            final @NotNull String prefix
     ) {
         DiscordUser user = DiscordUser.of(event);
         assert user.channel() != null;

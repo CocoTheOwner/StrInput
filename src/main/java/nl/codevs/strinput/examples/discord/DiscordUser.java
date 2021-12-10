@@ -82,6 +82,7 @@ public record DiscordUser(
      */
     @Override
     public void sendMessage(@NotNull final Str msg) {
+        assert channel() != null;
         channel().sendMessage(strToString(msg)).queue();
     }
 
