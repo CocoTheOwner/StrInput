@@ -268,7 +268,6 @@ public final class StrVirtualCategory implements StrVirtual {
                 continue;
             }
 
-            debug(new Str("REE! " + subCat.getClass().getSimpleName()));
             try {
                 new FileWriter(
                         subCat.getClass().getSimpleName() + ".txt"

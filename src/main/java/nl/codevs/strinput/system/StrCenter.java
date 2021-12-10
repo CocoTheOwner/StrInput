@@ -104,6 +104,8 @@ public class StrCenter {
             @NotNull final StrContextHandler<?>[] extraContextHandlers,
             @NotNull final StrCategory... rootCommands
     ) {
+        Env.touch(this);
+        Env.touch(consoleUser);
 
         settingsFile = new File(settingsFolder.getAbsolutePath()
                 + "/strsettings.json");
