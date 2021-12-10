@@ -62,8 +62,8 @@ public class DiscordCenter extends StrCenter {
     /**
      * Create a new command center.
      * @param settingsFile the directory where the settings should be stored
-     * @param extraParameterHandlers extra parameter handlers on top of the default discord & java ones
-     * @param extraContextHandlers extra context handlers on top of the default discord & java ones
+     * @param extraParameterHandlers extra parameter handlers on top of the default discord and java ones
+     * @param extraContextHandlers extra context handlers on top of the default discord and java ones
      * @param categories vararg root categories
      */
     public DiscordCenter(
