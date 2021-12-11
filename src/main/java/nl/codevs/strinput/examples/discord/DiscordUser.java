@@ -24,6 +24,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.Str;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +49,8 @@ public record DiscordUser(
      * @param event the event
      * @return the Discord User
      */
-    public static DiscordUser of(final MessageReceivedEvent event) {
+    @Contract("_ -> new")
+    public static @NotNull DiscordUser of(final @NotNull MessageReceivedEvent event) {
         return new DiscordUser(
                 event.getAuthor(),
                 event.getTextChannel(),
