@@ -71,10 +71,10 @@ public @interface Param {
      * <p>
      * Provides additional values to just the {@link #name() name} if specified, or the method name by default<br>
      * Can be initialized as just a string
-     * (ex. <code>"alias"</code>) or as an array (ex. <code>{"alias1", "alias2"}</code>)<br>
-     * If someone uses <code>/plugin foo bar=baz</code>,
-     * and you specify <code>alias="b"</code> here,
-     * <code>/plugin foo b=baz</code> will do the exact same.
+     * (ex. {@code "alias"}) or as an array (ex. {@code {"alias1", "alias2"}})<br>
+     * If someone uses {@code /plugin foo bar=baz},
+     * and you specify {@code alias="b"} here,
+     * {@code /plugin foo b=baz} will do the exact same.
      * @return the aliases of this parameter
      */
     String[] aliases() default "";
