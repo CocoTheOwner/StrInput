@@ -98,7 +98,7 @@ public final class Env {
      * This system REQUIRES:
      * <ul>
      *     <li>each command to be be handled in a new thread</li>
-     *     <li>a call to {@link #touch(StrUser)} asap after a command call</li>
+     *     <li>a call to {@link #touch(StrUser)} before context is accessed</li>
      * </ul>
      *
      * @author Sjoerd van de Goor
@@ -109,8 +109,7 @@ public final class Env {
         /**
          * Map containing environment users.
          */
-        private static final
-        ConcurrentHashMap<Thread, StrUser> MAP = new ConcurrentHashMap<>();
+        private static final ConcurrentHashMap<Thread, StrUser> MAP = new ConcurrentHashMap<>();
 
         /**
          * Get the current user from the current thread's context.
@@ -144,12 +143,11 @@ public final class Env {
 
     /**
      * Context handling for command centers (command center handling).
-     *
+     * <p>
      * This system REQUIRES:
      * <ul>
      *     <li>each command to be be handled in a new thread</li>
-     *     <li>a call to {@link #touch(StrCenter)}
-     *     asap after a command call</li>
+     *     <li>a call to {@link #touch(StrCenter)} before context is accessed</li>
      * </ul>
      *
      * @author Sjoerd van de Goor
@@ -160,8 +158,7 @@ public final class Env {
         /**
          * Map containing environment {@link StrCenter}.
          */
-        private static final
-        ConcurrentHashMap<Thread, StrCenter> MAP = new ConcurrentHashMap<>();
+        private static final ConcurrentHashMap<Thread, StrCenter> MAP = new ConcurrentHashMap<>();
 
         /**
          * Get the current center from the current thread's context.
