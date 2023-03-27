@@ -1,6 +1,6 @@
-[license]: https://github.com/CocoTheOwner/Strinput/tree/main/LICENSE.md
+[license]: https://github.com/CocoTheOwner/StrInput/tree/main/LICENSE.md
 [license-shield]: https://img.shields.io/badge/license-GNU%20GPL%20v3-green
-[docs]: https://cocotheowner.github.io/Strinput/index.html
+[docs]: https://cocotheowner.github.io/StrInput/index.html
 [docs-shield]: https://img.shields.io/badge/Docs-Github%20Pages-green
 
 [ ![license-shield]][license]
@@ -8,7 +8,7 @@
 [ ![docs-shield]][docs]
 
 
-# Strinput
+# StrInput
 
 StrInput provides a feature-rich general-use command parsing system.
 This library helps implement command systems through reducing type conversion complexity and command parsing improvements.
@@ -22,7 +22,7 @@ This library helps implement command systems through reducing type conversion co
 
 # Release with jitpack support
 StrInput is now ready to be used. Though lacking some features, its main flow is working.
-Examples for both [Discord](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/examples/discord/package-summary.html) ([JDA](https://github.com/DV8FromTheWorld/JDA)) and [Spigot](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/examples/spigotmc/package-summary.html) ([SpigotMC](https://github.com/SpigotMC)) are present in the `examples` module.
+Examples for both [Discord](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/examples/discord/package-summary.html) ([JDA](https://github.com/DV8FromTheWorld/JDA)) and [Spigot](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/examples/spigotmc/package-summary.html) ([SpigotMC](https://github.com/SpigotMC)) are present in the `examples` module.
 
 # Installation
 
@@ -58,7 +58,7 @@ Setting up the command system is quite simple and requires only three steps.
 3. [First Category](#first-category)
 
 ## User
-To interact with the system you will need an implementation of the abstract class [StrUser](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrUser.html). This implementation will handle messages from the system to the user.
+To interact with the system you will need an implementation of the abstract class [StrUser](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrUser.html). This implementation will handle messages from the system to the user.
 
 ```java
 public class CustomUser implements StrUser {
@@ -67,8 +67,8 @@ public class CustomUser implements StrUser {
 ```
 
 ## Command Center
-The command center is an instance of [StrCenter](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCenter.html).
-You provide in the constructor at least a settings directory and one (or more) class instances (implementing [StrCategory](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCategory.html)), which are your root commands. Additionally, you can (as shown in [Setup (advanced)](#setup-(advanced))) optionally specify a console [StrUser](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrUser.html) (which by default simply uses `System.out.println()`), extra [StrParameterHandlers](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/parameter/StrParameterHandler.html) and [StrContextHandlers](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/context/StrContextHandler.html). It is advisable to store the command system in a main class (such as in the Spigot example, [SpigotPlugin](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html)).
+The command center is an instance of [StrCenter](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrCenter.html).
+You provide in the constructor at least a settings directory and one (or more) class instances (implementing [StrCategory](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrCategory.html)), which are your root commands. Additionally, you can (as shown in [Setup (advanced)](#setup-(advanced))) optionally specify a console [StrUser](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrUser.html) (which by default simply uses `System.out.println()`), extra [StrParameterHandlers](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/parameter/StrParameterHandler.html) and [StrContextHandlers](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/context/StrContextHandler.html). It is advisable to store the command system in a main class (such as in the Spigot example, [SpigotPlugin](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/examples/spigotmc/SpigotPlugin.html)).
 
 ```java
 public class MainClass {
@@ -111,8 +111,8 @@ Now all that is left is creating the first command category!
 
 ## First Category
 Each command (sub)category gets its own class.
-Command categories can extend [StrCategory](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCategory.html) (or a custom expansion of that, which you can create, see [StrCategory Extension](#strcategory-extension)) to gain access to the current [#user()](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCategory.html#user()) (the command sender) and the current [#center()](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrCategory.html#center()) (the active command center).__
-The category and commands therein must be annotated with [@StrInput](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/StrInput.html) and parameters with [@Param](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/Param.html). These annotation also contain settings such as the name, aliases and a description (and more, see the classes).
+Command categories can extend [StrCategory](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrCategory.html) (or a custom expansion of that, which you can create, see [StrCategory Extension](#strcategory-extension)) to gain access to the current [#user()](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrCategory.html#user()) (the command sender) and the current [#center()](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrCategory.html#center()) (the active command center).__
+The category and commands therein must be annotated with [@StrInput](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/StrInput.html) and parameters with [@Param](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/Param.html). These annotation also contain settings such as the name, aliases and a description (and more, see the classes).
 
 ```java
 public final class ExampleCategory implements SpigotCommandCategory {
@@ -142,7 +142,7 @@ public final class ExampleCategory implements SpigotCommandCategory {
     }
 }
 ```
-_Note `)`. [Str](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/text/Str.html) is the custom text format which can contain colors, color gradients, clickable event and text-hovering._
+_Note `)`. [Str](https://cocotheowner.github.io/StrInput/nl/codevs/strinput/system/text/Str.html) is the custom text format which can contain colors, color gradients, clickable event and text-hovering._
 
 # Setup (advanced)
 A set of custom options are available to further simplify command creation.

@@ -1,6 +1,6 @@
 /*
  * This file is part of the StrInput distribution.
- * (https://github.com/CocoTheOwner/Strinput)
+ * (https://github.com/CocoTheOwner/StrInput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,14 +28,11 @@ import nl.codevs.strinput.system.parameter.ShortHandler;
 import nl.codevs.strinput.system.parameter.StringHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
-import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
 import org.apache.commons.lang.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.List;

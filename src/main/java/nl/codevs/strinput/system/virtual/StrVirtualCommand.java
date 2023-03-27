@@ -1,6 +1,6 @@
 /*
  * This file is part of the StrInput distribution.
- * (https://github.com/CocoTheOwner/Strinput)
+ * (https://github.com/CocoTheOwner/StrInput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
  * This program is free software: you can redistribute it and/or modify
