@@ -82,7 +82,7 @@ public class StrCenter {
      * @return the settings
      */
     public StrSettings getSettings() {
-        return settings;
+        return settings == null ? new StrSettings() : settings;
     }
 
     /**
@@ -194,7 +194,7 @@ public class StrCenter {
             s.start();
 
             // Hot-load settings
-            settings = settings.hotLoad(settingsFile, this);
+            settings = getSettings().hotLoad(settingsFile, this);
 
             // Remove empty arguments (spaces)
             List<String> arguments = command.stream().filter(
@@ -224,7 +224,7 @@ public class StrCenter {
             }
 
             s.stop();
-            if (settings.isDebugTime()) {
+            if (getSettings().isDebugTime()) {
                 debug(new Str(C.G).a("Command sent by ")
                         .a(C.B).a(user.getName())
                         .a(C.G).a(" took ")
@@ -234,7 +234,7 @@ public class StrCenter {
 
         };
 
-        if (settings.isAsync()) {
+        if (getSettings().isAsync()) {
             new Thread(cmd, "StrInput command by " + user.getName()).start();
         } else {
             cmd.run();
@@ -246,8 +246,8 @@ public class StrCenter {
      * @param message the debug message
      */
     public void debug(final Str message) {
-        if (settings.isDebug()) {
-            console.sendMessage(settings.getDebugPrefix().copy().a(C.G).a("DEBG: ").a(message));
+        if (getSettings().isDebug()) {
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.G).a("DEBG: ").a(message));
         }
     }
 
@@ -256,8 +256,8 @@ public class StrCenter {
      * @param message the warning message
      */
     public void warn(final Str message) {
-        if (settings.isWarn()) {
-            console.sendMessage(settings.getDebugPrefix().copy().a(C.Y).a("WARN: ").a(message));
+        if (getSettings().isWarn()) {
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.Y).a("WARN: ").a(message));
         }
     }
 
@@ -266,8 +266,8 @@ public class StrCenter {
      * @param message the error message
      */
     public void error(final Str message) {
-        if (settings.isError()) {
-            console.sendMessage(settings.getDebugPrefix().copy().a(C.R).a("ERRR: ").a(message));
+        if (getSettings().isError()) {
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.R).a("ERRR: ").a(message));
         }
     }
 
@@ -276,8 +276,8 @@ public class StrCenter {
      * @param message the information message
      */
     public void info(final Str message) {
-        if (settings.isInfo()) {
-            console.sendMessage(settings.getDebugPrefix().copy().a(C.B).a("INFO: ").a(message));
+        if (getSettings().isInfo()) {
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.B).a("INFO: ").a(message));
         }
     }
 
