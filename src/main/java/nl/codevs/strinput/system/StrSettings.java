@@ -69,10 +69,10 @@ public final class StrSettings implements StrCategory {
      * Debug message prefix.
      * Cannot be modified by commands.
      */
-    private final Str debugPrefix = new Str(C.R).a("[")
-            .a(C.G).a("StrInput")
-            .a(C.R).a("] ")
-            .a(C.X);
+    private final Str debugPrefix = new Str(C.RED).a("[")
+            .a(C.GREEN).a("StrInput")
+            .a(C.RED).a("] ")
+            .a(C.RESET);
 
     /**
      * @return the debug message prefix.
@@ -104,10 +104,10 @@ public final class StrSettings implements StrCategory {
                     final int times
     ) {
         pickingAmount = times;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("option picking amount ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(pickingAmount))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("option picking amount ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(pickingAmount))
         );
     }
     /**
@@ -137,10 +137,10 @@ public final class StrSettings implements StrCategory {
                     final int time
     ) {
         pickingTimeout = time;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("option picking time ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(pickingTimeout))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("option picking time ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(pickingTimeout))
         );
     }
     /**
@@ -170,10 +170,10 @@ public final class StrSettings implements StrCategory {
                     final Double threshold
     ) {
         matchThreshold = threshold;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("matching threshold ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(matchThreshold))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("matching threshold ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(matchThreshold))
         );
     }
 
@@ -207,10 +207,10 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         settingsCommands = enable == null ? !settingsCommands : enable;
-        user().sendMessage(new Str(C.G).a("After a restart, ")
-                .a(C.B).a("settings commands ")
-                .a(C.G).a("will be: ")
-                .a(C.B).a(String.valueOf(settingsCommands))
+        user().sendMessage(new Str(C.GREEN).a("After a restart, ")
+                .a(C.BLUE).a("settings commands ")
+                .a(C.GREEN).a("will be: ")
+                .a(C.BLUE).a(String.valueOf(settingsCommands))
         );
     }
 
@@ -243,10 +243,10 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         async = enable == null ? !async : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("async ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(async))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("async ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(async))
         );
     }
 
@@ -278,10 +278,10 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         allowNullInput = enable == null ? !allowNullInput : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("allow null input ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(allowNullInput))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("allow null input ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(allowNullInput))
         );
     }
 
@@ -312,10 +312,10 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         debug = enable == null ? !debug : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("debug ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(debug))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("debug ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(debug))
         );
     }
 
@@ -346,10 +346,10 @@ public final class StrSettings implements StrCategory {
             final Boolean enable
     ) {
         warn = enable == null ? !warn : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("warnings ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(warn))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("warnings ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(warn))
         );
     }
 
@@ -380,10 +380,10 @@ public final class StrSettings implements StrCategory {
             final Boolean enable
     ) {
         error = enable == null ? !error : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("errors ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(error))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("errors ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(error))
         );
     }
 
@@ -414,10 +414,10 @@ public final class StrSettings implements StrCategory {
             final Boolean enable
     ) {
         info = enable == null ? !info : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("information ")
-                .a(C.G).a("to: ")
-                .a(C.B).a(String.valueOf(info))
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("information ")
+                .a(C.GREEN).a("to: ")
+                .a(C.BLUE).a(String.valueOf(info))
         );
     }
 
@@ -449,9 +449,9 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         debugTime = enable == null ? !debugTime : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("debugTime ")
-                .a(C.G).a("to: ")
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("debugTime ")
+                .a(C.GREEN).a("to: ")
                 .a(String.valueOf(debugTime))
         );
     }
@@ -484,9 +484,9 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         debugMatching = enable == null ? !debugMatching : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("debug matching ")
-                .a(C.G).a("to: ")
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("debug matching ")
+                .a(C.GREEN).a("to: ")
                 .a(String.valueOf(debugMatching))
         );
     }
@@ -518,9 +518,9 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         pickFirstOnMultiple = enable == null ? !pickFirstOnMultiple : enable;
-        user().sendMessage(new Str(C.G).a("Set ")
-                .a(C.B).a("pick first on multiple ")
-                .a(C.G).a("to: ")
+        user().sendMessage(new Str(C.GREEN).a("Set ")
+                .a(C.BLUE).a("pick first on multiple ")
+                .a(C.GREEN).a("to: ")
                 .a(String.valueOf(pickFirstOnMultiple))
         );
     }
@@ -558,10 +558,10 @@ public final class StrSettings implements StrCategory {
                 GSON.toJson(newSettings, StrSettings.class, f);
                 f.close();
                 newSettings.lastChanged = settingsFile.lastModified();
-                center.debug(new Str(C.G).a("Made new StrInput config (")
-                        .a(C.B).a(settingsFile.getParent().replace("\\", "/")
+                center.debug(new Str(C.GREEN).a("Made new StrInput config (")
+                        .a(C.BLUE).a(settingsFile.getParent().replace("\\", "/")
                                 + "/" + settingsFile.getName())
-                        .a(C.G).a(")"));
+                        .a(C.GREEN).a(")"));
                 return newSettings;
             }
             return new Gson().fromJson(
@@ -588,7 +588,7 @@ public final class StrSettings implements StrCategory {
             FileWriter f = new FileWriter(settingsFile);
             GSON.toJson(this, StrSettings.class, f);
             f.close();
-            center.debug(new Str(C.G).a("Saved StrInput Settings"));
+            center.debug(new Str(C.GREEN).a("Saved StrInput Settings"));
             lastChanged = settingsFile.lastModified();
         } catch (IOException e) {
             center.debug(new Str("Failed to save config: \n"
@@ -617,7 +617,7 @@ public final class StrSettings implements StrCategory {
         // File is newer
         if (lastChanged != settingsFile.lastModified()) {
             lastChanged = settingsFile.lastModified();
-            center.debug(new Str(C.G).a("Hotloaded StrInput Settings"));
+            center.debug(new Str(C.GREEN).a("Hotloaded StrInput Settings"));
             return fileSettings;
         }
 

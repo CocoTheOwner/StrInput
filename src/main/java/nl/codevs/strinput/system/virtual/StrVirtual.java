@@ -183,8 +183,8 @@ public interface StrVirtual {
      */
     default void debug(@NotNull Str str) {
         if (Env.settings().isDebugMatching()) {
-            center().debug(new Str(getName(), C.B)
-                    .a(new Str(": ", C.G))
+            center().debug(new Str(getName(), C.BLUE)
+                    .a(new Str(": ", C.GREEN))
                     .a(str.copy())
             );
         }

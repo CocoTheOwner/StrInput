@@ -26,42 +26,77 @@ public enum C {
     /**
      * Red color.
      */
-    R("red"),
+    RED('1'),
     /**
      * Green color.
      */
-    G("green"),
+    GREEN('2'),
     /**
      * Blue color.
      */
-    B("blue"),
+    BLUE('3'),
     /**
      * Yellow color.
      */
-    Y("yellow"),
+    YELLOW('4'),
     /**
      * Reset color.
      */
-    X("reset");
+    RESET('0');
 
     /**
-     * Name of the color.
+     * To String conversion
      */
-    private final String name;
+    private final String toString;
+
+    /**
+     * The special character which prefixes all chat colour codes. Use this if you
+     * need to dynamically convert colour codes from your custom format.
+     */
+    public static final char COLOR_CHAR =  '\u00A7';
 
     /**
      * Construct a new color.
      * @param colorName the name of the color
      */
-    C(final String colorName) {
-        name = colorName;
+    C(final char code) {
+        toString = new String(new char[]{COLOR_CHAR, code});
     }
 
     /**
-     * Get the color name.
-     * @return the color name
+     * Returns the name of this enum constant, as contained in the
+     * declaration.  This method may be overridden, though it typically
+     * isn't necessary or desirable.  An enum class should override this
+     * method when a more "programmer-friendly" string form exists.
+     *
+     * @return the name of this enum constant
      */
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return toString;
+    }
+
+    /**
+     * Convert a string to a blank output (colorless)
+     * @a
+     */
+    public static String removeColor(String string) {
+
+        // Index to iterate through characters
+        int i = 0;
+
+        // Result builder
+        StringBuilder result = new StringBuilder();
+
+        while (i < string.length()) {
+            if (string.charAt(i) != COLOR_CHAR) {
+                result.append(string.charAt(i)); // Append non-color character to output
+            } else {
+                i += 1; // Skip the next character, which is used to indicate the color.
+            }
+            i += 1; // Go to the next character
+        }
+
+        return result.toString();
     }
 }

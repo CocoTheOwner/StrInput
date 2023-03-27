@@ -150,7 +150,7 @@ public final class StrVirtualCategory implements StrVirtual {
     @Override
     public boolean run(@NotNull final List<String> arguments) {
         if (arguments.size() == 0) {
-            debug(new Str(C.G).a("Sending help to user"));
+            debug(new Str(C.GREEN).a("Sending help to user"));
             help(user());
             return true;
         }
@@ -162,7 +162,7 @@ public final class StrVirtualCategory implements StrVirtual {
                 o -> o.doesMatchUser(user())
         ).collect(Collectors.toList());
         if (n - options.size() != 0) {
-            debug(new Str(C.B).a(
+            debug(new Str(C.BLUE).a(
                     "Virtual" + getName() + " filtered out "
                             + (n - options.size()) + " options!"
             ));
@@ -176,16 +176,16 @@ public final class StrVirtualCategory implements StrVirtual {
                 Env.settings().getMatchThreshold()
         );
 
-        debug(new Str(C.G).a("Options: ")
+        debug(new Str(C.GREEN).a("Options: ")
                 .a(new Str(opt
                         .stream()
                         .map(o -> String.join("/", o.getNames()))
                         .collect(Collectors.joining(", ")),
-                        C.B)
+                        C.BLUE)
                 )
         );
 
-        debug(new Str(C.G).a(
+        debug(new Str(C.GREEN).a(
                 "Attempting to find a match in "
                         + options.size() + " options with input: " + next)
         );
@@ -193,14 +193,14 @@ public final class StrVirtualCategory implements StrVirtual {
             if (option.run(new ArrayList<>(arguments))) {
                 return true;
             } else {
-                debug(new Str(C.R).a(
+                debug(new Str(C.RED).a(
                         "Virtual " + option.getName()
                                 + " matched with "
                                 + next + " but failed to run!"
                 ));
             }
         }
-        debug(new Str(C.R).a(
+        debug(new Str(C.RED).a(
                 "Virtual " + getName()
                         + " failed to find a matching option for "
                         + next + " and returns false"

@@ -152,16 +152,16 @@ public final class StrVirtualCommand implements StrVirtual {
     public boolean run(@NotNull final List<String> arguments) {
 
         if (arguments.size() != 0) {
-            debug(new Str(C.G).a("Entered arguments: ")
-                    .a(new Str(String.join(", ", arguments), C.B)));
+            debug(new Str(C.GREEN).a("Entered arguments: ")
+                    .a(new Str(String.join(", ", arguments), C.BLUE)));
         }
 
         ConcurrentHashMap<StrVirtualParameter, Object> params
                 = computeParameters(arguments);
 
         if (params == null) {
-            debug(new Str(C.R).a("Parameter parsing failed for ")
-                    .a(new Str(getName(), C.B)));
+            debug(new Str(C.RED).a("Parameter parsing failed for ")
+                    .a(new Str(getName(), C.BLUE)));
             help(user());
             return true;
         }
@@ -176,22 +176,22 @@ public final class StrVirtualCommand implements StrVirtual {
         for (StrVirtualParameter parameter : getParameters()) {
             if (!params.containsKey(parameter)) {
                 debug(new Str("Failed to handle command"
-                        + " because of missing param: ", C.R)
-                        .a(new Str(parameter.getName(), C.B))
-                        .a(new Str("!", C.R)));
-                debug(new Str("Params stored: ", C.R)
+                        + " because of missing param: ", C.RED)
+                        .a(new Str(parameter.getName(), C.BLUE))
+                        .a(new Str("!", C.RED)));
+                debug(new Str("Params stored: ", C.RED)
                         .a(new Str(params.keySet().stream()
                                 .map(StrVirtualParameter::getName)
                                 .collect(Collectors.joining(", ")
-                                ), C.B))
+                                ), C.BLUE))
                 );
                 debug(new Str("This is a big problem"
                         + " within the Decree system,"
                         + " as it should have been caught earlier."
-                        + " Please contact the author(s).", C.R));
+                        + " Please contact the author(s).", C.RED));
                 user().sendMessage(
                         new Str("A big error occurred in the command system."
-                                + " Contact your admin!", C.R));
+                                + " Contact your admin!", C.RED));
                 return false;
             }
 
@@ -222,13 +222,13 @@ public final class StrVirtualCommand implements StrVirtual {
                         debug(new Str(
                                 "Sent asynchronously while it must be ran sync."
                                         + " Set 'sync = true' in the annotation"
-                                        + " of the command or category", C.R));
+                                        + " of the command or category", C.RED));
                         e.printStackTrace();
                         user().sendMessage(
-                                new Str("The command you tried to run (", C.R)
-                                .a(new Str(getPath(), C.B)
+                                new Str("The command you tried to run (", C.RED)
+                                .a(new Str(getPath(), C.BLUE)
                                         .a(new Str(") may only be run sync!"
-                                            + " Contact your admin!", C.R))));
+                                            + " Contact your admin!", C.RED))));
                     } else {
                         throw e;
                     }
@@ -237,7 +237,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 e.printStackTrace();
                 user().sendMessage(new Str(
                         "Uncaught Exception thrown while executing,"
-                                + " contact your admin!", C.R));
+                                + " contact your admin!", C.RED));
                 throw new RuntimeException("Failed to execute " + getPath());
             }
         };
@@ -258,7 +258,7 @@ public final class StrVirtualCommand implements StrVirtual {
      */
     @Override
     public void help(@NotNull final StrUser user) {
-        user.sendMessage(new Str(C.G)
+        user.sendMessage(new Str(C.GREEN)
                 .a(getName() + " " + parameters.size()));
     }
 
@@ -418,10 +418,10 @@ public final class StrVirtualCommand implements StrVirtual {
                 splitArg = new ArrayList<>(List.of(arg.split("=")));
 
                 if (splitArg.size() == 2) {
-                    debug(new Str(C.R).a(
+                    debug(new Str(C.RED).a(
                                     "Parameter fixed by replacing"
                                             + " '==' with '=' (new arg: ")
-                            .a(C.B).a(arg).a(C.R).a(")")
+                            .a(C.BLUE).a(arg).a(C.RED).a(")")
                     );
                     keyedArgs.add(arg);
                 } else {
@@ -432,15 +432,15 @@ public final class StrVirtualCommand implements StrVirtual {
 
             if (Env.settings().isAllowNullInput()
                     && splitArg.get(1).equalsIgnoreCase("null")) {
-                debug(new Str(C.G).a("Null parameter added: ").a(C.B).a(arg));
+                debug(new Str(C.GREEN).a("Null parameter added: ").a(C.BLUE).a(arg));
                 nullArgs.add(splitArg.get(0));
                 continue;
             }
 
             if (splitArg.get(0).isEmpty()) {
-                debug(new Str(C.R)
+                debug(new Str(C.RED)
                         .a("Parameter key has empty value (full arg: ")
-                        .a(C.B).a(arg).a(C.R).a(")"));
+                        .a(C.BLUE).a(arg).a(C.RED).a(")"));
                 while (!arg.startsWith("=")) {
                     arg = arg.substring(1);
                 }
@@ -449,11 +449,11 @@ public final class StrVirtualCommand implements StrVirtual {
             }
 
             if (splitArg.get(1).isEmpty()) {
-                debug(new Str(C.R).a("Parameter key: ")
-                        .a(C.B).a(splitArg.get(0))
-                        .a(C.R).a(" has empty value (full arg: ")
-                        .a(C.B).a(arg)
-                        .a(C.R).a(")"));
+                debug(new Str(C.RED).a("Parameter key: ")
+                        .a(C.BLUE).a(splitArg.get(0))
+                        .a(C.RED).a(" has empty value (full arg: ")
+                        .a(C.BLUE).a(arg)
+                        .a(C.RED).a(")"));
                 badArgs.add(arg);
                 continue;
             }
@@ -499,37 +499,37 @@ public final class StrVirtualCommand implements StrVirtual {
 
         // Debug
         if (Env.settings().isAllowNullInput()) {
-            debug(new Str(nullArgs.isEmpty() ? C.G : C.R)
+            debug(new Str(nullArgs.isEmpty() ? C.GREEN : C.RED)
                     .a("Unmatched null argument"
                             + (nullArgs.size() == 1 ? "" : "s") + ": ")
                     .a(new Str(!nullArgs.isEmpty()
                             ? String.join(", ", nullArgs)
                             : "NONE",
-                            C.B)
+                            C.BLUE)
                     ));
         }
-        debug(new Str(keylessArgs.isEmpty() ? C.G : C.R)
+        debug(new Str(keylessArgs.isEmpty() ? C.GREEN : C.RED)
                 .a("Unmatched keyless argument"
                         + (keylessArgs.size() == 1 ? "" : "s") + ": ")
                 .a(new Str(!keylessArgs.isEmpty()
                         ? String.join(", ", keylessArgs)
-                        : "NONE", C.B)
+                        : "NONE", C.BLUE)
                 ));
-        debug(new Str(keyedArgs.isEmpty() ? C.G : C.R)
+        debug(new Str(keyedArgs.isEmpty() ? C.GREEN : C.RED)
                 .a("Unmatched keyed argument"
                         + (keyedArgs.size() == 1 ? "" : "s") + ": ")
                 .a(new Str(!keyedArgs.isEmpty()
                         ? String.join(", ", keyedArgs)
-                        : "NONE", C.B)
+                        : "NONE", C.BLUE)
                 ));
-        debug(new Str(badArgs.isEmpty() ? C.G : C.R)
+        debug(new Str(badArgs.isEmpty() ? C.GREEN : C.RED)
                 .a("Bad argument"
                         + (badArgs.size() == 1 ? "" : "s") + ": ")
                 .a(new Str(!badArgs.isEmpty()
                         ? String.join(", ", badArgs)
-                        : "NONE", C.B)
+                        : "NONE", C.BLUE)
                 ));
-        debug(new Str(parseExceptionArgs.isEmpty() ? C.G : C.R)
+        debug(new Str(parseExceptionArgs.isEmpty() ? C.GREEN : C.RED)
                 .a("Failed argument"
                         + (parseExceptionArgs.size() == 1 ? "" : "s")
                         + (parseExceptionArgs.isEmpty() ? ": NONE" : ":\n")
@@ -544,7 +544,7 @@ public final class StrVirtualCommand implements StrVirtual {
                             .toList()
             )));
         }
-        debug(new Str(options.isEmpty() ? C.G : C.R)
+        debug(new Str(options.isEmpty() ? C.GREEN : C.RED)
                 .a("Unfulfilled parameter"
                         + (options.size() == 1 ? "" : "s") + ": ")
                 .a(new Str(!options.isEmpty()
@@ -554,44 +554,44 @@ public final class StrVirtualCommand implements StrVirtual {
                                         .map(StrVirtualParameter::getName)
                                         .toList()
                         )
-                                : "NONE", C.B)
+                                : "NONE", C.BLUE)
                 ));
-        debug(new Str(dashArgs.isEmpty() ? C.G : C.R)
+        debug(new Str(dashArgs.isEmpty() ? C.GREEN : C.RED)
                 .a("Unfulfilled -boolean parameter"
                         + (dashArgs.size() == 1 ? "" : "s") + ": ")
                 .a(new Str(!dashArgs.isEmpty()
                         ? String.join(", ", dashArgs)
-                        : "NONE", C.B)
+                        : "NONE", C.BLUE)
                 ));
 
         List<Str> mappings = new ArrayList<>();
-        mappings.add(new Str(C.G).a("Parameter mapping:"));
-        params.forEach((param, object) -> mappings.add(new Str(C.G)
+        mappings.add(new Str(C.GREEN).a("Parameter mapping:"));
+        params.forEach((param, object) -> mappings.add(new Str(C.GREEN)
                         .a("\u0009 - (")
-                        .a(C.B)
+                        .a(C.BLUE)
                         .a(param.getType().getSimpleName())
-                        .a(C.G)
+                        .a(C.GREEN)
                         .a(") ")
-                        .a(C.B)
+                        .a(C.BLUE)
                         .a(param.getName())
-                        .a(C.G)
+                        .a(C.GREEN)
                         .a(" -> ")
-                        .a(C.B)
+                        .a(C.BLUE)
                         .a(object.toString()
                                 .replace(String.valueOf(NULL_PARAM), "null"))
                 )
         );
-        options.forEach(param -> mappings.add(new Str(C.G)
+        options.forEach(param -> mappings.add(new Str(C.GREEN)
                 .a("\u0009 - (")
-                .a(C.B)
+                .a(C.BLUE)
                 .a(param.getType().getSimpleName())
-                .a(C.G)
+                .a(C.GREEN)
                 .a(") ")
-                .a(C.B)
+                .a(C.BLUE)
                 .a(param.getName())
-                .a(C.G)
+                .a(C.GREEN)
                 .a(" -> ")
-                .a(C.R)
+                .a(C.RED)
                 .a("NONE")));
 
         for (Str mapping : mappings) {
@@ -624,21 +624,21 @@ public final class StrVirtualCommand implements StrVirtual {
                     params.put(option, val == null ? NULL_PARAM : val);
                     options.remove(option);
                 } catch (StrParameterHandler.StrParseException e) {
-                    debug(new Str(C.R).a("Default value ")
-                            .a(C.B).a(option.getDefault())
-                            .a(C.R).a(" could not be parsed to ")
+                    debug(new Str(C.RED).a("Default value ")
+                            .a(C.BLUE).a(option.getDefault())
+                            .a(C.RED).a(" could not be parsed to ")
                             .a(option.getType().getSimpleName()));
-                    debug(new Str(C.R).a("Reason: ").a(C.B).a(e.getMessage()));
+                    debug(new Str(C.RED).a("Reason: ").a(C.BLUE).a(e.getMessage()));
                 } catch (StrParameterHandler.StrWhichException e) {
-                    debug(new Str(C.R).a("Default value ")
-                            .a(C.B).a(option.getDefault())
-                            .a(C.R).a(" returned multiple options"));
+                    debug(new Str(C.RED).a("Default value ")
+                            .a(C.BLUE).a(option.getDefault())
+                            .a(C.RED).a(" returned multiple options"));
                     options.remove(option);
                     if (Env.settings().isPickFirstOnMultiple()
                             || user().supportsClickables()) {
-                        debug(new Str(C.G)
+                        debug(new Str(C.GREEN)
                                 .a("Adding the first option for parameter ")
-                                .a(C.B).a(option.getName()));
+                                .a(C.BLUE).a(option.getName()));
                         params.put(option, e.getOptions().get(0));
                     } else {
                         Object result = pickValidOption(e.getOptions(), option);
@@ -657,16 +657,16 @@ public final class StrVirtualCommand implements StrVirtual {
                             .getContextHandler(option.getType());
                 } catch (StrCenter.ContextHandling
                         .StrNoContextHandlerException e) {
-                    debug(new Str(C.R)
+                    debug(new Str(C.RED)
                             .a("Parameter "
                                     + option.getName()
                                     + " marked as contextual without"
                                     + " available context handler ("
                                     + option.getType().getSimpleName() + ")."));
-                    user().sendMessage(new Str(C.R)
+                    user().sendMessage(new Str(C.RED)
                             .a("Parameter ")
-                            .a(C.B).a(option.help(user()))
-                            .a(C.R).a(" marked as contextual without"
+                            .a(C.BLUE).a(option.help(user()))
+                            .a(C.RED).a(" marked as contextual without"
                                     + " available context handler ("
                                     + option.getType().getSimpleName()
                                     + "). Please context your admin.")
@@ -676,21 +676,21 @@ public final class StrVirtualCommand implements StrVirtual {
                 }
                 Object contextValue = handler.handle(user());
                 if (contextValue == null) {
-                    debug(new Str(C.R).a("Parameter: ")
-                            .a(C.B).a(option.getName())
-                            .a(C.R).a(" not fulfilled due to context"
+                    debug(new Str(C.RED).a("Parameter: ")
+                            .a(C.BLUE).a(option.getName())
+                            .a(C.RED).a(" not fulfilled due to context"
                                     + " handler returning null."));
                 } else {
-                    debug(new Str(C.G).a("Context value for ")
-                            .a(C.B).a(option.getName())
-                            .a(C.G).a(" set to: " + contextValue));
+                    debug(new Str(C.GREEN).a("Context value for ")
+                            .a(C.BLUE).a(option.getName())
+                            .a(C.GREEN).a(" set to: " + contextValue));
                     params.put(option, contextValue);
                     options.remove(option);
                 }
             } else if (parseExceptionArgs.containsKey(option)) {
-                debug(new Str(C.R).a("Parameter: ")
-                        .a(C.B).a(option.getName())
-                        .a(C.R).a(" not fulfilled due to parseException: "
+                debug(new Str(C.RED).a("Parameter: ")
+                        .a(C.BLUE).a(option.getName())
+                        .a(C.RED).a(" not fulfilled due to parseException: "
                                 + parseExceptionArgs.get(option).getMessage()));
             }
         }
@@ -722,8 +722,8 @@ public final class StrVirtualCommand implements StrVirtual {
 
                 if (Env.settings().isAllowNullInput()
                         && keylessArg.equalsIgnoreCase("null")) {
-                    debug(new Str(C.G).a("Null parameter added: ")
-                            .a(C.B).a(keylessArg));
+                    debug(new Str(C.GREEN).a("Null parameter added: ")
+                            .a(C.BLUE).a(keylessArg));
                     params.put(option, NULL_PARAM);
                     continue looping;
                 }
@@ -757,20 +757,20 @@ public final class StrVirtualCommand implements StrVirtual {
                     }
                 } catch (Throwable e) {
                     // This exception is actually something that is broken
-                    debug(new Str(C.R).a("Parsing ")
-                            .a(C.B).a(keylessArg)
-                            .a(C.R).a(" into ")
-                            .a(C.B).a(option.getName())
-                            .a(C.R).a(" failed because of: ")
-                            .a(C.B).a(e.getMessage())
+                    debug(new Str(C.RED).a("Parsing ")
+                            .a(C.BLUE).a(keylessArg)
+                            .a(C.RED).a(" into ")
+                            .a(C.BLUE).a(option.getName())
+                            .a(C.RED).a(" failed because of: ")
+                            .a(C.BLUE).a(e.getMessage())
                     );
                     e.printStackTrace();
-                    debug(new Str(C.R).a("If you see a handler"
+                    debug(new Str(C.RED).a("If you see a handler"
                                     + " in the stacktrace that we (")
-                            .a(C.G).a("StrInput")
-                            .a(C.R).a(") wrote, please report this bug to us.")
+                            .a(C.GREEN).a("StrInput")
+                            .a(C.RED).a(") wrote, please report this bug to us.")
                     );
-                    debug(new Str(C.R)
+                    debug(new Str(C.RED)
                             .a("If you see a custom handler of your own,"
                                     + " there is an issue with it.")
                     );
@@ -1048,12 +1048,12 @@ public final class StrVirtualCommand implements StrVirtual {
         user().sendMessage(new Str(
                 "This query will expire in "
                         + Env.settings().getPickingTimeout()
-                        + " seconds.", C.G, C.B
+                        + " seconds.", C.GREEN, C.BLUE
         ));
 
         while (tries-- > 0 && (result == null || !options.contains(result))) {
             user().sendMessage(new Str(
-                    "Please pick a valid option.", C.G, C.B
+                    "Please pick a valid option.", C.GREEN, C.BLUE
             ));
 
             CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -1061,10 +1061,10 @@ public final class StrVirtualCommand implements StrVirtual {
                 int finalI = i;
                 user().sendMessage(new Str(
                         "- " + options.get(i),
-                        C.G,
-                        C.B,
+                        C.GREEN,
+                        C.BLUE,
                         () -> future.complete(finalI),
-                        new Str(options.get(i), C.G, C.B)
+                        new Str(options.get(i), C.GREEN, C.BLUE)
                 ));
             }
             user().playSound(StrUser.StrSoundEffect.PICK_OPTION);
@@ -1091,10 +1091,10 @@ public final class StrVirtualCommand implements StrVirtual {
                 }
             }
         } else {
-            user().sendMessage(new Str(C.R).a(
+            user().sendMessage(new Str(C.RED).a(
                     "You did not enter a correct option within 3 tries."
             ));
-            user().sendMessage(new Str(C.R).a(
+            user().sendMessage(new Str(C.RED).a(
                     "Please double-check your arguments & option picking."
             ));
         }
@@ -1118,19 +1118,19 @@ public final class StrVirtualCommand implements StrVirtual {
         boolean valid = true;
         for (StrVirtualParameter parameter : getParameters()) {
             if (!params.containsKey(parameter)) {
-                debug(new Str(C.R).a("Parameter: ")
-                        .a(C.B).a(parameter.getName())
-                        .a(C.R).a(" not in mapping."));
-                Str message = new Str(C.R).a("Parameter: ")
-                        .a(C.B).a(parameter.help(user()));
+                debug(new Str(C.RED).a("Parameter: ")
+                        .a(C.BLUE).a(parameter.getName())
+                        .a(C.RED).a(" not in mapping."));
+                Str message = new Str(C.RED).a("Parameter: ")
+                        .a(C.BLUE).a(parameter.help(user()));
                 if (parseExceptions.containsKey(parameter)) {
                     StrParameterHandler.StrParseException e
                             = parseExceptions.get(parameter);
-                    message.a(" (").a(C.B).a(e.getType().getSimpleName())
-                            .a(C.R).a(") failed for ")
-                            .a(C.B).a(e.getInput())
-                            .a(C.R).a(". Reason: ")
-                            .a(C.B).a(e.getReason());
+                    message.a(" (").a(C.BLUE).a(e.getType().getSimpleName())
+                            .a(C.RED).a(") failed for ")
+                            .a(C.BLUE).a(e.getInput())
+                            .a(C.RED).a(". Reason: ")
+                            .a(C.BLUE).a(e.getReason());
                 } else {
                     message.a(" not specified. Please add.");
                 }
@@ -1169,12 +1169,12 @@ public final class StrVirtualCommand implements StrVirtual {
             );
             return true;
         } catch (StrParameterHandler.StrWhichException e) {
-            debug(new Str(C.R).a("Value ")
-                    .a(C.B).a(value).a(C.R).a(" returned multiple options"));
+            debug(new Str(C.RED).a("Value ")
+                    .a(C.BLUE).a(value).a(C.RED).a(" returned multiple options"));
             if (Env.settings().isPickFirstOnMultiple()
                     || user().supportsClickables()) {
-                debug(new Str(C.G).a("Adding: ")
-                        .a(C.B).a(e.getOptions().get(0).toString()));
+                debug(new Str(C.GREEN).a("Adding: ")
+                        .a(C.BLUE).a(e.getOptions().get(0).toString()));
                 params.put(option, e.getOptions().get(0));
             } else {
                 Object result = pickValidOption(e.getOptions(), option);

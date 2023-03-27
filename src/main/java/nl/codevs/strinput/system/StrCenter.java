@@ -207,28 +207,28 @@ public class StrCenter {
 
             // Run
             if (root == null) {
-                user.sendMessage(new Str(C.R)
+                user.sendMessage(new Str(C.RED)
                         .a("Could not find root command for: ")
-                        .a(C.B)
+                        .a(C.BLUE)
                         .a(mainCommand)
                 );
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else if (!root.run(arguments)) {
-                user.sendMessage(new Str(C.R)
+                user.sendMessage(new Str(C.RED)
                         .a("Failed to run your command!"));
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else {
-                Env.center().debug(new Str(C.G)
+                Env.center().debug(new Str(C.GREEN)
                         .a("Successfully ran your command!"));
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
             s.stop();
             if (getSettings().isDebugTime()) {
-                debug(new Str(C.G).a("Command sent by ")
-                        .a(C.B).a(user.getName())
-                        .a(C.G).a(" took ")
-                        .a(C.B).a(s.getTime() + "ms")
+                debug(new Str(C.GREEN).a("Command sent by ")
+                        .a(C.BLUE).a(user.getName())
+                        .a(C.GREEN).a(" took ")
+                        .a(C.BLUE).a(s.getTime() + "ms")
                 );
             }
 
@@ -247,7 +247,7 @@ public class StrCenter {
      */
     public void debug(final Str message) {
         if (getSettings().isDebug()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.G).a("DEBG: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.GREEN).a("DEBG: ").a(message));
         }
     }
 
@@ -257,7 +257,7 @@ public class StrCenter {
      */
     public void warn(final Str message) {
         if (getSettings().isWarn()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.Y).a("WARN: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.YELLOW).a("WARN: ").a(message));
         }
     }
 
@@ -267,7 +267,7 @@ public class StrCenter {
      */
     public void error(final Str message) {
         if (getSettings().isError()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.R).a("ERRR: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.RED).a("ERRR: ").a(message));
         }
     }
 
@@ -277,7 +277,7 @@ public class StrCenter {
      */
     public void info(final Str message) {
         if (getSettings().isInfo()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.B).a("INFO: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.BLUE).a("INFO: ").a(message));
         }
     }
 
@@ -287,7 +287,7 @@ public class StrCenter {
      * @param runnable the runnable to run
      */
     public void runSync(@NotNull Runnable runnable) {
-        Env.user().sendMessage(new Str(C.R)
+        Env.user().sendMessage(new Str(C.RED)
                 .a("Running command synchronous without having the method overridden. Ask your admin")
         );
         warn(new Str("Running command synchronous without having the StrCenter#runSync(Runnable) method overridden. " +
@@ -380,38 +380,38 @@ public class StrCenter {
 
             // Debug startup
             if (rootInstancesSuccess.isEmpty()) {
-                center.warn(new Str(C.R).a(
+                center.warn(new Str(C.RED).a(
                         "No successful root instances registered."
                         + " Did you register all commands in the creator?"
                         + " Are they all annotated?")
                 );
             } else {
-                Str r = new Str(C.G).a("Loaded root category classes: ");
+                Str r = new Str(C.GREEN).a("Loaded root category classes: ");
                 rootInstancesSuccess.forEach(
-                        c -> r.a(C.B).a(c.getClass().getSimpleName())
-                                .a(C.G).a(", ")
+                        c -> r.a(C.BLUE).a(c.getClass().getSimpleName())
+                                .a(C.GREEN).a(", ")
                 );
                 center.info(r);
             }
 
             if (rootInstancesFailed.size() > 0) {
-                Str r = new Str(C.R);
-                center.debug(r.a("Failed root instances: ").a(C.B));
+                Str r = new Str(C.RED);
+                center.debug(r.a("Failed root instances: ").a(C.BLUE));
                 rootInstancesFailed.forEach(
-                        c -> r.a(C.R).a(", ")
-                                .a(C.B).a(c.getClass().getSimpleName())
+                        c -> r.a(C.RED).a(", ")
+                                .a(C.BLUE).a(c.getClass().getSimpleName())
                 );
             }
 
             if (registeredRootNames.isEmpty()) {
-                center.debug(new Str(C.R).a("No root commands registered!"
+                center.debug(new Str(C.RED).a("No root commands registered!"
                         + " Did you register all commands in the creator?"
                         + " Are they @StrInput annotated?")
                 );
             } else {
-                Str r = new Str(C.G).a("Loaded root commands: ");
+                Str r = new Str(C.GREEN).a("Loaded root commands: ");
                 registeredRootNames.forEach(
-                        c -> r.a(C.B).a(c).a(C.G).a(", ")
+                        c -> r.a(C.BLUE).a(c).a(C.GREEN).a(", ")
                 );
                 center.debug(r);
             }

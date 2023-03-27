@@ -49,17 +49,17 @@ class StrTest {
 
     @Test
     public void testStrColor() {
-        assertEquals(C.B, new Str("hey", C.R).a(new Str("there!", C.B)).getMainColor());
+        assertEquals(C.BLUE, new Str("hey", C.RED).a(new Str("there!", C.BLUE)).getMainColor());
     }
 
     @Test
     public void testIsGradient() {
-        assertFalse(new Str("hey", C.R, C.B).a(new Str("there!", C.B)).isGradient());
+        assertFalse(new Str("hey", C.RED, C.BLUE).a(new Str("there!", C.BLUE)).isGradient());
     }
 
     @Test
     public void testIsParentGradient() {
-        assertTrue(new Str("hey", C.R, C.B).a(new Str("there!", C.B)).getPrevious().isGradient());
+        assertTrue(new Str("hey", C.RED, C.BLUE).a(new Str("there!", C.BLUE)).getPrevious().isGradient());
     }
 
     @Test
@@ -96,23 +96,23 @@ class StrTest {
 
     @Test
     public void testTextAdditionColorCarryOver() {
-        assertEquals(C.B, new Str("", C.B).a("hey!").getMainColor());
+        assertEquals(C.BLUE, new Str("", C.BLUE).a("hey!").getMainColor());
     }
 
     @Test
     public void testStrAdditionColorNoCarryOver() {
-        assertEquals(C.X, new Str("", C.B).a(new Str("hey!")).getMainColor());
+        assertEquals(C.RESET, new Str("", C.BLUE).a(new Str("hey!")).getMainColor());
     }
 
     @Test
     public void testComplexColorAddition() {
-        assertEquals("the full text after", new Str(C.B).a("the full ").a(C.R).a("text after").toHumanReadable());
+        assertEquals("the full text after", new Str(C.BLUE).a("the full ").a(C.RED).a("text after").toHumanReadable());
     }
 
     @Test
     public void testComplexColorAdditionStr() {
-        assertEquals(C.B, new Str(C.B).a("the full ").a(new Str("text after", C.R)).getPrevious().getMainColor());
-        assertEquals(C.R, new Str(C.B).a("the full ").a(new Str("text after", C.R)).getMainColor());
-        TestCenter.SUT.debug(new Str(C.B).a("the full ").a(new Str("text after", C.R)));
+        assertEquals(C.BLUE, new Str(C.BLUE).a("the full ").a(new Str("text after", C.RED)).getPrevious().getMainColor());
+        assertEquals(C.RED, new Str(C.BLUE).a("the full ").a(new Str("text after", C.RED)).getMainColor());
+        TestCenter.SUT.debug(new Str(C.BLUE).a("the full ").a(new Str("text after", C.RED)));
     }
 }
