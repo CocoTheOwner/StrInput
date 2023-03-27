@@ -184,11 +184,11 @@ public final class StrVirtualCategory implements StrVirtual {
             if (option.run(new ArrayList<>(arguments))) {
                 return true;
             } else {
-                debug(C.RED + "Virtual " + C.BLUE + option.getName() + C.RED + " matched with "
+                error(C.RED + "Virtual " + C.BLUE + option.getName() + C.RED + " matched with "
                         + C.BLUE + next + C.RED + " but failed to run!");
             }
         }
-        debug(C.RED + "Virtual " + C.BLUE + getName() + C.RED + " failed to find a matching option for " +
+        error(C.RED + "Virtual " + C.BLUE + getName() + C.RED + " failed to find a matching option for " +
                 C.BLUE + next + C.RED + " and returns false");
         return false;
     }
