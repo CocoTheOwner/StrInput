@@ -152,7 +152,7 @@ public final class StrVirtualCommand implements StrVirtual {
     public boolean run(@NotNull final List<String> arguments) {
 
         if (arguments.size() != 0) {
-            debug(new Str("Entered arguments: ", C.G)
+            debug(new Str(C.G).a("Entered arguments: ")
                     .a(new Str(String.join(", ", arguments), C.B)));
         }
 
