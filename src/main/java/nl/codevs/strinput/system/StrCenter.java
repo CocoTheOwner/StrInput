@@ -1,5 +1,5 @@
 /*
- * This file is part of the Strinput distribution.
+ * This file is part of the StrInput distribution.
  * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
@@ -288,8 +288,7 @@ public class StrCenter {
     /**
      * List this command system including
      * all listed root command categories, commands and parameters.
-     * @param spacing the space to append to the prefix
-     *               for subsequent sub-virtuals
+     * @param spacing the space to append to the prefix for subsequent sub-virtual elements
      * @param exampleInput the input example to show matching scores
      * @return a list of strings representing this command system
      */
@@ -386,19 +385,17 @@ public class StrCenter {
                         + " Did you register all commands in the creator?"
                         + " Are they all annotated?");
             } else {
-                StringBuilder r = new StringBuilder(C.GREEN + "Loaded root category classes: ");
-                rootInstancesSuccess.forEach(
-                        c -> r.append(C.BLUE).append(c.getClass().getSimpleName()).append(C.GREEN).append(", ")
+                center.info(C.GREEN + "Loaded root category classes: "
+                        + C.BLUE + rootInstancesSuccess.stream().map(ri -> ri.getClass().getSimpleName())
+                                .collect(Collectors.joining(C.GREEN + ", " + C.BLUE))
                 );
-                center.info(r.toString());
             }
 
             if (rootInstancesFailed.size() > 0) {
-                StringBuilder r = new StringBuilder(C.RED.toString()).append("Failed root instances: ").append(C.BLUE);
-                rootInstancesFailed.forEach(
-                        c -> r.append(C.RED).append(", ").append(C.BLUE).append(c.getClass().getSimpleName())
+                center.error(C.RED + "Failed to load root category classes: "
+                        + C.BLUE + rootInstancesFailed.stream().map(ri -> ri.getClass().getSimpleName())
+                        .collect(Collectors.joining(C.RED + ", " + C.BLUE))
                 );
-                center.warn(r.toString());
             }
 
             if (registeredRootNames.isEmpty() && rootInstancesSuccess.isEmpty()) {

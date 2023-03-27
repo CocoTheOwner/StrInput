@@ -1,5 +1,5 @@
 /*
- * This file is part of the Strinput distribution.
+ * This file is part of the StrInput distribution.
  * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
@@ -464,72 +464,69 @@ public final class StrVirtualCommand implements StrVirtual {
         }
 
         // Convert nullArgs
-        for (int i = 0; i < nullArgs.size(); i++) {
-            nullArgs.set(i, nullArgs.get(i) + "=null");
-        }
+        nullArgs.replaceAll(s -> s + "=null");
 
         // Debug
         if (Env.settings().isAllowNullInput()) {
-            debug(nullArgs.isEmpty() ? C.GREEN.toString() : C.RED + "Unmatched null argument"
-                            + (nullArgs.size() == 1 ? "" : "s") + ": " + (!nullArgs.isEmpty()
-                            ? String.join(", ", nullArgs)
-                            : "NONE"));
+            debug((nullArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                    + "Unmatched null argument" + (nullArgs.size() == 1 ? "" : "s") + ": "
+                    + C.BLUE + (!nullArgs.isEmpty() ? String.join(C.RED + ", " + C.BLUE, nullArgs): "NONE")
+            );
         }
-        if (keylessArgs.isEmpty()) {
-            debug(C.GREEN + )
-        }
-        debug(keylessArgs.isEmpty() ? C.GREEN : C.RED + "Unmatched keyless argument"
-                        + (keylessArgs.size() == 1 ? "" : "s") + ": " + !keylessArgs.isEmpty()
-                        ? String.join(", ", keylessArgs)
-                        : "NONE", C.BLUE)
-                ));
-        debug(keyedArgs.isEmpty() ? C.GREEN : C.RED + "Unmatched keyed argument"
-                        + (keyedArgs.size() == 1 ? "" : "s") + ": " + !keyedArgs.isEmpty()
-                        ? String.join(", ", keyedArgs)
-                        : "NONE", C.BLUE)
-                ));
-        debug(badArgs.isEmpty() ? C.GREEN : C.RED + "Bad argument"
-                        + (badArgs.size() == 1 ? "" : "s") + ": " + !badArgs.isEmpty()
-                        ? String.join(", ", badArgs)
-                        : "NONE", C.BLUE)
-                ));
-        debug(parseExceptionArgs.isEmpty() ? C.GREEN : C.RED + "Failed argument"
-                        + (parseExceptionArgs.size() == 1 ? "" : "s")
-                        + (parseExceptionArgs.isEmpty() ? ": NONE" : ":\n")
-                ));
+        debug((keylessArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                + "Unmatched keyless argument" + (keylessArgs.size() == 1 ? "" : "s") + ": "
+                + C.BLUE + (!keylessArgs.isEmpty() ? String.join(C.RED + ", " + C.BLUE, keylessArgs) : "NONE")
+        );
+        debug((keyedArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                + "Unmatched keyed argument" + (keyedArgs.size() == 1 ? "" : "s") + ": "
+                + C.BLUE + (!keyedArgs.isEmpty() ? String.join(C.RED + ", " + C.BLUE, keyedArgs) : "NONE")
+        );
+        debug((badArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                + "Bad argument" + (badArgs.size() == 1 ? "" : "s") + ": "
+                + C.BLUE + (!badArgs.isEmpty() ? String.join(C.RED + ", " + C.BLUE, badArgs) : "NONE")
+        );
+        debug((parseExceptionArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                + "Failed argument" + (parseExceptionArgs.size() == 1 ? "" : "s") + ": "
+                + C.BLUE + (parseExceptionArgs.isEmpty() ? "\n" : "NONE")
+        );
         if (!parseExceptionArgs.isEmpty()) {
-            debug(String.join(
-                    ", ",
+            debug(C.BLUE + String.join(
+                    C.RED + ", " + C.BLUE,
                     parseExceptionArgs
                             .values()
                             .stream()
                             .map(Throwable::getMessage)
                             .toList()
-            )));
+            ));
         }
-        debug(options.isEmpty() ? C.GREEN : C.RED + "Unfulfilled parameter"
-                        + (options.size() == 1 ? "" : "s") + ": " + !options.isEmpty()
-                                ? String.join(
-                                ", ", options
-                                        .stream()
-                                        .map(StrVirtualParameter::getName)
-                                        .toList()
-                        )
-                                : "NONE", C.BLUE)
-                ));
-        debug(dashArgs.isEmpty() ? C.GREEN : C.RED + "Unfulfilled -boolean parameter"
-                        + (dashArgs.size() == 1 ? "" : "s") + ": " + !dashArgs.isEmpty()
-                        ? String.join(", ", dashArgs)
-                        : "NONE", C.BLUE)
-                ));
-
-        List<Str> mappings = new ArrayList<>();
-        mappings.add(C.GREEN + "Parameter mapping:"));
-        params.forEach((param, object) -> mappings.add(C.GREEN + "\u0009 - (" + C.BLUE + param.getType().getSimpleName() + C.GREEN + ") " + C.BLUE + param.getName() + C.GREEN + " -> " + C.BLUE + object.toString()
-                                .replace(String.valueOf(NULL_PARAM), "null"))
-                )
+        debug((options.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                + "Unfulfilled parameter" + (options.size() == 1 ? "" : "s") + ": "
+                + C.BLUE + (!options.isEmpty() ? String.join(C.RED + ", " + C.BLUE,
+                        options.stream().map(StrVirtualParameter::getName).toList()) : "NONE")
         );
-        options.forEach(param -> mappings.add(C.GREEN + "\u0009 - (" + C.BLUE + param.getType().getSimpleName() + C.GREEN + ") " + C.BLUE + param.getName() + C.GREEN + " -> " + C.RED + "NONE")));
+        debug((dashArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
+                + "Unfulfilled -boolean parameter" + (dashArgs.size() == 1 ? "" : "s") + ": "
+                + C.BLUE + (!dashArgs.isEmpty() ? String.join(C.RED + ", " + C.BLUE, dashArgs) : "NONE")
+        );
+
+        List<String> mappings = new ArrayList<>();
+        mappings.add(C.GREEN + "Parameter mapping:");
+        params.forEach((param, object) -> mappings.add(
+                C.GREEN + "\u0009 - ("
+                + C.BLUE + param.getType().getSimpleName()
+                + C.GREEN + ") "
+                + C.BLUE + param.getName()
+                + C.GREEN + " -> "
+                + C.BLUE + object.toString().replace(String.valueOf(NULL_PARAM), "null")
+        ));
+        options.forEach(param -> mappings.add(
+                C.GREEN + "\u0009 - ("
+                + C.BLUE + param.getType().getSimpleName()
+                + C.GREEN + ") "
+                + C.BLUE + param.getName()
+                + C.GREEN + " -> "
+                + C.RED + "NONE")
+        );
 
         for (String mapping : mappings) {
             debug(mapping);
@@ -561,16 +558,17 @@ public final class StrVirtualCommand implements StrVirtual {
                     params.put(option, val == null ? NULL_PARAM : val);
                     options.remove(option);
                 } catch (StrParameterHandler.StrParseException e) {
-                    debug(C.RED + "Default value " + C.BLUE + option.getDefault() + C.RED + " could not be parsed to " + option.getType().getSimpleName()));
-                    debug(C.RED + "Reason: " + C.BLUE + e.getMessage()));
+                    warning(C.RED + "Default value " + C.BLUE + option.getDefault() + C.RED + " could not be parsed to " + option.getType().getSimpleName());
+                    warning(C.RED + "Reason: " + C.BLUE + e.getMessage());
+                    center().printException(e);
                 } catch (StrParameterHandler.StrWhichException e) {
-                    debug(C.RED + "Default value " + C.BLUE + option.getDefault() + C.RED + " returned multiple options"));
                     options.remove(option);
                     if (Env.settings().isPickFirstOnMultiple()
                             || user().supportsClickables()) {
-                        debug(C.GREEN + "Adding the first option for parameter " + C.BLUE + option.getName()));
+                        debug(C.GREEN + "Adding the first option for parameter " + C.BLUE + option.getName());
                         params.put(option, e.getOptions().get(0));
                     } else {
+                        debug(C.YELLOW + "Default value " + C.BLUE + option.getDefault() + C.YELLOW + " returned multiple options");
                         Object result = pickValidOption(e.getOptions(), option);
                         if (result == null) {
                             badArgs.add(option.getDefault());
