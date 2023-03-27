@@ -1,5 +1,5 @@
 /*
- * This file is part of the Strinput distribution.
+ * This file is part of the StrInput distribution.
  * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
@@ -22,7 +22,6 @@ import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.Env;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.C;
-import nl.codevs.strinput.system.text.Str;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -150,7 +149,7 @@ public final class StrVirtualCategory implements StrVirtual {
     @Override
     public boolean run(@NotNull final List<String> arguments) {
         if (arguments.size() == 0) {
-            debug(new Str(C.GREEN).a("Sending help to user"));
+            debug(C.GREEN + "Sending help to user");
             help(user());
             return true;
         }
@@ -162,10 +161,8 @@ public final class StrVirtualCategory implements StrVirtual {
                 o -> o.doesMatchUser(user())
         ).collect(Collectors.toList());
         if (n - options.size() != 0) {
-            debug(new Str(C.BLUE).a(
-                    "Virtual" + getName() + " filtered out "
-                            + (n - options.size()) + " options!"
-            ));
+            debug(C.GREEN + "Virtual" + C.BLUE + getName() + C.GREEN + " filtered out "
+                    + C.BLUE + (n - options.size()) + C.GREEN + " options!");
         }
 
         String next = arguments.remove(0);
@@ -176,35 +173,23 @@ public final class StrVirtualCategory implements StrVirtual {
                 Env.settings().getMatchThreshold()
         );
 
-        debug(new Str(C.GREEN).a("Options: ")
-                .a(new Str(opt
+        debug(C.GREEN + "Options: " + C.BLUE + opt
                         .stream()
                         .map(o -> String.join("/", o.getNames()))
-                        .collect(Collectors.joining(", ")),
-                        C.BLUE)
-                )
-        );
+                        .collect(Collectors.joining(C.GREEN + ", " + C.BLUE)));
 
-        debug(new Str(C.GREEN).a(
-                "Attempting to find a match in "
-                        + options.size() + " options with input: " + next)
-        );
+        debug(C.GREEN + "Attempting to find a match in " + options.size() + " options with input: " + next);
+
         for (StrVirtual option : opt) {
             if (option.run(new ArrayList<>(arguments))) {
                 return true;
             } else {
-                debug(new Str(C.RED).a(
-                        "Virtual " + option.getName()
-                                + " matched with "
-                                + next + " but failed to run!"
-                ));
+                debug(C.RED + "Virtual " + C.BLUE + option.getName() + C.RED + " matched with "
+                        + C.BLUE + next + C.RED + " but failed to run!");
             }
         }
-        debug(new Str(C.RED).a(
-                "Virtual " + getName()
-                        + " failed to find a matching option for "
-                        + next + " and returns false"
-        ));
+        debug(C.RED + "Virtual " + C.BLUE + getName() + C.RED + " failed to find a matching option for " +
+                C.BLUE + next + C.RED + " and returns false");
         return false;
     }
 
@@ -215,9 +200,8 @@ public final class StrVirtualCategory implements StrVirtual {
      */
     @Override
     public void help(final @NotNull StrUser user) {
-        List<Str> helpMessages = new ArrayList<>();
-
-        user.sendMessage(helpMessages);
+        // TODO: Write help implementation
+        user.sendMessage("Help messages not implemented yet.");
     }
 
     /**
@@ -268,12 +252,22 @@ public final class StrVirtualCategory implements StrVirtual {
                 continue;
             }
 
+            FileWriter w = null;
             try {
-                new FileWriter(
+                w = new FileWriter(
                         subCat.getClass().getSimpleName() + ".txt"
-                ).write(subCat.toGenericString());
+                );
+                w.write(subCat.toGenericString());
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (w != null) {
+                        w.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             subCat.setAccessible(true);
@@ -281,11 +275,10 @@ public final class StrVirtualCategory implements StrVirtual {
             try {
                 childRoot = subCat.get(instance);
             } catch (IllegalAccessException e) {
-                debug(new Str("Could not get child \""
-                        + subCat.getName() + "\" from instance: \""
-                        + instance.getClass().getSimpleName() + "\""
-                ));
-                debug(new Str("Because of: " + e.getMessage()));
+                error("Could not get child " + C.BLUE + subCat.getName() + C.RED + " from instance: "
+                        + C.BLUE + instance.getClass().getSimpleName()
+                );
+                center().printException(e);
                 continue;
             }
             if (childRoot == null) {
@@ -293,31 +286,25 @@ public final class StrVirtualCategory implements StrVirtual {
                     childRoot = subCat.getType().getConstructor().newInstance();
                     subCat.set(instance, childRoot);
                 } catch (NoSuchMethodException e) {
-                    debug(new Str("Method \"" + subCat.getName()
-                            + "\" does not exist in instance: \""
-                            + instance.getClass().getSimpleName() + "\""
-                    ));
-                    debug(new Str("Because of: " + e.getMessage()));
+                    error(C.RED + "Method " + C.BLUE + subCat.getName() + C.RED + " does not exist in instance: " +
+                            C.BLUE + instance.getClass().getSimpleName());
+                    center().printException(e);
                 } catch (IllegalAccessException e) {
-                    debug(new Str("Could get, but not access child \""
-                            + subCat.getName() + "\" from instance: \""
-                            + instance.getClass().getSimpleName() + "\""
-                    ));
-                    debug(new Str("Because of: " + e.getMessage()));
+                    error(C.RED + "Could get, but not access child " + C.BLUE + subCat.getName() + C.RED
+                            + " from instance: " + C.BLUE + instance.getClass().getSimpleName());
+                    center().printException(e);
                 } catch (InstantiationException e) {
-                    debug(new Str("Could not instantiate \"" + subCat.getName()
-                            + "\" from instance: \""
-                            + instance.getClass().getSimpleName() + "\""
-                    ));
-                    debug(new Str("Because of: " + e.getMessage()));
+                    error(C.RED + "Could not instantiate " + C.BLUE + subCat.getName() + C.RED
+                            + C.BLUE + instance.getClass().getSimpleName()
+                    );
+                    center().printException(e);
                 } catch (InvocationTargetException e) {
-                    debug(new Str("Invocation exception on \""
-                            + subCat.getName() + "\" from instance: \""
-                            + instance.getClass().getSimpleName() + "\""
-                    ));
-                    debug(new Str("Because of: " + e.getMessage()));
-                    debug(new Str("Underlying exception: "
-                            + e.getTargetException().getMessage()));
+                    error(C.RED + "Invocation exception on " + C.BLUE + subCat.getName() + C.RED + " from instance: "
+                            + C.BLUE + instance.getClass().getSimpleName()
+                    );
+                    center().printException(e);
+                    error(C.RED + "Due to underlying exception: ");
+                    center().printException(e.getTargetException());
                 }
             }
 

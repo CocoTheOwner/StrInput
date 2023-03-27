@@ -1,5 +1,5 @@
 /*
- * This file is part of the Strinput distribution.
+ * This file is part of the StrInput distribution.
  * (https://github.com/CocoTheOwner/Strinput)
  * Copyright (c) 2021 Sjoerd van de Goor.
  *
@@ -19,6 +19,7 @@ package environment;
 
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,9 +53,10 @@ public class TestUser implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(@NotNull Str message) {
-        System.out.println(message.toHumanReadable());
-        messages.add(message.toHumanReadable());
+    public void sendMessage(@NotNull String message) {
+        message = C.removeColor(message);
+        System.out.println(C.removeColor(message));
+        messages.add(message);
     }
 
     /**
@@ -97,11 +99,4 @@ public class TestUser implements StrUser {
         return true;
     }
 
-    /**
-     * Get the last message this sender received.
-     * @return the last message this sender received
-     */
-    public String getLastMessage() {
-        return messages.get(messages.size() - 1);
-    }
 }

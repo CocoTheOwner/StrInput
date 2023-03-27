@@ -45,8 +45,8 @@ public class SpigotConsole implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(@NotNull final Str message) {
-        Bukkit.getConsoleSender().sendMessage(message.toHumanReadable());
+    public void sendMessage(@NotNull final String message) {
+        Bukkit.getConsoleSender().sendMessage(message);
     }
 
     /**

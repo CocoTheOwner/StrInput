@@ -17,10 +17,9 @@
  */
 package nl.codevs.strinput.system;
 
-import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import nl.codevs.strinput.system.text.Str;
 
 /**
  * Instance of a user (the sender/receiver, end-user client).
@@ -40,22 +39,12 @@ public interface StrUser {
      * Send a message to the user.
      * @param message the message to send
      */
-    void sendMessage(@NotNull Str message);
+    void sendMessage(@NotNull String message);
 
     /**
      * @return whether this user supports clickable {@link Str}s.
      */
     boolean supportsClickables();
-
-    /**
-     * Send multiple messages to the user.
-     * @param messages the message(s) to send
-     */
-    default void sendMessage(@NotNull final Str... messages) {
-        for (Str message : messages) {
-            sendMessage(message);
-        }
-    }
 
     /**
      * Send messages to the user.
@@ -64,16 +53,6 @@ public interface StrUser {
      */
     default void sendMessage(@NotNull final String... messages) {
         for (String message : messages) {
-            sendMessage(new Str(message));
-        }
-    }
-
-    /**
-     * Send multiple messages to the user. Uses a loop of {@link #sendMessage}.
-     * @param messages the messages to send
-     */
-    default void sendMessage(@NotNull final List<Str> messages) {
-        for (Str message : messages) {
             sendMessage(message);
         }
     }

@@ -122,7 +122,7 @@ public final class ExampleCategory implements SpigotCommandCategory {
      */
     @StrInput(description = "Send a message", aliases = "msg")
     public void message() {
-        user().sendMessage(new Str(C.G).a("Hey!"));
+        user().sendMessage(C.G + "Hey!"));
     }
 
     /**
@@ -138,11 +138,11 @@ public final class ExampleCategory implements SpigotCommandCategory {
             )
             final String message
     ) {
-        center().debug(new Str(message));
+        center().debug(message));
     }
 }
 ```
-_Note `new Str()`. [Str](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/text/Str.html) is the custom text format which can contain colors, color gradients, clickable event and text-hovering._
+_Note `)`. [Str](https://cocotheowner.github.io/Strinput/nl/codevs/strinput/system/text/Str.html) is the custom text format which can contain colors, color gradients, clickable event and text-hovering._
 
 # Setup (advanced)
 A set of custom options are available to further simplify command creation.

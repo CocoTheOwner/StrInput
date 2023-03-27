@@ -17,7 +17,6 @@
  */
 package nl.codevs.strinput.system.parameter;
 
-import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -233,12 +232,12 @@ public interface StrParameterHandler<T> {
         /**
          * The input text that caused the exception.
          */
-        private final Str input;
+        private final String input;
 
         /**
          * The system reason for the exception.
          */
-        private final Str reason;
+        private final String reason;
 
         /**
          * Get the underlying exception's class.
@@ -252,7 +251,7 @@ public interface StrParameterHandler<T> {
          * Get the input that caused the exception.
          * @return the input
          */
-        public Str getInput() {
+        public String getInput() {
             return input;
         }
 
@@ -260,7 +259,7 @@ public interface StrParameterHandler<T> {
          * Get the specified reason the parser failed.
          * @return the reason the parser failed
          */
-        public Str getReason() {
+        public String getReason() {
             return reason;
         }
 
@@ -277,8 +276,8 @@ public interface StrParameterHandler<T> {
         ) {
             super();
             this.type = exceptionType;
-            this.input = new Str(inputString);
-            this.reason = new Str(systemReason);
+            this.input = inputString;
+            this.reason = systemReason;
         }
     }
 

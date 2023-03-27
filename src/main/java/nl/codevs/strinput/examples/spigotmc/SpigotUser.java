@@ -59,8 +59,8 @@ public record SpigotUser(Player player) implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(@NotNull final Str message) {
-        player.sendMessage(strToString(message));
+    public void sendMessage(@NotNull final String message) {
+        player.sendMessage(message);
     }
 
     /**
@@ -176,17 +176,5 @@ public record SpigotUser(Player player) implements StrUser {
      */
     public boolean isPlayer() {
         return player == null;
-    }
-
-    /**
-     * Turn a {@link Str} to a string.
-     *
-     * @param message the Str message to convert
-     * @return the string
-     * TODO Implement colors
-     */
-    private @NotNull String strToString(@NotNull final Str message) {
-        // TODO: Implement clickables, hovering, colors, gradients
-        return message.toHumanReadable();
     }
 }

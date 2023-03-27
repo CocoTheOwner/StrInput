@@ -18,7 +18,7 @@
 package environment;
 
 import nl.codevs.strinput.system.*;
-import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.text.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -48,8 +48,8 @@ public class TestCenter extends StrCenter {
                     }
 
                     @Override
-                    public void sendMessage(@NotNull Str message) {
-                        System.out.println(message.toHumanReadable());
+                    public void sendMessage(@NotNull String message) {
+                        System.out.println(C.removeColor(message));
                     }
 
                     @Override

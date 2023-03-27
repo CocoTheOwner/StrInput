@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -83,9 +84,9 @@ public record DiscordUser(
      * @param msg the message to send
      */
     @Override
-    public void sendMessage(@NotNull final Str msg) {
+    public void sendMessage(@NotNull final String msg) {
         assert channel() != null;
-        String output = strToString(msg);
+        String output = C.removeColor(msg);
         while (output.length() > 1500) {
             channel().sendMessage(output.substring(0, 1500)).queue();
             output = output.substring(1501);
@@ -132,17 +133,5 @@ public record DiscordUser(
     @Override
     public boolean hasPermission(@NotNull final String permission) {
         return true;
-    }
-
-    /**
-     * Turn a {@link Str} to a string.
-     *
-     * @param msg the Str message to convert
-     * @return the string
-     * TODO Implement colors
-     */
-    private @NotNull String strToString(@NotNull final Str msg) {
-        // TODO: Implement clickables, hovering, colors, gradients
-        return msg.toHumanReadable();
     }
 }

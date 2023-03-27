@@ -22,7 +22,6 @@ import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.C;
-import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -177,16 +176,32 @@ public interface StrVirtual {
     }
 
     /**
-     * Send a debug message with additional information
-     * about the node in its prefix.
-     * @param str the {@link Str} message to send
+     * Send a debug message with additional information about the node in its prefix.
+     * @param the message to send
      */
-    default void debug(@NotNull Str str) {
+    default void debug(@NotNull String message) {
         if (Env.settings().isDebugMatching()) {
-            center().debug(new Str(getName(), C.BLUE)
-                    .a(new Str(": ", C.GREEN))
-                    .a(str.copy())
-            );
+            center().debug(C.BLUE + getPath() + C.GREEN + ": " + message);
+        }
+    }
+
+    /**
+     * Send a warning message with additional information about the node in its prefix.
+     * @param message the message to send
+     */
+    default void warning(@NotNull String message) {
+        if (Env.settings().isDebugMatching()) {
+            center().warn(C.BLUE + getPath() + C.YELLOW + ": " + message);
+        }
+    }
+
+    /**
+     * Send an error message with additional information about the node in its prefix.
+     * @param message the message to send
+     */
+    default void error(@NotNull String message) {
+        if (Env.settings().isDebugMatching()) {
+            center().error(C.BLUE + getPath() + C.RED + ": " + message);
         }
     }
 

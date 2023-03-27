@@ -34,6 +34,8 @@ import org.apache.commons.lang.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +62,7 @@ public class StrCenter {
     private final File settingsFile;
 
     /**
-     * The console which receives messages (such as from {@link #debug(Str)}).
+     * The console which receives messages (such as from {@link #debug(String)}).
      */
     private final StrUser console;
 
@@ -207,29 +209,19 @@ public class StrCenter {
 
             // Run
             if (root == null) {
-                user.sendMessage(new Str(C.RED)
-                        .a("Could not find root command for: ")
-                        .a(C.BLUE)
-                        .a(mainCommand)
-                );
+                user.sendMessage(C.RED + "Could not find root command for: " + C.BLUE + mainCommand);
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else if (!root.run(arguments)) {
-                user.sendMessage(new Str(C.RED)
-                        .a("Failed to run your command!"));
+                user.sendMessage(C.RED + "Failed to run your command!");
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else {
-                Env.center().debug(new Str(C.GREEN)
-                        .a("Successfully ran your command!"));
+                Env.center().debug(C.GREEN + "Successfully ran your command!");
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
             s.stop();
             if (getSettings().isDebugTime()) {
-                debug(new Str(C.GREEN).a("Command sent by ")
-                        .a(C.BLUE).a(user.getName())
-                        .a(C.GREEN).a(" took ")
-                        .a(C.BLUE).a(s.getTime() + "ms")
-                );
+                debug(C.GREEN + "Command sent by " + C.BLUE + user.getName() + C.GREEN + " took " + C.BLUE + s.getTime() + "ms");
             }
 
         };
@@ -245,9 +237,9 @@ public class StrCenter {
      * Send a debug message.
      * @param message the debug message
      */
-    public void debug(final Str message) {
+    public void debug(final String message) {
         if (getSettings().isDebug()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.GREEN).a("DEBG: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix() + C.GREEN + "DEBG: " + message);
         }
     }
 
@@ -255,9 +247,9 @@ public class StrCenter {
      * Send a warning message.
      * @param message the warning message
      */
-    public void warn(final Str message) {
+    public void warn(final String message) {
         if (getSettings().isWarn()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.YELLOW).a("WARN: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix() + C.YELLOW + "WARN: " + message);
         }
     }
 
@@ -265,9 +257,9 @@ public class StrCenter {
      * Send an error message.
      * @param message the error message
      */
-    public void error(final Str message) {
+    public void error(final String message) {
         if (getSettings().isError()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.RED).a("ERRR: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix() + C.RED + "ERRR: " + message);
         }
     }
 
@@ -275,9 +267,9 @@ public class StrCenter {
      * Send an information message.
      * @param message the information message
      */
-    public void info(final Str message) {
+    public void info(final String message) {
         if (getSettings().isInfo()) {
-            console.sendMessage(getSettings().getDebugPrefix().copy().a(C.BLUE).a("INFO: ").a(message));
+            console.sendMessage(getSettings().getDebugPrefix() + C.BLUE + "INFO: " + message);
         }
     }
 
@@ -287,11 +279,9 @@ public class StrCenter {
      * @param runnable the runnable to run
      */
     public void runSync(@NotNull Runnable runnable) {
-        Env.user().sendMessage(new Str(C.RED)
-                .a("Running command synchronous without having the method overridden. Ask your admin")
-        );
-        warn(new Str("Running command synchronous without having the StrCenter#runSync(Runnable) method overridden. " +
-                "Please overwrite the method to allow running on the main thread explicitly."));
+        Env.user().sendMessage(C.RED + "Running command synchronous without having the method overridden. Ask your admin");
+        warn("Running command synchronous without having the StrCenter#runSync(Runnable) method overridden. " +
+                "Please overwrite the method to allow running on the main thread explicitly.");
         runnable.run();
     }
 
@@ -326,6 +316,17 @@ public class StrCenter {
             loadedCategory.getListing(spacing, spacing, result, exampleInput);
         }
         return result;
+    }
+
+    /**
+     * Print out an exception.
+     * @param e the exception to print
+     */
+    public void printException(Throwable e) {
+        error("Exception reported: " + C.BLUE + e + C.RED + ". Stacktrace:");
+        for (StackTraceElement el : e.getStackTrace()) {
+            error(el.toString());
+        }
     }
 
     /**
@@ -380,46 +381,42 @@ public class StrCenter {
 
             // Debug startup
             if (rootInstancesSuccess.isEmpty()) {
-                center.warn(new Str(C.RED).a(
+                center.warn(C.RED + 
                         "No successful root instances registered."
                         + " Did you register all commands in the creator?"
-                        + " Are they all annotated?")
-                );
+                        + " Are they all annotated?");
             } else {
-                Str r = new Str(C.GREEN).a("Loaded root category classes: ");
+                StringBuilder r = new StringBuilder(C.GREEN + "Loaded root category classes: ");
                 rootInstancesSuccess.forEach(
-                        c -> r.a(C.BLUE).a(c.getClass().getSimpleName())
-                                .a(C.GREEN).a(", ")
+                        c -> r.append(C.BLUE).append(c.getClass().getSimpleName()).append(C.GREEN).append(", ")
                 );
-                center.info(r);
+                center.info(r.toString());
             }
 
             if (rootInstancesFailed.size() > 0) {
-                Str r = new Str(C.RED);
-                center.debug(r.a("Failed root instances: ").a(C.BLUE));
+                StringBuilder r = new StringBuilder(C.RED.toString()).append("Failed root instances: ").append(C.BLUE);
                 rootInstancesFailed.forEach(
-                        c -> r.a(C.RED).a(", ")
-                                .a(C.BLUE).a(c.getClass().getSimpleName())
+                        c -> r.append(C.RED).append(", ").append(C.BLUE).append(c.getClass().getSimpleName())
                 );
+                center.warn(r.toString());
             }
 
-            if (registeredRootNames.isEmpty()) {
-                center.debug(new Str(C.RED).a("No root commands registered!"
+            if (registeredRootNames.isEmpty() && rootInstancesSuccess.isEmpty()) {
+                center.warn(C.RED + "No root commands & root instances registered!"
                         + " Did you register all commands in the creator?"
-                        + " Are they @StrInput annotated?")
-                );
+                        + " Are they @StrInput annotated?");
             } else {
-                Str r = new Str(C.GREEN).a("Loaded root commands: ");
+                StringBuilder r = new StringBuilder(C.GREEN + "Loaded root commands: ");
                 registeredRootNames.forEach(
-                        c -> r.a(C.BLUE).a(c).a(C.GREEN).a(", ")
+                        c -> r.append(C.BLUE).append(c).append(C.GREEN).append(", ")
                 );
-                center.debug(r);
+                center.info(r.toString());
             }
         }
     }
 
     /**
-     * Str parameter handling.
+     * String parameter handling.
      * @author Sjoerd van de Goor
      * @since v0.1
      */
@@ -481,7 +478,7 @@ public class StrCenter {
     }
 
     /**
-     * Str context handling.
+     * String context handling.
      * @author Sjoerd van de Goor
      * @since v0.1
      */
@@ -552,8 +549,8 @@ public class StrCenter {
         }
 
         @Override
-        public void sendMessage(@NotNull final Str message) {
-            System.out.println(message.toHumanReadable());
+        public void sendMessage(@NotNull final String message) {
+            System.out.println(message);
         }
 
         @Override

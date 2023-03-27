@@ -19,7 +19,7 @@ package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -204,8 +204,8 @@ public final class StrVirtualParameter {
      * @return the help
      */
     @Contract("_ -> new")
-    public @NotNull Str help(@NotNull final StrUser user) {
-        return new Str("Node help of " + getName() + " for " + user.getName());
+    public @NotNull String help(@NotNull final StrUser user) {
+        return C.GREEN + "Node help of " + C.BLUE + getName() + C.GREEN + " for " + C.BLUE + user.getName();
     }
 
     /**

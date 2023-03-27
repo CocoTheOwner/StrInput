@@ -20,7 +20,6 @@ package nl.codevs.strinput.system;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import nl.codevs.strinput.system.text.C;
-import nl.codevs.strinput.system.text.Str;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -69,15 +68,12 @@ public final class StrSettings implements StrCategory {
      * Debug message prefix.
      * Cannot be modified by commands.
      */
-    private final Str debugPrefix = new Str(C.RED).a("[")
-            .a(C.GREEN).a("StrInput")
-            .a(C.RED).a("] ")
-            .a(C.RESET);
+    private final String debugPrefix = C.RED + "[" + C.GREEN + "StrInput" + C.RED + "] " + C.RESET;
 
     /**
      * @return the debug message prefix.
      */
-    public Str getDebugPrefix() {
+    public String getDebugPrefix() {
         return debugPrefix;
     }
 
@@ -104,11 +100,7 @@ public final class StrSettings implements StrCategory {
                     final int times
     ) {
         pickingAmount = times;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("option picking amount ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(pickingAmount))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "option picking amount " + C.GREEN + "to: " + C.BLUE + pickingAmount);
     }
     /**
      * The amount of times the user can try to pick an option.
@@ -137,11 +129,7 @@ public final class StrSettings implements StrCategory {
                     final int time
     ) {
         pickingTimeout = time;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("option picking time ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(pickingTimeout))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "option picking time " + C.GREEN + "to: " + C.BLUE + pickingTimeout);
     }
     /**
      * The amount of time (in seconds) the user has to pick an option.
@@ -170,11 +158,7 @@ public final class StrSettings implements StrCategory {
                     final Double threshold
     ) {
         matchThreshold = threshold;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("matching threshold ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(matchThreshold))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "matching threshold " + C.GREEN + "to: " + C.BLUE + matchThreshold);
     }
 
     /**
@@ -207,11 +191,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         settingsCommands = enable == null ? !settingsCommands : enable;
-        user().sendMessage(new Str(C.GREEN).a("After a restart, ")
-                .a(C.BLUE).a("settings commands ")
-                .a(C.GREEN).a("will be: ")
-                .a(C.BLUE).a(String.valueOf(settingsCommands))
-        );
+        user().sendMessage(C.GREEN + "After a restart, " + C.BLUE + "settings commands " + C.GREEN + "will be: " + C.BLUE + settingsCommands);
     }
 
     /**
@@ -243,11 +223,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         async = enable == null ? !async : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("async ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(async))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "async " + C.GREEN + "to: " + C.BLUE + async);
     }
 
     /**
@@ -278,11 +254,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         allowNullInput = enable == null ? !allowNullInput : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("allow null input ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(allowNullInput))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "allow null input " + C.GREEN + "to: " + C.BLUE + allowNullInput);
     }
 
     /**
@@ -312,11 +284,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         debug = enable == null ? !debug : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("debug ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(debug))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "debug " + C.GREEN + "to: " + C.BLUE + debug);
     }
 
     /**
@@ -346,11 +314,7 @@ public final class StrSettings implements StrCategory {
             final Boolean enable
     ) {
         warn = enable == null ? !warn : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("warnings ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(warn))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "warnings " + C.GREEN + "to: " + C.BLUE + warn);
     }
 
     /**
@@ -380,11 +344,7 @@ public final class StrSettings implements StrCategory {
             final Boolean enable
     ) {
         error = enable == null ? !error : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("errors ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(error))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "errors " + C.GREEN + "to: " + C.BLUE + error);
     }
 
     /**
@@ -414,11 +374,7 @@ public final class StrSettings implements StrCategory {
             final Boolean enable
     ) {
         info = enable == null ? !info : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("information ")
-                .a(C.GREEN).a("to: ")
-                .a(C.BLUE).a(String.valueOf(info))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "information " + C.GREEN + "to: " + C.BLUE + info);
     }
 
     /**
@@ -449,11 +405,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         debugTime = enable == null ? !debugTime : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("debugTime ")
-                .a(C.GREEN).a("to: ")
-                .a(String.valueOf(debugTime))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "debugTime " + C.GREEN + "to: " + debugTime);
     }
 
     /**
@@ -484,11 +436,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         debugMatching = enable == null ? !debugMatching : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("debug matching ")
-                .a(C.GREEN).a("to: ")
-                .a(String.valueOf(debugMatching))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "debug matching " + C.GREEN + "to: " + debugMatching);
     }
 
     /**
@@ -518,11 +466,7 @@ public final class StrSettings implements StrCategory {
                     final Boolean enable
     ) {
         pickFirstOnMultiple = enable == null ? !pickFirstOnMultiple : enable;
-        user().sendMessage(new Str(C.GREEN).a("Set ")
-                .a(C.BLUE).a("pick first on multiple ")
-                .a(C.GREEN).a("to: ")
-                .a(String.valueOf(pickFirstOnMultiple))
-        );
+        user().sendMessage(C.GREEN + "Set " + C.BLUE + "pick first on multiple " + C.GREEN + "to: " + pickFirstOnMultiple);
     }
 
     /**
@@ -558,10 +502,8 @@ public final class StrSettings implements StrCategory {
                 GSON.toJson(newSettings, StrSettings.class, f);
                 f.close();
                 newSettings.lastChanged = settingsFile.lastModified();
-                center.debug(new Str(C.GREEN).a("Made new StrInput config (")
-                        .a(C.BLUE).a(settingsFile.getParent().replace("\\", "/")
-                                + "/" + settingsFile.getName())
-                        .a(C.GREEN).a(")"));
+                center.debug(C.GREEN + "Made new StrInput config (" + C.BLUE + settingsFile.getParent().replace("\\", "/")
+                                + "/" + settingsFile.getName() + C.GREEN + ")");
                 return newSettings;
             }
             return new Gson().fromJson(
@@ -588,11 +530,11 @@ public final class StrSettings implements StrCategory {
             FileWriter f = new FileWriter(settingsFile);
             GSON.toJson(this, StrSettings.class, f);
             f.close();
-            center.debug(new Str(C.GREEN).a("Saved StrInput Settings"));
+            center.debug(C.GREEN + "Saved StrInput Settings");
             lastChanged = settingsFile.lastModified();
         } catch (IOException e) {
-            center.debug(new Str("Failed to save config: \n"
-                    + GSON.toJson(this)));
+            center.debug("Failed to save config: \n"
+                    + GSON.toJson(this));
             e.printStackTrace();
         }
     }
@@ -617,7 +559,7 @@ public final class StrSettings implements StrCategory {
         // File is newer
         if (lastChanged != settingsFile.lastModified()) {
             lastChanged = settingsFile.lastModified();
-            center.debug(new Str(C.GREEN).a("Hotloaded StrInput Settings"));
+            center.debug(C.GREEN + "Hotloaded StrInput Settings");
             return fileSettings;
         }
 
