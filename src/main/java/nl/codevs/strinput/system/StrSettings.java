@@ -320,15 +320,117 @@ public final class StrSettings implements StrCategory {
     }
 
     /**
-     * Whether debugging is enabled or not.
+     * Whether debug messages are enabled or not.
      */
     private boolean debug = false;
 
     /**
-     * @return whether debugging is enabled or not
+     * @return whether debug messages are enabled or not
      */
     public boolean isDebug() {
         return debug;
+    }
+
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
+    @StrInput(description = "Whether to send warning messages or not")
+    public void warn(
+            @Param(
+                    description = "Whether to set this setting"
+                            + " to true or false",
+                    defaultValue = "toggle",
+                    name = "enable"
+            )
+            final Boolean enable
+    ) {
+        warn = enable == null ? !warn : enable;
+        user().sendMessage(new Str(C.G).a("Set ")
+                .a(C.B).a("warnings ")
+                .a(C.G).a("to: ")
+                .a(C.B).a(String.valueOf(warn))
+        );
+    }
+
+    /**
+     * Whether warning messages are enabled or not.
+     */
+    private boolean warn = true;
+
+    /**
+     * @return whether warning messages are enabled or not
+     */
+    public boolean isWarn() {
+        return warn;
+    }
+
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
+    @StrInput(description = "Whether to send error messages or not")
+    public void error(
+            @Param(
+                    description = "Whether to set this setting"
+                            + " to true or false",
+                    defaultValue = "toggle",
+                    name = "enable"
+            )
+            final Boolean enable
+    ) {
+        error = enable == null ? !error : enable;
+        user().sendMessage(new Str(C.G).a("Set ")
+                .a(C.B).a("errors ")
+                .a(C.G).a("to: ")
+                .a(C.B).a(String.valueOf(error))
+        );
+    }
+
+    /**
+     * Whether error messages are enabled or not.
+     */
+    private boolean error = true;
+
+    /**
+     * @return whether information messages are enabled or not
+     */
+    public boolean isInfo() {
+        return info;
+    }
+
+    /**
+     * Setting command.
+     * @param enable whether to enable it or not
+     */
+    @StrInput(description = "Whether to send info messages or not")
+    public void info(
+            @Param(
+                    description = "Whether to set this setting"
+                            + " to true or false",
+                    defaultValue = "toggle",
+                    name = "enable"
+            )
+            final Boolean enable
+    ) {
+        info = enable == null ? !info : enable;
+        user().sendMessage(new Str(C.G).a("Set ")
+                .a(C.B).a("information ")
+                .a(C.G).a("to: ")
+                .a(C.B).a(String.valueOf(info))
+        );
+    }
+
+    /**
+     * Whether information messages are enabled or not.
+     */
+    private boolean info = true;
+
+    /**
+     * @return whether error messages are enabled or not
+     */
+    public boolean isError() {
+        return error;
     }
 
     /**
