@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Input center. The main class for interacting with Strinput.<br>
+ * Input center. The main class for interacting with StrInput.<br>
  * Make sure to point command calls to {@link #onCommand(List, StrUser)}
 
  * @see nl.codevs.strinput.examples.spigotmc
@@ -244,21 +244,41 @@ public class StrCenter {
 
     /**
      * Send a debug message.
-     * @param message the debug message(s)
+     * @param message the debug message
      */
     public void debug(final Str message) {
         if (settings.isDebug()) {
-            console.sendMessage(settings.getDebugPrefix().copy().a(message));
+            console.sendMessage(settings.getDebugPrefix().copy().a(C.G).a("DEBG: ").a(message));
         }
     }
 
     /**
-     * Send a debug message.
-     * @param message the debug message(s)
+     * Send a warning message.
+     * @param message the warning message
      */
-    public void debug(final String message) {
-        if (settings.isDebug()) {
-            console.sendMessage(settings.getDebugPrefix().copy().a(message));
+    public void warn(final Str message) {
+        if (settings.isWarn()) {
+            console.sendMessage(settings.getDebugPrefix().copy().a(C.Y).a("WARN: ").a(message));
+        }
+    }
+
+    /**
+     * Send an error message.
+     * @param message the error message
+     */
+    public void error(final Str message) {
+        if (settings.isError()) {
+            console.sendMessage(settings.getDebugPrefix().copy().a(C.R).a("ERRR: ").a(message));
+        }
+    }
+
+    /**
+     * Send an information message.
+     * @param message the information message
+     */
+    public void info(final Str message) {
+        if (settings.isInfo()) {
+            console.sendMessage(settings.getDebugPrefix().copy().a(C.B).a("INFO: ").a(message));
         }
     }
 
@@ -268,6 +288,11 @@ public class StrCenter {
      * @param runnable the runnable to run
      */
     public void runSync(@NotNull Runnable runnable) {
+        Env.user().sendMessage(new Str(C.R)
+                .a("Running command synchronous without having the method overridden. Ask your admin")
+        );
+        warn(new Str("Running command synchronous without having the StrCenter#runSync(Runnable) method overridden. " +
+                "Please overwrite the method to allow running on the main thread explicitly."));
         runnable.run();
     }
 
@@ -344,63 +369,52 @@ public class StrCenter {
                     return;
                 }
 
-                // Get input annotation of the root instance
-                StrInput input = r.getClass()
-                        .getDeclaredAnnotation(StrInput.class);
-
-                // Instance names
-                List<String> names = new ArrayList<>();
-                names.add(input.name());
-                names.addAll(Arrays.asList(input.aliases()));
-
                 // Actual virtual category (root)
                 StrVirtualCategory root = new StrVirtualCategory(null, r);
 
                 // Add names to root map
-                names.forEach(n -> {
+                root.getNames().forEach(n -> {
                     registeredRootNames.add(n);
                     put(n, root);
                 });
             });
 
             // Debug startup
-            if (center.getSettings().isDebugTime()) {
-                if (rootInstancesSuccess.isEmpty()) {
-                    center.debug(new Str(C.R).a(
-                            "No successful root instances registered."
-                            + " Did you register all commands in the creator?"
-                            + " Are they all annotated?")
-                    );
-                } else {
-                    Str r = new Str(C.G).a("Loaded root category classes: ");
-                    rootInstancesSuccess.forEach(
-                            c -> r.a(C.B).a(c.getClass().getSimpleName())
-                                    .a(C.G).a(", ")
-                    );
-                    center.debug(r);
-                }
+            if (rootInstancesSuccess.isEmpty()) {
+                center.warn(new Str(C.R).a(
+                        "No successful root instances registered."
+                        + " Did you register all commands in the creator?"
+                        + " Are they all annotated?")
+                );
+            } else {
+                Str r = new Str(C.G).a("Loaded root category classes: ");
+                rootInstancesSuccess.forEach(
+                        c -> r.a(C.B).a(c.getClass().getSimpleName())
+                                .a(C.G).a(", ")
+                );
+                center.info(r);
+            }
 
-                if (rootInstancesFailed.size() > 0) {
-                    Str r = new Str(C.R);
-                    center.debug(r.a("Failed root instances: ").a(C.B));
-                    rootInstancesFailed.forEach(
-                            c -> r.a(C.R).a(", ")
-                                    .a(C.B).a(c.getClass().getSimpleName())
-                    );
-                }
+            if (rootInstancesFailed.size() > 0) {
+                Str r = new Str(C.R);
+                center.debug(r.a("Failed root instances: ").a(C.B));
+                rootInstancesFailed.forEach(
+                        c -> r.a(C.R).a(", ")
+                                .a(C.B).a(c.getClass().getSimpleName())
+                );
+            }
 
-                if (registeredRootNames.isEmpty()) {
-                    center.debug(new Str(C.R).a("No root commands registered!"
-                            + " Did you register all commands in the creator?"
-                            + " Are they @StrInput annotated?")
-                    );
-                } else {
-                    Str r = new Str(C.G).a("Loaded root commands: ");
-                    registeredRootNames.forEach(
-                            c -> r.a(C.B).a(c).a(C.G).a(", ")
-                    );
-                    center.debug(r);
-                }
+            if (registeredRootNames.isEmpty()) {
+                center.debug(new Str(C.R).a("No root commands registered!"
+                        + " Did you register all commands in the creator?"
+                        + " Are they @StrInput annotated?")
+                );
+            } else {
+                Str r = new Str(C.G).a("Loaded root commands: ");
+                registeredRootNames.forEach(
+                        c -> r.a(C.B).a(c).a(C.G).a(", ")
+                );
+                center.debug(r);
             }
         }
     }
