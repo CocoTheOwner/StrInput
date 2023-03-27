@@ -84,8 +84,8 @@ public @interface StrInput {
     String permission() default NO_PERMISSION;
 
     /**
-     * If the node's functions MUST be run in sync, set this to true.<br>
-     * Defaults to false
+     * If the node's functions must be run on the main thread (i.e. sync), set this to true.<br>
+     * Defaults to false. Requires you to overwrite the {@link StrCenter#runSync(Runnable)} method.
      *
      * @return true if this category's commands or command should be run in sync
      */
