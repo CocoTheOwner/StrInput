@@ -36,6 +36,10 @@ public enum C {
      */
     B("blue"),
     /**
+     * Yellow color.
+     */
+    Y("yellow"),
+    /**
      * Reset color.
      */
     X("reset");
