@@ -67,24 +67,24 @@ public @interface Param {
     String defaultValue() default "";
 
     /**
-     * The aliases of this parameter
-     * (instead of just the {@link #name() name}
-     * (if specified) or Method Name (name of method))<br>
+     * The aliases of this parameter.
+     * <p>
+     * Provides additional values to just the {@link #name() name} if specified, or the method name by default<br>
      * Can be initialized as just a string
-     * (ex. "alias") or as an array (ex. {"alias1", "alias2"})<br>
-     * If someone uses /plugin foo bar=baz,
-     * and you specify alias="b" here,
-     * /plugin foo b=baz will do the exact same.
+     * (ex. <code>"alias"</code>) or as an array (ex. <code>{"alias1", "alias2"}</code>)<br>
+     * If someone uses <code>/plugin foo bar=baz</code>,
+     * and you specify <code>alias="b"</code> here,
+     * <code>/plugin foo b=baz</code> will do the exact same.
      * @return the aliases of this parameter
      */
     String[] aliases() default "";
 
     /**
      * Attempts to dynamically pull context from the user,
-     * default data or something else for supported types.<br>
+     * default data or uses one of the custom supported types.<br>
      * <em>Requires a context handler in
      * {@link nl.codevs.strinput.system.context}</em>
-     * @return true if this parameter can be devied from context.
+     * @return true if this parameter may be derived from context.
      */
     boolean contextual() default false;
 }
