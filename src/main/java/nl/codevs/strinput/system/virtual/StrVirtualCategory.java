@@ -150,7 +150,7 @@ public final class StrVirtualCategory implements StrVirtual {
     @Override
     public boolean run(@NotNull final List<String> arguments) {
         if (arguments.size() == 0) {
-            debug(new Str("Sending help to user"));
+            debug(new Str(C.G).a("Sending help to user"));
             help(user());
             return true;
         }
@@ -176,7 +176,7 @@ public final class StrVirtualCategory implements StrVirtual {
                 Env.settings().getMatchThreshold()
         );
 
-        debug(new Str("Options: ", C.G)
+        debug(new Str(C.G).a("Options: ")
                 .a(new Str(opt
                         .stream()
                         .map(o -> String.join("/", o.getNames()))
