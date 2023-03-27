@@ -122,7 +122,7 @@ public final class ExampleCategory implements SpigotCommandCategory {
      */
     @StrInput(description = "Send a message", aliases = "msg")
     public void message() {
-        user().sendMessage(new Str("Hey!"));
+        user().sendMessage(new Str(C.G).a("Hey!"));
     }
 
     /**
