@@ -42,6 +42,10 @@ javadoc {
     destinationDir file("docs")
 }
 
-compileJava {
-    options.compilerArgs << '-parameters'
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-parameters"
+        }
+    }
 }
