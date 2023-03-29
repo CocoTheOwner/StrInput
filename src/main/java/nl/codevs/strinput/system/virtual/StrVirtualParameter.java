@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.management.ReflectionException;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,9 @@ public final class StrVirtualParameter {
      * @param param the parameter
      */
     public StrVirtualParameter(final @NotNull Parameter param) {
+        if (!param.isNamePresent()) {
+            throw new RuntimeException("Parameter names are not present in the jar!");
+        }
         this.parameter = param;
         this.annotation = param.getDeclaredAnnotation(Param.class);
     }

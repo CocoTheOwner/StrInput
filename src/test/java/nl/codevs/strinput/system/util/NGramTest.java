@@ -77,7 +77,7 @@ public class NGramTest {
         for (StrVirtual os : o) {
             System.out.println(os.getName());
         }
-        assertEquals("mult, multi", o.stream().map(StrVirtual::getName).collect(Collectors.joining(", ")));
+        assertEquals("mult, multiplications", o.stream().map(StrVirtual::getName).collect(Collectors.joining(", ")));
     }
 
     /**

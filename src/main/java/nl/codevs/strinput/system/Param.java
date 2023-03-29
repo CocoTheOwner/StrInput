@@ -38,13 +38,18 @@ public @interface Param {
     String DEFAULT_DESCRIPTION = "No Description Provided";
 
     /**
+     * The default parameter name.
+     */
+    String PARAMETER_NAME = "";
+
+    /**
      * The main name of this command.<br>
      * Required parameter.<br>
      * This is what is used in game,
      * alongside any (if specified) {@link #aliases() aliases}
      * @return the name of this parameter
      */
-    String name();
+    String name() default PARAMETER_NAME;
 
     /**
      * The description of this parameter, used in help-popups in game.<br>

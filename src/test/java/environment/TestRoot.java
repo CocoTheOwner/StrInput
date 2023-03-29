@@ -32,8 +32,6 @@ public class TestRoot implements StrCategory {
     public static String stringAddResult;
     public static int multResult;
 
-//    public TestRoot r = new TestRoot();
-
     @StrInput(name = "add", description = "Add two strings")
     public void stringAddition(
             @Param(
@@ -55,29 +53,25 @@ public class TestRoot implements StrCategory {
     public void multiplication(
             @Param(
                     description = "The first integer",
-                    aliases = "i1",
-                    name = "input1"
+                    aliases = "input1"
             ) Integer i1,
             @Param(
                     description = "The second integer",
-                    aliases = "i2",
-                    name = "input2"
+                    aliases = "input2"
             ) Integer i2
     ) {
         multResult = i1 * i2;
     }
 
-    @StrInput(name = "multi", description = "Multiply two integers")
+    @StrInput(description = "Multiply two integers")
     public void multiplications(
             @Param(
                     description = "The first integer",
-                    aliases = "i1",
-                    name = "input1"
+                    aliases = "input1"
             ) Integer i1,
             @Param(
                     description = "The second integer",
-                    aliases = "i2",
-                    name = "input2"
+                    aliases = "input2"
             ) Integer i2
     ) {
         multResult = i1 * i2 + 1;
