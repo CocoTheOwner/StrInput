@@ -201,8 +201,8 @@ public final class StrVirtualCommand implements StrVirtual {
         Runnable rx = () -> {
             try {
                 try {
-                    Env.UserContext.touch(user);
-                    Env.CenterContext.touch(center);
+                    Env.touch(user);
+                    Env.touch(center);
                     method.setAccessible(true);
                     method.invoke(getParent().getInstance(), finalParams);
                 } catch (InvocationTargetException e) {

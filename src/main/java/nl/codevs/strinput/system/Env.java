@@ -27,10 +27,10 @@ import java.util.concurrent.ConcurrentHashMap;
  *     <li>{@link #touch(StrCenter)} store a center for the current thread</li>
  * </ul>
  * <ul>
- *     <li>{@link #user()} get the current user</li>
- *     <li>{@link #center()} get the current center</li>
- *     <li>{@link #settings()} get the current settings
- *     (based on {@link #center()}</li>
+ *     <li>{@link #user()} get the current {@link StrUser}</li>
+ *     <li>{@link #center()} get the current {@link StrCenter}</li>
+ *     <li>{@link #settings()} get the current {@link StrSettings}
+ *     (based on {@link #center()})</li>
  * </ul>
  *
  * @author Sjoerd van de Goor
@@ -43,11 +43,21 @@ public final class Env {
     }
 
     /**
+     * Context container for {@link StrUser}s.
+     */
+    private static final ContextContainer<StrUser> USER_CONTEXT_CONTAINER = new ContextContainer<>();
+
+    /**
+     * Context container for {@link StrCenter}s.
+     */
+    private static final ContextContainer<StrCenter> CENTER_CONTEXT_CONTAINER = new ContextContainer<>();
+
+    /**
      * Get the current user.
      * @return the current user
      */
     public static StrUser user() {
-        return UserContext.get();
+        return USER_CONTEXT_CONTAINER.get();
     }
 
     /**
@@ -55,7 +65,7 @@ public final class Env {
      * @return the current center
      */
     public static StrCenter center() {
-        return CenterContext.get();
+        return CENTER_CONTEXT_CONTAINER.get();
     }
 
     /**
@@ -72,7 +82,7 @@ public final class Env {
      * @param center the center
      */
     public static void touch(final StrCenter center) {
-        CenterContext.touch(center);
+        CENTER_CONTEXT_CONTAINER.touch(center);
     }
 
     /**
@@ -81,53 +91,53 @@ public final class Env {
      * @param user the user
      */
     public static void touch(final StrUser user) {
-        UserContext.touch(user);
+        USER_CONTEXT_CONTAINER.touch(user);
     }
 
     /**
      * Get whether this thread is registered.
-     * @return true if this thread is registered
+     * @return {@code true} if this thread is registered
      */
     public static boolean registered() {
         return center() != null;
     }
 
     /**
-     * Context handling (user handling).
+     * Context container.
      * <p>
-     * This system REQUIRES:
+     * This system requires:
      * <ul>
-     *     <li>each command to be be handled in a new thread</li>
-     *     <li>a call to {@link #touch(StrUser)} before context is accessed</li>
+     *     <li>a new thread for each call</li>
+     *     <li>a call to {@link #touch(T)} before context is accessed</li>
      * </ul>
      *
      * @author Sjoerd van de Goor
      * @since v0.1
      */
-    public static class UserContext {
+    public static class ContextContainer<T> {
 
         /**
-         * Map containing environment users.
+         * Map containing contextual data.
          */
-        private static final ConcurrentHashMap<Thread, StrUser> MAP = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<Thread, T> MAP = new ConcurrentHashMap<>();
 
         /**
-         * Get the current user from the current thread's context.
+         * Get the current data from the current thread's context.
          *
-         * @return the {@link StrUser} for this thread
+         * @return the data for this thread
          */
-        public static StrUser get() {
+        public T get() {
             return MAP.get(Thread.currentThread());
         }
 
         /**
-         * Add the {@link StrUser} to the context map and removes dead threads.
+         * Adds the data to the context map and removes dead threads.
          *
-         * @param user the user
+         * @param data the data
          */
-        public static void touch(final StrUser user) {
+        public void touch(final T data) {
             synchronized (MAP) {
-                MAP.put(Thread.currentThread(), user);
+                MAP.put(Thread.currentThread(), data);
 
                 Enumeration<Thread> contextKeys = MAP.keys();
 
@@ -137,57 +147,6 @@ public final class Env {
                         MAP.remove(thread);
                     }
                 }
-            }
-        }
-    }
-
-    /**
-     * Context handling for command centers (command center handling).
-     * <p>
-     * This system REQUIRES:
-     * <ul>
-     *     <li>each command to be be handled in a new thread</li>
-     *     <li>a call to {@link #touch(StrCenter)} before context is accessed</li>
-     * </ul>
-     *
-     * @author Sjoerd van de Goor
-     * @since v0.1
-     */
-    public static class CenterContext {
-
-        /**
-         * Map containing environment {@link StrCenter}.
-         */
-        private static final ConcurrentHashMap<Thread, StrCenter> MAP = new ConcurrentHashMap<>();
-
-        /**
-         * Get the current center from the current thread's context.
-         *
-         * @return the {@link StrCenter} for this thread
-         */
-        public static StrCenter get() {
-            return MAP.get(Thread.currentThread());
-        }
-
-        /**
-         * Add the {@link StrCenter}
-         * to the context map and removes dead threads.
-         *
-         * @param center the center
-         */
-        public static void touch(final StrCenter center) {
-            synchronized (MAP) {
-
-                Enumeration<Thread> contextKeys = MAP.keys();
-
-                while (contextKeys.hasMoreElements()) {
-                    Thread thread = contextKeys.nextElement();
-                    if (!thread.isAlive()) {
-                        MAP.remove(thread);
-                    }
-                }
-
-                MAP.put(Thread.currentThread(), center);
             }
         }
     }
