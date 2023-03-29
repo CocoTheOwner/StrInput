@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class TestCenter extends StrCenter {
 
-    public static TestCenter SUT = new TestCenter();
+    public static final TestCenter SUT = new TestCenter();
 
     /**
      * Create a new command center.<br>

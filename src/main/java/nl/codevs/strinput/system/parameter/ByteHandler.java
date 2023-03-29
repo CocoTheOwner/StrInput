@@ -62,6 +62,7 @@ public final class ByteHandler implements StrParameterHandler<Byte> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Byte parse(@NotNull final String text) throws Throwable {
         return Byte.parseByte(text);

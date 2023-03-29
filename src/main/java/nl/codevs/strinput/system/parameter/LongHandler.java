@@ -68,6 +68,7 @@ public final class LongHandler implements StrParameterHandler<Long> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Long parse(@NotNull final String text) throws Throwable {
         return Long.parseLong(text);

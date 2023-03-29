@@ -20,7 +20,7 @@ public class ContextContainer<T> {
     /**
      * Map containing contextual data.
      */
-    private final ConcurrentHashMap<Thread, T> MAP = new ConcurrentHashMap<Thread, T>();
+    private final ConcurrentHashMap<Thread, T> MAP = new ConcurrentHashMap<>();
 
     /**
      * Get the current data from the current thread's context.

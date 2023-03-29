@@ -81,14 +81,13 @@ public class SpigotCenter extends StrCenter {
      * Run a spigot command with StrInput.
      * @param sender the command sender
      * @param command the command
-     * @param label the label
      * @param args the command arguments
      * @return true if successful
      */
+    @SuppressWarnings("SameReturnValue")
     public boolean onCommand(
             @NotNull final CommandSender sender,
             @NotNull final Command command,
-            @NotNull final String label,
             @NotNull final String[] args
     ) {
         List<String> cmd = new ArrayList<>();

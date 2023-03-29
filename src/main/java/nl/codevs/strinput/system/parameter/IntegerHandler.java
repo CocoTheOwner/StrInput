@@ -66,6 +66,7 @@ public final class IntegerHandler implements StrParameterHandler<Integer> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Integer parse(@NotNull final String text) throws Throwable {
         AtomicReference<String> r = new AtomicReference<>(text);

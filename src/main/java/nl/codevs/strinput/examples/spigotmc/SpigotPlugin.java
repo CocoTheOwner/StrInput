@@ -45,7 +45,7 @@ public final class SpigotPlugin extends JavaPlugin
             @NotNull final String label,
             @NotNull final String[] args
     ) {
-        return commandSystem.onCommand(sender, command, label, args);
+        return commandSystem.onCommand(sender, command, args);
     }
 
     @Override

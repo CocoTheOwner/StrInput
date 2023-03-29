@@ -69,6 +69,7 @@ public final class StringHandler implements StrParameterHandler<String> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull String parse(@NotNull final String text) throws Throwable {
         return text;

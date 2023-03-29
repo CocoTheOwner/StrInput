@@ -18,7 +18,6 @@
 package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.*;
-import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
@@ -440,6 +439,7 @@ public final class StrVirtualCommand implements StrVirtual {
      * @param badArgs bad arguments
      * @param parseExceptionArgs arguments that ran into parse exceptions
      */
+    @SuppressWarnings("UnnecessaryUnicodeEscape")
     private void debug(
             @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
                     params,

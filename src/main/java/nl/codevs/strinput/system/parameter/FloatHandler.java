@@ -68,6 +68,7 @@ public final class FloatHandler implements StrParameterHandler<Float> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Float parse(@NotNull final String text) throws Throwable {
         return Float.parseFloat(text);

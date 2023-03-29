@@ -496,7 +496,9 @@ public final class StrSettings implements StrCategory {
     ) {
         try {
             if (!settingsFile.exists() || settingsFile.length() == 0) {
-                settingsFile.getParentFile().mkdirs();
+                if (!settingsFile.getParentFile().mkdirs()) {
+                    throw new IOException("Failed to initialize parent directories for settings");
+                };
                 StrSettings newSettings = new StrSettings();
                 FileWriter f = new FileWriter(settingsFile);
                 GSON.toJson(newSettings, StrSettings.class, f);

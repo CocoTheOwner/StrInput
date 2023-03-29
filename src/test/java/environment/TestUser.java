@@ -33,9 +33,9 @@ import java.util.List;
  */
 public class TestUser implements StrUser {
 
-    public static TestUser SUT = new TestUser();
+    public static final TestUser SUT = new TestUser();
 
-    public List<String> messages = new ArrayList<>();
+    public final List<String> messages = new ArrayList<>();
 
     /**
      * The name of the user (something to identify them by).

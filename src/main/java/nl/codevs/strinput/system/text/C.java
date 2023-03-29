@@ -53,11 +53,12 @@ public enum C {
      * The special character which prefixes all chat colour codes. Use this if you
      * need to dynamically convert colour codes from your custom format.
      */
+    @SuppressWarnings("UnnecessaryUnicodeEscape")
     public static final char COLOR_CHAR =  '\u00A7';
 
     /**
      * Construct a new color.
-     * @param colorName the name of the color
+     * @param code the code of the color
      */
     C(final char code) {
         toString = new String(new char[]{COLOR_CHAR, code});
@@ -78,7 +79,8 @@ public enum C {
 
     /**
      * Convert a string to a blank output (colorless)
-     * @a
+     * @param string the string to remove the color of
+     * @return the string without color characters
      */
     public static String removeColor(String string) {
 

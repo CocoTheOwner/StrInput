@@ -68,6 +68,7 @@ public final class ShortHandler implements StrParameterHandler<Short> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Short parse(@NotNull final String text) throws Throwable {
         return Short.parseShort(text);

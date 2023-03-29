@@ -65,6 +65,7 @@ public final class DoubleHandler implements StrParameterHandler<Double> {
      * @throws Throwable when something else fails.
      * (Exceptions don't have to be caught in the parser)
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Double parse(@NotNull final String text) throws Throwable {
         return Double.parseDouble(text);

@@ -177,7 +177,7 @@ public interface StrVirtual {
 
     /**
      * Send a debug message with additional information about the node in its prefix.
-     * @param the message to send
+     * @param message the message to send
      */
     default void debug(@NotNull String message) {
         if (Context.settings().isDebugMatching()) {

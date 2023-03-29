@@ -66,6 +66,7 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
      * @param text the string to parse
      * @return an instance of this type parsed from the string
      */
+    @SuppressWarnings("RedundantThrows")
     @Override
     public @NotNull Boolean parse(
             @NotNull final String text
