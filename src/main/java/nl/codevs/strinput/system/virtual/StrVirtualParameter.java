@@ -238,9 +238,15 @@ public final class StrVirtualParameter {
             @NotNull final List<String> current,
             @NotNull final String exampleMatch
     ) {
-        String matchScore = String.valueOf((double)
-                NGram.nGramMatch(exampleMatch, getName()) /
-                NGram.nGramMatch(getName(), getName()));
+        String matchString;
+        if (exampleMatch.contains("=")) {
+            String matchScore = String.valueOf((double)
+                    NGram.nGramMatch(exampleMatch.split("=")[0], getName()) /
+                    NGram.nGramMatch(getName(), getName()));
+            matchString = " | matches '" + exampleMatch + "' with score " + matchScore.substring(0, Math.min(matchScore.length(), 4));
+        } else {
+            matchString = " | example has no '=', so no score is calculated";
+        }
         current.add(prefix
                 + "Parameter '" + getName() + "'"
                 + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
@@ -255,8 +261,7 @@ public final class StrVirtualParameter {
                                 ? ""
                                 : "not"
                 ) + " contextual"
-                + " | matches '" + exampleMatch + "'"
-                + " with score " + matchScore.substring(0, Math.min(matchScore.length(), 4))
+                + matchString
         );
     }
 }

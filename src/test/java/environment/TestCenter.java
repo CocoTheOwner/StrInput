@@ -90,8 +90,8 @@ public class TestCenter extends StrCenter {
                                 new ArrayList<>(List.of(
                                         "test",
                                         "multi",
-                                        "1",
-                                        "2"
+                                        "i1=1",
+                                        "i2=2"
                                 ))
                         )
                 )
