@@ -80,6 +80,6 @@ public class TestRoot implements StrCategory {
                     name = "input2"
             ) Integer i2
     ) {
-        multResult = i1 * i2;
+        multResult = i1 * i2 + 1;
     }
 }
