@@ -22,7 +22,7 @@
  *     used to indicate commands / categories and command parameters
  *     respectively. All commands, categories and parameters must be annotated
  *     by these.</li>
- *     <li>{@link nl.codevs.strinput.system.Env}
+ *     <li>{@link nl.codevs.strinput.system.Context}
  *     contains environment variables such as the
  *     {@link nl.codevs.strinput.system.StrCenter} and
  *     {@link nl.codevs.strinput.system.StrUser} currently

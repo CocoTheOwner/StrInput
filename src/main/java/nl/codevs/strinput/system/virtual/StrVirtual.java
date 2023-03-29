@@ -17,7 +17,7 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrUser;
@@ -180,7 +180,7 @@ public interface StrVirtual {
      * @param the message to send
      */
     default void debug(@NotNull String message) {
-        if (Env.settings().isDebugMatching()) {
+        if (Context.settings().isDebugMatching()) {
             center().debug(C.BLUE + getPath() + C.GREEN + ": " + message);
         }
     }
@@ -190,7 +190,7 @@ public interface StrVirtual {
      * @param message the message to send
      */
     default void warning(@NotNull String message) {
-        if (Env.settings().isDebugMatching()) {
+        if (Context.settings().isDebugMatching()) {
             center().warn(C.BLUE + getPath() + C.YELLOW + ": " + message);
         }
     }
@@ -200,7 +200,7 @@ public interface StrVirtual {
      * @param message the message to send
      */
     default void error(@NotNull String message) {
-        if (Env.settings().isDebugMatching()) {
+        if (Context.settings().isDebugMatching()) {
             center().error(C.BLUE + getPath() + C.RED + ": " + message);
         }
     }
@@ -209,14 +209,14 @@ public interface StrVirtual {
      * @return The sender of the command, the user.
      */
     @NotNull default StrUser user() {
-        return Env.UserContext.get();
+        return Context.user();
     }
 
     /**
      * @return The command center running the system.
      */
     @NotNull default StrCenter center() {
-        return Env.CenterContext.get();
+        return Context.center();
     }
 
 }

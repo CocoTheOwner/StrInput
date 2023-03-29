@@ -17,8 +17,7 @@
  */
 package nl.codevs.strinput.system;
 
-import java.util.Enumeration;
-import java.util.concurrent.ConcurrentHashMap;
+import nl.codevs.strinput.system.util.ContextContainer;
 
 /**
  * Environment variables available on a per-thread basis.
@@ -36,9 +35,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
-public final class Env {
+public final class Context {
 
-    private Env() {
+    private Context() {
         // Never used
     }
 
@@ -53,24 +52,24 @@ public final class Env {
     private static final ContextContainer<StrCenter> CENTER_CONTEXT_CONTAINER = new ContextContainer<>();
 
     /**
-     * Get the current user.
-     * @return the current user
+     * Get the current {@link StrUser}.
+     * @return the current {@link StrUser}
      */
     public static StrUser user() {
         return USER_CONTEXT_CONTAINER.get();
     }
 
     /**
-     * Get the current center.
-     * @return the current center
+     * Get the current {@link StrCenter}.
+     * @return the current {@link StrCenter}
      */
     public static StrCenter center() {
         return CENTER_CONTEXT_CONTAINER.get();
     }
 
     /**
-     * Get the current settings.
-     * @return the current settings
+     * Get the current {@link StrSettings}.
+     * @return the current {@link StrSettings}
      */
     public static StrSettings settings() {
         return center().getSettings();
@@ -79,7 +78,7 @@ public final class Env {
     /**
      * Add the {@link StrCenter} to the context map and removes dead threads.
      *
-     * @param center the center
+     * @param center the {@link StrCenter}
      */
     public static void touch(final StrCenter center) {
         CENTER_CONTEXT_CONTAINER.touch(center);
@@ -88,66 +87,17 @@ public final class Env {
     /**
      * Add the {@link StrUser} to the context map and removes dead threads.
      *
-     * @param user the user
+     * @param user the {@link StrUser}
      */
     public static void touch(final StrUser user) {
         USER_CONTEXT_CONTAINER.touch(user);
     }
 
     /**
-     * Get whether this thread is registered.
-     * @return {@code true} if this thread is registered
+     * Get whether the current thread is registered.
+     * @return {@code true} if the current thread is registered, else {@code false}
      */
     public static boolean registered() {
         return center() != null;
-    }
-
-    /**
-     * Context container.
-     * <p>
-     * This system requires:
-     * <ul>
-     *     <li>a new thread for each call</li>
-     *     <li>a call to {@link #touch(T)} before context is accessed</li>
-     * </ul>
-     *
-     * @author Sjoerd van de Goor
-     * @since v0.1
-     */
-    public static class ContextContainer<T> {
-
-        /**
-         * Map containing contextual data.
-         */
-        private final ConcurrentHashMap<Thread, T> MAP = new ConcurrentHashMap<>();
-
-        /**
-         * Get the current data from the current thread's context.
-         *
-         * @return the data for this thread
-         */
-        public T get() {
-            return MAP.get(Thread.currentThread());
-        }
-
-        /**
-         * Adds the data to the context map and removes dead threads.
-         *
-         * @param data the data
-         */
-        public void touch(final T data) {
-            synchronized (MAP) {
-                MAP.put(Thread.currentThread(), data);
-
-                Enumeration<Thread> contextKeys = MAP.keys();
-
-                while (contextKeys.hasMoreElements()) {
-                    Thread thread = contextKeys.nextElement();
-                    if (!thread.isAlive()) {
-                        MAP.remove(thread);
-                    }
-                }
-            }
-        }
     }
 }

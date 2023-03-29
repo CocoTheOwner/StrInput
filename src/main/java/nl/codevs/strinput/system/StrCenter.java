@@ -102,8 +102,8 @@ public class StrCenter {
             @NotNull final StrContextHandler<?>[] extraContextHandlers,
             @NotNull final StrCategory... rootCommands
     ) {
-        Env.touch(this);
-        Env.touch(consoleUser);
+        Context.touch(this);
+        Context.touch(consoleUser);
 
         settingsFile = new File(settingsFolder.getAbsolutePath()
                 + "/strsettings.json");
@@ -185,8 +185,8 @@ public class StrCenter {
         Runnable cmd = () -> {
 
             // Store user in context for command invocation
-            Env.touch(user);
-            Env.touch(this);
+            Context.touch(user);
+            Context.touch(this);
 
             // Timing
             StopWatch s = new StopWatch();
@@ -212,7 +212,7 @@ public class StrCenter {
                 user.sendMessage(C.RED + "Failed to run your command!");
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else {
-                Env.center().debug(C.GREEN + "Successfully ran your command!");
+                Context.center().debug(C.GREEN + "Successfully ran your command!");
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
@@ -276,7 +276,7 @@ public class StrCenter {
      * @param runnable the runnable to run
      */
     public void runSync(@NotNull Runnable runnable) {
-        Env.user().sendMessage(C.RED + "Running command synchronous without having the method overridden. Ask your admin");
+        Context.user().sendMessage(C.RED + "Running command synchronous without having the method overridden. Ask your admin");
         warn("Running command synchronous without having the StrCenter#runSync(Runnable) method overridden. " +
                 "Please overwrite the method to allow running on the main thread explicitly.");
         runnable.run();

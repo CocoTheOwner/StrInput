@@ -76,8 +76,8 @@ public class TestCenter extends StrCenter {
         );
 
         // Set async to false so we can run tests sync
-        Env.touch(getConsole());
-        Env.touch(this);
+        Context.touch(getConsole());
+        Context.touch(this);
         getSettings().setAsync(false);
         getSettings().setSettingsCommands(false);
     }

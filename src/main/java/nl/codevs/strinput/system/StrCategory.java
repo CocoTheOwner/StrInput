@@ -32,14 +32,14 @@ public interface StrCategory {
      * @return The sender of the command, the user.
      */
     @NotNull default StrUser user() {
-        return Env.user();
+        return Context.user();
     }
 
     /**
      * @return The command center running the system.
      */
     @NotNull default StrCenter center() {
-        return Env.center();
+        return Context.center();
     }
 
 }

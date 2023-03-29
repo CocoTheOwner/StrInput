@@ -19,7 +19,7 @@ package nl.codevs.strinput.system.virtual;
 
 import environment.TestCenter;
 import environment.TestRoot;
-import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.Context;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -38,10 +38,10 @@ class StrVirtualCategoryTest {
 
     @BeforeAll
     static void setup() {
-        if (Env.center() == null) {
-            Env.touch(new TestCenter());
+        if (Context.center() == null) {
+            Context.touch(new TestCenter());
         }
-        Env.touch(Env.center().getConsole());
+        Context.touch(Context.center().getConsole());
     }
 
     @Test

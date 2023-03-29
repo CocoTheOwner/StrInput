@@ -18,7 +18,7 @@
 package nl.codevs.strinput.system.parameter;
 
 import environment.TestCenter;
-import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrCenter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,8 +34,8 @@ public class StrParameterHandlerTest {
 
     @BeforeAll
     public static void setup() {
-        if (!Env.registered()) {
-            Env.touch(new TestCenter());
+        if (!Context.registered()) {
+            Context.touch(new TestCenter());
         }
     }
 

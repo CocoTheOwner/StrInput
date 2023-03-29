@@ -18,7 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc.extensions;
 
 import nl.codevs.strinput.examples.spigotmc.SpigotUser;
-import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -73,7 +73,7 @@ public class SpigotWorldHandler implements StrParameterHandler<World> {
      */
     @Override
     public @NotNull World parse(@NotNull final String text) throws Throwable {
-        if (!((SpigotUser) Env.UserContext.get()).isPlayer()) {
+        if (!((SpigotUser) Context.user()).isPlayer()) {
             throw new StrParseException(
                     World.class,
                     text,

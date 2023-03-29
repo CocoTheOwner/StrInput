@@ -17,12 +17,8 @@
  */
 package nl.codevs.strinput.system.virtual;
 
-import nl.codevs.strinput.system.StrInput;
-import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.StrCenter;
-import nl.codevs.strinput.system.StrSettings;
-import nl.codevs.strinput.system.Param;
-import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.*;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
 import nl.codevs.strinput.system.text.C;
@@ -201,8 +197,8 @@ public final class StrVirtualCommand implements StrVirtual {
         Runnable rx = () -> {
             try {
                 try {
-                    Env.touch(user);
-                    Env.touch(center);
+                    Context.touch(user);
+                    Context.touch(center);
                     method.setAccessible(true);
                     method.invoke(getParent().getInstance(), finalParams);
                 } catch (InvocationTargetException e) {
@@ -406,7 +402,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 continue;
             }
 
-            if (Env.settings().isAllowNullInput()
+            if (Context.settings().isAllowNullInput()
                     && splitArg.get(1).equalsIgnoreCase("null")) {
                 debug(C.GREEN + "Null parameter added: " + C.BLUE + arg);
                 nullArgs.add(splitArg.get(0));
@@ -459,7 +455,7 @@ public final class StrVirtualCommand implements StrVirtual {
             > parseExceptionArgs
     ) {
         // Prevent debug if not required
-        if (!Env.center().getSettings().isDebug()) {
+        if (!Context.center().getSettings().isDebug()) {
             return;
         }
 
@@ -467,7 +463,7 @@ public final class StrVirtualCommand implements StrVirtual {
         nullArgs.replaceAll(s -> s + "=null");
 
         // Debug
-        if (Env.settings().isAllowNullInput()) {
+        if (Context.settings().isAllowNullInput()) {
             debug((nullArgs.isEmpty() ? C.GREEN.toString() : C.RED.toString())
                     + "Unmatched null argument" + (nullArgs.size() == 1 ? "" : "s") + ": "
                     + C.BLUE + (!nullArgs.isEmpty() ? String.join(C.RED + ", " + C.BLUE, nullArgs): "NONE")
@@ -563,7 +559,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     center().printException(e);
                 } catch (StrParameterHandler.StrWhichException e) {
                     options.remove(option);
-                    if (Env.settings().isPickFirstOnMultiple()
+                    if (Context.settings().isPickFirstOnMultiple()
                             || user().supportsClickables()) {
                         debug(C.GREEN + "Adding the first option for parameter " + C.BLUE + option.getName());
                         params.put(option, e.getOptions().get(0));
@@ -638,7 +634,7 @@ public final class StrVirtualCommand implements StrVirtual {
 
             for (String keylessArg : new ArrayList<>(keylessArgs)) {
 
-                if (Env.settings().isAllowNullInput()
+                if (Context.settings().isAllowNullInput()
                         && keylessArg.equalsIgnoreCase("null")) {
                     debug(C.GREEN + "Null parameter added: " + C.BLUE + keylessArg);
                     params.put(option, NULL_PARAM);
@@ -660,7 +656,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     options.remove(option);
                     keylessArgs.remove(keylessArg);
 
-                    if (Env.settings().isPickFirstOnMultiple()
+                    if (Context.settings().isPickFirstOnMultiple()
                             || user().supportsClickables()) {
                         params.put(option, e.getOptions().get(0));
                     } else {
@@ -942,7 +938,7 @@ public final class StrVirtualCommand implements StrVirtual {
     ) {
         StrParameterHandler<?> handler = parameter.getHandler();
 
-        int tries = Env.settings().getPickingAmount();
+        int tries = Context.settings().getPickingAmount();
         List<String> options = new ArrayList<>();
         validOptions.forEach(o -> options.add(handler.toStringForce(o)));
         String result = null;
@@ -951,7 +947,7 @@ public final class StrVirtualCommand implements StrVirtual {
                         + " (" + parameter.getType().getSimpleName() + ")"
         );
         user().sendMessage(C.GREEN + "This query will expire in "
-                + C.BLUE + Env.settings().getPickingTimeout() + C.GREEN + " seconds."
+                + C.BLUE + Context.settings().getPickingTimeout() + C.GREEN + " seconds."
         );
 
         while (tries-- > 0 && (result == null || !options.contains(result))) {
@@ -974,7 +970,7 @@ public final class StrVirtualCommand implements StrVirtual {
             try {
                 result = options.get(
                         future.get(
-                                Env.settings().getPickingTimeout(),
+                                Context.settings().getPickingTimeout(),
                                 TimeUnit.SECONDS
                         )
                 );
@@ -1060,7 +1056,7 @@ public final class StrVirtualCommand implements StrVirtual {
             );
             return true;
         } catch (StrParameterHandler.StrWhichException e) {
-            if (Env.settings().isPickFirstOnMultiple()
+            if (Context.settings().isPickFirstOnMultiple()
                     || user().supportsClickables()) {
                 debug(C.GREEN + "Adding: " + C.BLUE + e.getOptions().get(0).toString());
                 params.put(option, e.getOptions().get(0));

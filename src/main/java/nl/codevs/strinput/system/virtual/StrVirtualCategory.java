@@ -19,7 +19,7 @@ package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrCategory;
-import nl.codevs.strinput.system.Env;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.util.NGram;
@@ -170,7 +170,7 @@ public final class StrVirtualCategory implements StrVirtual {
         List<StrVirtual> opt = NGram.sortByNGram(
                 next,
                 options,
-                Env.settings().getMatchThreshold()
+                Context.settings().getMatchThreshold()
         );
 
         debug(C.GREEN + "Options: " + C.BLUE + opt
