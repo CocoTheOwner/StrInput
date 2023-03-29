@@ -73,11 +73,11 @@ public class NGramTest {
         List<StrVirtual> o = new ArrayList<>();
         o.addAll(t.getCommands());
         o.addAll(t.getSubCats());
-        o = NGram.sortByNGram("mult", o, 0.6);
+        o = NGram.sortByNGram("multiplication", o, 0.6);
         for (StrVirtual os : o) {
             System.out.println(os.getName());
         }
-        assertEquals("mult, multiplications", o.stream().map(StrVirtual::getName).collect(Collectors.joining(", ")));
+        assertEquals("multiplication, multiplications", o.stream().map(StrVirtual::getName).collect(Collectors.joining(", ")));
     }
 
     /**

@@ -52,6 +52,6 @@ class StrVirtualCategoryTest {
     @Test
     void runOne() {
         new StrVirtualCategory(null, new TestRoot()).run(new ArrayList<>(List.of("mult", "2", "3")));
-        assertEquals(6, TestRoot.multResult);
+        assertEquals(6, TestRoot.multiplicationResult);
     }
 }

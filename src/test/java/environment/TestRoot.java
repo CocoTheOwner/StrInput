@@ -30,7 +30,7 @@ import nl.codevs.strinput.system.StrInput;
 public class TestRoot implements StrCategory {
 
     public static String stringAddResult;
-    public static int multResult;
+    public static int multiplicationResult;
 
     @StrInput(name = "add", description = "Add two strings")
     public void stringAddition(
@@ -49,7 +49,7 @@ public class TestRoot implements StrCategory {
         stringAddResult = stringOne + stringTwo;
     }
 
-    @StrInput(name = "mult", description = "Multiply two integers")
+    @StrInput(description = "Multiply two integers")
     public void multiplication(
             @Param(
                     description = "The first integer",
@@ -60,7 +60,7 @@ public class TestRoot implements StrCategory {
                     aliases = "input2"
             ) Integer i2
     ) {
-        multResult = i1 * i2;
+        multiplicationResult = i1 * i2;
     }
 
     @StrInput(description = "Multiply two integers")
@@ -74,6 +74,6 @@ public class TestRoot implements StrCategory {
                     aliases = "input2"
             ) Integer i2
     ) {
-        multResult = i1 * i2 + 1;
+        multiplicationResult = i1 * i2 + 1;
     }
 }
