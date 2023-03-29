@@ -132,6 +132,20 @@ public final class StrVirtualParameter {
     }
 
     /**
+     * Get aliases.
+     * @return the aliases
+     */
+    @NotNull List<String> getAliases() {
+        List<String> aliases = new ArrayList<>();
+        for (String alias : annotation.aliases()) {
+            if (!alias.isBlank()) {
+                aliases.add(alias);
+            }
+        }
+        return aliases;
+    }
+
+    /**
      * Get default value for this parameter.
      * {@code null} if there is none (check {@link #hasDefault()} first).
      * @return an instance of the parameter type
@@ -221,24 +235,25 @@ public final class StrVirtualParameter {
             @NotNull final List<String> current,
             @NotNull final String exampleMatch
     ) {
-        current.add(prefix + getName()
+        String matchScore = String.valueOf((double)
+                NGram.nGramMatch(exampleMatch, getName()) /
+                NGram.nGramMatch(getName(), getName()));
+        current.add(prefix
+                + "Parameter '" + getName() + "'"
+                + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
                 + " of type '" + getType().getSimpleName() + "'"
                 + (
                         hasDefault()
                                 ? " defaults to '" + getDefault() + "'"
                                 : " has no default"
                 )
-                + " and " + (
+                + " and is " + (
                         isContextual()
-                                ? "is contextual"
-                                : "is not contextual"
-                )
-                + " matches with " + exampleMatch
-                + " @ " + ((double) NGram.nGramMatch(
-                        exampleMatch, getName()
-                ) / NGram.nGramMatch(
-                        getName(), getName())
-                )
+                                ? ""
+                                : "not"
+                ) + " contextual"
+                + " and has a match score with the current input head '" + exampleMatch + "'"
+                + " of " + matchScore.substring(0, Math.min(matchScore.length(), 4))
         );
     }
 }

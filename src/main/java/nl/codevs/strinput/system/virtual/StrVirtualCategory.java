@@ -337,15 +337,17 @@ public final class StrVirtualCategory implements StrVirtual {
             @NotNull final List<String> current,
             @NotNull final List<String> exampleInput
     ) {
+        String matchScore = String.valueOf((double)
+                NGram.nGramMatch(exampleInput.get(0), getName()) /
+                NGram.nGramMatch(getName(), getName()));
         current.add(prefix
-                + getName()
-                + (getAliases().isEmpty() ? "" : " (" + getAliases() + ")")
-                + " cmds: " + getCommands().size()
-                + " / subcs: " + getSubCats().size()
-                + " matches with " + exampleInput.get(0)
-                + " @ " + ((double) NGram.nGramMatch(
-                        exampleInput.get(0), getName())
-                / NGram.nGramMatch(getName(), getName())));
+                + "Category '" + getName() + "'"
+                + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
+                + " has " + getSubCats().size() + (getSubCats().size() == 1 ? " subcategory " : " subcategories") + " and"
+                + " has " + getCommands().size() + (getCommands().size() == 1 ? " command " : " commands")
+                + " and has a match score with the current input head '" + exampleInput.get(0) + "'"
+                + " of " + matchScore.substring(0, Math.min(matchScore.length(), 4))
+        );
         for (StrVirtualCategory subCat : getSubCats()) {
             subCat.getListing(
                     prefix + spacing,

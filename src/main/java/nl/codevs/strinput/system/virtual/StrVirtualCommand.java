@@ -1096,13 +1096,16 @@ public final class StrVirtualCommand implements StrVirtual {
             @NotNull final List<String> current,
             @NotNull final List<String> exampleInput
     ) {
-        current.add(prefix + getName()
-                + (getAliases().isEmpty() ? "" : " (" + getAliases() + ")")
-                + " has " + getParameters().size() + " "
-                + (getParameters().size() > 1 ? "parameters" : "parameter")
-                + " matches with " + exampleInput.get(0) + " @ "
-                + ((double) NGram.nGramMatch(exampleInput.get(0), getName())
-                / NGram.nGramMatch(getName(), getName())));
+        String matchScore = String.valueOf((double)
+                NGram.nGramMatch(exampleInput.get(0), getName()) /
+                NGram.nGramMatch(getName(), getName()));
+        current.add(prefix
+                + "Command '" + getName() + "'"
+                + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
+                + " has " + getParameters().size() + (getParameters().size() > 1 ? " parameters" : " parameter")
+                + " and has a match score with the current input head '" + exampleInput.get(0) + "'"
+                + " of " + matchScore.substring(0, Math.min(matchScore.length(), 4))
+        );
         for (int i = 0; i < getParameters().size(); i++) {
             getParameters().get(i).getListing(
                     prefix + spacing,
