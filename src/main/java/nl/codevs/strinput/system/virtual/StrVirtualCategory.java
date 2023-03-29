@@ -27,8 +27,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Field;
@@ -76,8 +74,8 @@ public final class StrVirtualCategory implements StrVirtual {
     }
 
     /**
-     * Get subcats.
-     * @return the subcats
+     * Get subcategories.
+     * @return the subcategories
      */
     @Contract(" -> new")
     public @NotNull List<StrVirtualCategory> getSubCats() {
@@ -250,24 +248,6 @@ public final class StrVirtualCategory implements StrVirtual {
             // Class must be annotated by StrInput
             if (!subCat.getType().isAnnotationPresent(StrInput.class)) {
                 continue;
-            }
-
-            FileWriter w = null;
-            try {
-                w = new FileWriter(
-                        subCat.getClass().getSimpleName() + ".txt"
-                );
-                w.write(subCat.toGenericString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (w != null) {
-                        w.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
             subCat.setAccessible(true);

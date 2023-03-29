@@ -57,7 +57,7 @@ public class TestCommand {
 
     @Test
     public void testSimpleMultiplication() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "mult", "5", "6")), TestUser.SUT);
+        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "multi", "5", "6")), TestUser.SUT);
         assertEquals(30, TestRoot.multiplicationResult);
     }
 }

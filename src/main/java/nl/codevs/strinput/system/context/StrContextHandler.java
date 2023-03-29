@@ -48,7 +48,7 @@ public interface StrContextHandler<T> {
      *     <li>Adding fields to the user implementation, and then</li>
      *     <li>Casting this {@code user} to the new type.</li>
      * </ol>
-     * @param user the user whose data may be used (can be casted)
+     * @param user the user whose data may be used (can be cast)
      * @return the value in the assigned type
      */
     @Nullable T handle(@NotNull StrUser user);

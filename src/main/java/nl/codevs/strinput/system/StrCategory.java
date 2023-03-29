@@ -38,6 +38,7 @@ public interface StrCategory {
     /**
      * @return The command center running the system.
      */
+    @SuppressWarnings("unused")
     @NotNull default StrCenter center() {
         return Context.center();
     }

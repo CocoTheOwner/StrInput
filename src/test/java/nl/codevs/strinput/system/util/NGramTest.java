@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class NGramTest {
 
     @Test

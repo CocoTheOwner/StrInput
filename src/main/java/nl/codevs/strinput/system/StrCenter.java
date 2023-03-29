@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
  * @author Sjoerd van de Goor
  * @since v0.1
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class StrCenter {
 
     /**
@@ -541,7 +542,7 @@ public class StrCenter {
         }
 
         @Override
-        public boolean supportsClickables() {
+        public boolean supportsClickable() {
             return false;
         }
 

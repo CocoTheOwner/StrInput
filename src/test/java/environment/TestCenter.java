@@ -53,7 +53,7 @@ public class TestCenter extends StrCenter {
                     }
 
                     @Override
-                    public boolean supportsClickables() {
+                    public boolean supportsClickable() {
                         return false;
                     }
 
@@ -90,7 +90,7 @@ public class TestCenter extends StrCenter {
                                 "  ",
                                 new ArrayList<>(List.of(
                                         "test",
-                                        "mult",
+                                        "multi",
                                         "1",
                                         "2"
                                 ))

@@ -44,18 +44,7 @@ public interface StrUser {
     /**
      * @return whether this user supports clickable {@link Str}s.
      */
-    boolean supportsClickables();
-
-    /**
-     * Send messages to the user.
-     *
-     * @param messages the message(s) to send
-     */
-    default void sendMessage(@NotNull final String... messages) {
-        for (String message : messages) {
-            sendMessage(message);
-        }
-    }
+    boolean supportsClickable();
 
     /**
      * Play a sound effect.

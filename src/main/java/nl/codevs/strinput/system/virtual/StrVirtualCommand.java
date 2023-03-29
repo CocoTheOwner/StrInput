@@ -560,7 +560,7 @@ public final class StrVirtualCommand implements StrVirtual {
                 } catch (StrParameterHandler.StrWhichException e) {
                     options.remove(option);
                     if (Context.settings().isPickFirstOnMultiple()
-                            || user().supportsClickables()) {
+                            || user().supportsClickable()) {
                         debug(C.GREEN + "Adding the first option for parameter " + C.BLUE + option.getName());
                         params.put(option, e.getOptions().get(0));
                     } else {
@@ -657,7 +657,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     keylessArgs.remove(keylessArg);
 
                     if (Context.settings().isPickFirstOnMultiple()
-                            || user().supportsClickables()) {
+                            || user().supportsClickable()) {
                         params.put(option, e.getOptions().get(0));
                     } else {
                         Object result = pickValidOption(e.getOptions(), option);
@@ -687,6 +687,7 @@ public final class StrVirtualCommand implements StrVirtual {
      * @param params parameter mapping
      * @param options parameter options
      */
+    @SuppressWarnings("DuplicatedCode")
     private void parseDashArgs(
             @NotNull final List<String> dashArgs,
             @NotNull final ConcurrentHashMap<StrVirtualParameter, Object>
@@ -753,6 +754,7 @@ public final class StrVirtualCommand implements StrVirtual {
      * @param params parameter mapping
      * @param options parameter options
      */
+    @SuppressWarnings("DuplicatedCode")
     private void parseNullArgs(
             @NotNull final List<String> nullArgs,
             @NotNull final ConcurrentHashMap<StrVirtualParameter, Object> params,
@@ -823,6 +825,7 @@ public final class StrVirtualCommand implements StrVirtual {
      * @param badArgs bad arguments
      * @param parseExceptionArgs arguments that ran into parse exceptions
      */
+    @SuppressWarnings("DuplicatedCode")
     private void parseKeyedArgs(
             @NotNull final List<String> keyedArgs,
             @NotNull final List<StrVirtualParameter> options,
@@ -968,6 +971,7 @@ public final class StrVirtualCommand implements StrVirtual {
             user().playSound(StrUser.StrSoundEffect.PICK_OPTION);
 
             try {
+                //noinspection BlockingMethodInNonBlockingContext
                 result = options.get(
                         future.get(
                                 Context.settings().getPickingTimeout(),
@@ -1057,7 +1061,7 @@ public final class StrVirtualCommand implements StrVirtual {
             return true;
         } catch (StrParameterHandler.StrWhichException e) {
             if (Context.settings().isPickFirstOnMultiple()
-                    || user().supportsClickables()) {
+                    || user().supportsClickable()) {
                 debug(C.GREEN + "Adding: " + C.BLUE + e.getOptions().get(0).toString());
                 params.put(option, e.getOptions().get(0));
             } else {

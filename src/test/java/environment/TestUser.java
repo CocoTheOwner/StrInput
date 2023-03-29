@@ -63,7 +63,7 @@ public class TestUser implements StrUser {
      * @return whether this user supports clickable {@link Str}s.
      */
     @Override
-    public boolean supportsClickables() {
+    public boolean supportsClickable() {
         return false;
     }
 

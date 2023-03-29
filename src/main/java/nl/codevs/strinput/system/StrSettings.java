@@ -20,6 +20,7 @@ package nl.codevs.strinput.system;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -36,7 +37,6 @@ import java.util.List;
  */
 @StrInput(
         description = "StrInput settings",
-        aliases = "stri",
         name = "strinput",
         permission = "strinput"
 )
@@ -169,7 +169,7 @@ public final class StrSettings implements StrCategory {
 
     /**
      * @return the threshold that should be met when matching using
-     * {@link nl.codevs.strinput.system.util.NGram#ngramMatching(String, List)}.
+     * {@link NGram#ngramMatching(String, List)}.
      */
     public double getMatchThreshold() {
         return matchThreshold;
@@ -498,10 +498,11 @@ public final class StrSettings implements StrCategory {
             if (!settingsFile.exists() || settingsFile.length() == 0) {
                 if (!settingsFile.getParentFile().mkdirs()) {
                     throw new IOException("Failed to initialize parent directories for settings");
-                };
+                }
                 StrSettings newSettings = new StrSettings();
                 FileWriter f = new FileWriter(settingsFile);
                 GSON.toJson(newSettings, StrSettings.class, f);
+                //noinspection BlockingMethodInNonBlockingContext
                 f.close();
                 newSettings.lastChanged = settingsFile.lastModified();
                 center.debug(C.GREEN + "Made new StrInput config (" + C.BLUE + settingsFile.getParent().replace("\\", "/")
@@ -531,6 +532,7 @@ public final class StrSettings implements StrCategory {
         try {
             FileWriter f = new FileWriter(settingsFile);
             GSON.toJson(this, StrSettings.class, f);
+            //noinspection BlockingMethodInNonBlockingContext
             f.close();
             center.debug(C.GREEN + "Saved StrInput Settings");
             lastChanged = settingsFile.lastModified();
@@ -561,7 +563,7 @@ public final class StrSettings implements StrCategory {
         // File is newer
         if (lastChanged != settingsFile.lastModified()) {
             lastChanged = settingsFile.lastModified();
-            center.debug(C.GREEN + "Hotloaded StrInput Settings");
+            center.debug(C.GREEN + "Hot-loaded StrInput Settings");
             return fileSettings;
         }
 

@@ -122,7 +122,7 @@ public final class ExampleCategory implements SpigotCommandCategory {
      */
     @StrInput(description = "Send a message", aliases = "msg")
     public void message() {
-        user().sendMessage(C.G + "Hey!"));
+        user().sendMessage(C.G + "Hey!");
     }
 
     /**
@@ -138,7 +138,7 @@ public final class ExampleCategory implements SpigotCommandCategory {
             )
             final String message
     ) {
-        center().debug(message));
+        center().debug(message);
     }
 }
 ```
@@ -177,5 +177,5 @@ TBD
 - Parameter performance improvements (it's fast enough, but can be faster)
 - Write advanced setup
 - Add support for only-root commands (/kill, instead of /plugin kill)
-- Test if multiple instances of the system running at once (meaning different implementations, such as on multiple Spigot plugins) will interfere with oneanother.
+- Test if multiple instances of the system running at once (meaning different implementations, such as on multiple Spigot plugins) will interfere with one-another.
 - Make sure parameters' names are saved

@@ -72,7 +72,7 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
             @NotNull final String text
     ) throws StrParseException, StrWhichException {
         String lower = text.toLowerCase(Locale.ROOT);
-        for (String fls : FALSES) {
+        for (String fls : FALSE) {
             if (lower.equals(fls)) {
                 return false;
             }
@@ -102,7 +102,7 @@ public final class BooleanHandler implements StrParameterHandler<Boolean> {
     /**
      * False options.
      */
-    public static final String[] FALSES = new String[]{
+    public static final String[] FALSE = new String[]{
             "false",
             "f",
             "no",
