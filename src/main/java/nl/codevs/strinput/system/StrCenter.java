@@ -395,11 +395,9 @@ public class StrCenter {
                         + " Did you register all commands in the creator?"
                         + " Are they @StrInput annotated?");
             } else {
-                StringBuilder r = new StringBuilder(C.GREEN + "Loaded root commands: ");
-                registeredRootNames.forEach(
-                        c -> r.append(C.BLUE).append(c).append(C.GREEN).append(", ")
+                center.info(C.GREEN + "Loaded root commands: " + C.BLUE
+                        + registeredRootNames.stream().collect(Collectors.joining(C.GREEN + ", " + C.BLUE))
                 );
-                center.info(r.toString());
             }
         }
     }
