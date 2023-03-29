@@ -37,7 +37,7 @@ public class TestCommand {
 
     @Test
     public void testShowGraph() {
-        for (String s : TestCenter.SUT.getListing("  ", new ArrayList<>(List.of("test", "add", "hey", "there")))) {
+        for (String s : TestCenter.SUT.getListing(new ArrayList<>(List.of("test", "add", "hey", "there")))) {
             System.out.println(s);
         }
         assertTrue(true);

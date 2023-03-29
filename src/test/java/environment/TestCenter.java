@@ -87,7 +87,6 @@ public class TestCenter extends StrCenter {
                 String.join(
                         "\n",
                         SUT.getListing(
-                                "  ",
                                 new ArrayList<>(List.of(
                                         "test",
                                         "multi",

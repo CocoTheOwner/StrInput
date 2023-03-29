@@ -285,10 +285,7 @@ public class StrCenter {
      * @param exampleInput the input example to show matching scores
      * @return a list of strings representing this command system
      */
-    public List<String> getListing(
-            @NotNull final String spacing,
-            @NotNull final List<String> exampleInput
-    ) {
+    public List<String> getListing(@NotNull final List<String> exampleInput) {
         List<String> result = new ArrayList<>();
         List<StrVirtualCategory> loadedCategories = new ArrayList<>();
 
@@ -305,7 +302,7 @@ public class StrCenter {
                 + String.join(" ", exampleInput)
         );
         for (StrVirtualCategory loadedCategory : loadedCategories) {
-            loadedCategory.getListing(spacing, spacing, result, exampleInput);
+            loadedCategory.getListing("", "   ", result, exampleInput);
         }
         return result;
     }
