@@ -281,7 +281,6 @@ public class StrCenter {
     /**
      * List this command system including
      * all listed root command categories, commands and parameters.
-     * @param spacing the space to append to the prefix for subsequent sub-virtual elements
      * @param exampleInput the input example to show matching scores
      * @return a list of strings representing this command system
      */
