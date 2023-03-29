@@ -18,24 +18,16 @@
 package nl.codevs.strinput.system;
 
 import nl.codevs.strinput.system.context.StrContextHandler;
-import nl.codevs.strinput.system.parameter.BooleanHandler;
-import nl.codevs.strinput.system.parameter.ByteHandler;
-import nl.codevs.strinput.system.parameter.DoubleHandler;
-import nl.codevs.strinput.system.parameter.FloatHandler;
-import nl.codevs.strinput.system.parameter.IntegerHandler;
-import nl.codevs.strinput.system.parameter.LongHandler;
-import nl.codevs.strinput.system.parameter.ShortHandler;
-import nl.codevs.strinput.system.parameter.StringHandler;
-import nl.codevs.strinput.system.parameter.StrParameterHandler;
+import nl.codevs.strinput.system.parameter.*;
 import nl.codevs.strinput.system.text.C;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -189,8 +181,11 @@ public class StrCenter {
             Context.touch(this);
 
             // Timing
-            StopWatch s = new StopWatch();
-            s.start();
+            StopWatch s = null;
+            if (getSettings().isDebugTime()) {
+                s = new StopWatch();
+                s.start();
+            }
 
             // Hot-load settings
             settings = getSettings().hotLoad(settingsFile, this);
@@ -216,8 +211,8 @@ public class StrCenter {
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
-            s.stop();
-            if (getSettings().isDebugTime()) {
+            if (s != null) {
+                s.stop();
                 debug(C.GREEN + "Command sent by " + C.BLUE + user.getName() + C.GREEN + " took " + C.BLUE + s.getTime() + "ms");
             }
 
