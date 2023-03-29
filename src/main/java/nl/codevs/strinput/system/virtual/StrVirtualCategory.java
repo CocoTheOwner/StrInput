@@ -323,10 +323,10 @@ public final class StrVirtualCategory implements StrVirtual {
         current.add(prefix
                 + "Category '" + getName() + "'"
                 + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
-                + " has " + getSubCats().size() + (getSubCats().size() == 1 ? " subcategory " : " subcategories") + " and"
-                + " has " + getCommands().size() + (getCommands().size() == 1 ? " command " : " commands")
-                + " and has a match score with the current input head '" + exampleInput.get(0) + "'"
-                + " of " + matchScore.substring(0, Math.min(matchScore.length(), 4))
+                + " | " + getSubCats().size() + (getSubCats().size() == 1 ? " subcategory " : " subcategories")
+                + " | " + getCommands().size() + (getCommands().size() == 1 ? " command " : " commands")
+                + " | matches '" + exampleInput.get(0) + "'"
+                + " with score " + matchScore.substring(0, Math.min(matchScore.length(), 4))
         );
         for (StrVirtualCategory subCat : getSubCats()) {
             subCat.getListing(

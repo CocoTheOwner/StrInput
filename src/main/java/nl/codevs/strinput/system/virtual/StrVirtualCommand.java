@@ -1106,9 +1106,9 @@ public final class StrVirtualCommand implements StrVirtual {
         current.add(prefix
                 + "Command '" + getName() + "'"
                 + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
-                + " has " + getParameters().size() + (getParameters().size() > 1 ? " parameters" : " parameter")
-                + " and has a match score with the current input head '" + exampleInput.get(0) + "'"
-                + " of " + matchScore.substring(0, Math.min(matchScore.length(), 4))
+                + " | " + getParameters().size() + (getParameters().size() > 1 ? " parameters" : " parameter")
+                + " | matches '" + exampleInput.get(0) + "'"
+                + " with score " + matchScore.substring(0, Math.min(matchScore.length(), 4))
         );
         for (int i = 0; i < getParameters().size(); i++) {
             getParameters().get(i).getListing(

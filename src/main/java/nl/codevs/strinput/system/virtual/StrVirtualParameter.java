@@ -244,19 +244,19 @@ public final class StrVirtualParameter {
         current.add(prefix
                 + "Parameter '" + getName() + "'"
                 + (getAliases().isEmpty() ? "" : " (alias: " + getAliases() + ")")
-                + " of type '" + getType().getSimpleName() + "'"
-                + (
+                + " | " + getType().getSimpleName()
+                + " | " + (
                         hasDefault()
-                                ? " defaults to '" + getDefault() + "'"
-                                : " has no default"
+                                ? "defaults to '" + getDefault() + "'"
+                                : "has no default"
                 )
-                + " and is " + (
+                + " | is " + (
                         isContextual()
                                 ? ""
                                 : "not"
                 ) + " contextual"
-                + " and has a match score with the current input head '" + exampleMatch + "'"
-                + " of " + matchScore.substring(0, Math.min(matchScore.length(), 4))
+                + " | matches '" + exampleMatch + "'"
+                + " with score " + matchScore.substring(0, Math.min(matchScore.length(), 4))
         );
     }
 }
