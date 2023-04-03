@@ -56,7 +56,7 @@ public final class StrSettings implements StrCategory {
      * The default threshold matching should achieve,
      * before a match is allowed.
      */
-    private static final double DEFAULT_MATCH_THRESHOLD = 0.1;
+    private static final double DEFAULT_MATCH_THRESHOLD = 0.3;
 
     /**
      * The last time the settings file was modified
