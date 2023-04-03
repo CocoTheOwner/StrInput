@@ -18,6 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 import net.kyori.adventure.text.TextComponent;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrUser;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,11 @@ public class SpigotConsole implements StrUser {
      */
     @Override
     public void sendMessage(@NotNull TextComponent message) {
-        Bukkit.getConsoleSender().sendMessage(message.content());
+        if (Context.center() instanceof SpigotCenter spigotCenter) {
+            spigotCenter.getAudiences().console().sendMessage(message);
+        } else {
+            throw new RuntimeException("Found non-SpigotCenter for SpigotConsole!");
+        }
     }
 
     /**
