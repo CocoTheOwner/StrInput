@@ -1,5 +1,6 @@
 package nl.codevs.strinput.system.util;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -25,7 +26,22 @@ class CTest {
 
     @Test
     void splitByC() {
-        assertEquals(new ArrayList<>(List.of("" + C.BLUE, "B", "" + C.RED, "R")),
+        assertStringListEqual(new ArrayList<>(List.of("" + C.BLUE, "B", "" + C.RED, "R")),
                 C.splitByC("" + C.BLUE + "B" + C.RED + "R"));
+        assertStringListEqual(new ArrayList<>(List.of("" + C.RESET, "")), C.splitByC(""));
+        assertStringListEqual(new ArrayList<>(List.of("" + C.RED, "ok")), C.splitByC("" + C.BLUE + C.BLUE + C.BLUE + C.RED + "ok"));
+    }
+
+    /**
+     * Check whether two lists are equal.
+     * @param expected the expected values
+     * @param actual the actual values
+     */
+    void assertStringListEqual(@NotNull List<String> expected, @NotNull List<String> actual) {
+        for (int i = 0; i < expected.size(); i++) {
+            if (!actual.get(i).equals(expected.get(i))) {
+                fail("index (" + i + ") expected: " + expected.get(i) + " but was: " + actual.get(i));
+            }
+        }
     }
 }

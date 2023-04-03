@@ -142,6 +142,13 @@ public enum C {
         StringBuilder current = new StringBuilder();
         int i = 0;
 
+        // Empty string
+        if (string.length() == 0) {
+            out.add(String.valueOf(RESET));
+            out.add("");
+            return out;
+        }
+
         // Get first C
         if (string.charAt(0) != C_CHAR) {
             out.add(String.valueOf(RESET));
