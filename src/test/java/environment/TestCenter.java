@@ -42,42 +42,7 @@ public class TestCenter extends StrCenter {
     public TestCenter() {
         super(
                 new File("testSettings"),
-                new StrUser() {
-                    @Override
-                    public @NotNull String getName() {
-                        return "Console";
-                    }
-
-                    /**
-                     * Send a message to the user.
-                     *
-                     * @param message the message to send
-                     */
-                    @Override
-                    public void sendMessage(@NotNull TextComponent message) {
-                        System.out.println(C.removeC(message.content()));
-                    }
-
-                    @Override
-                    public boolean replaceClickable() {
-                        return true;
-                    }
-
-                    @Override
-                    public void playSound(@NotNull StrSoundEffect sfx) {
-
-                    }
-
-                    @Override
-                    public boolean supportsContext() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean hasPermission(@NotNull String permission) {
-                        return true;
-                    }
-                },
+                DEFAULT_CONSOLE_USER,
                 new TestRoot()
         );
 
