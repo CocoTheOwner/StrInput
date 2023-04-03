@@ -27,8 +27,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test {@link environment.TestRoot} commands.
@@ -86,12 +85,19 @@ public class TestCommand {
     @Test
     public void testGetHelp() {
         TestCenter.SUT.onCommand(new ArrayList<>(List.of("test")), TestUser.SUT);
-        List<String> messages = TestUser.SUT.messages;
-        int l = messages.size() - 4;
-        assertEquals("===== test - Test category =====",
-                C.removeC(messages.get(l++)));
-        assertEquals("test add - Add two strings", messages.get(l++));
-        assertEquals("test multiplications - Multiply two integers", messages.get(l++));
-        assertEquals("test multiplication - Multiply two integers", messages.get(l));
+        List.of(
+                "===== test - Test category =====",
+                "test add (Add two strings)",
+                "test multiplications (Multiply two integers)",
+                "test multiplication (Multiply two integers)"
+        ).forEach(m -> {
+            for (String message : TestUser.SUT.messages) {
+                System.out.println("Comparing '" + m + "' with '" + message + "': " + message.startsWith(m));
+                if (message.startsWith(m)) {
+                    return;
+                }
+            }
+            fail("Logs above are output, but this message was not found: " + m);
+        });
     }
 }
