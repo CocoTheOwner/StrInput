@@ -21,6 +21,7 @@ import environment.TestCenter;
 import environment.TestRoot;
 import environment.TestUser;
 import nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.util.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -87,9 +88,10 @@ public class TestCommand {
         TestCenter.SUT.onCommand(new ArrayList<>(List.of("test")), TestUser.SUT);
         List<String> messages = TestUser.SUT.messages;
         int l = messages.size() - 4;
-        assertTrue(messages.get(l++).contains(TestCommand.class.getAnnotation(StrInput.class).name()));
-        assertEquals("", messages.get(l++));
-        assertEquals("", messages.get(l++));
-        assertEquals("", messages.get(l));
+        assertEquals("===== test - Test category =====",
+                C.removeC(messages.get(l++)));
+        assertEquals("test add - Add two strings", messages.get(l++));
+        assertEquals("test multiplications - Multiply two integers", messages.get(l++));
+        assertEquals("test multiplication - Multiply two integers", messages.get(l));
     }
 }

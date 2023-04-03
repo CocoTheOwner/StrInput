@@ -18,7 +18,7 @@
 package nl.codevs.strinput.system.virtual;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.Context;
@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Field;
@@ -203,17 +202,28 @@ public final class StrVirtualCategory implements StrVirtual {
      */
     @Override
     public void help(final @NotNull StrUser user) {
-        TextComponent tc = Component.text().content("").build();
-        user.sendMessage(getName() + " (" + String.join(", ", getAliases()) + ")");
-        if (user.supportsClickable()) {
-            getSubCats().forEach(c -> user.sendMessage(c.getPath() + " - [Run] - " + c.getAnnotation().description()));
-            getCommands().forEach(c -> user.sendMessage(c.getPath() + " - [Run] - " + c.getAnnotation().description()));
-        } else {
-            getSubCats().forEach(c -> user.sendMessage(c.getPath() + " - " + c.getAnnotation().description()));
-            getCommands().forEach(c -> user.sendMessage(c.getPath() + " - " + c.getAnnotation().description()));
+        user.sendMessage("===== " + C.BLUE + getName() + (getAliases().isEmpty() ?
+                "" :
+                C.GREEN + "(" + C.BLUE +
+                        String.join(C.GREEN + ", " + C.BLUE, getAliases()) + ")"
+        ) + " - " + getAnnotation().description() + C.RESET + " =====");
+
+        for (StrVirtualCategory subCat : getSubCats()) {
+            user.sendMessage(Component.text()
+                    .clickEvent(ClickEvent.runCommand(center().getCommandPrefix() + subCat.getPath()))
+                    .content(C.BLUE + center().getCommandPrefix() + subCat.getPath()
+                            + C.GREEN + " - " + subCat.getAnnotation().description())
+                    .build()
+            );
         }
-        // TODO: Write help implementation
-        user.sendMessage("Help messages not implemented yet.");
+        for (StrVirtualCommand command : getCommands()) {
+            user.sendMessage(Component.text()
+                    .clickEvent(ClickEvent.runCommand(command.getPath()))
+                    .content(C.BLUE + center().getCommandPrefix() + command.getPath()
+                            + C.GREEN + " - " + command.getAnnotation().description())
+                    .build()
+            );
+        }
     }
 
     /**
@@ -315,16 +325,15 @@ public final class StrVirtualCategory implements StrVirtual {
     }
 
     /**
-     * List this node and any sub-virtuals
+     * List this node and any sub-categories & commands
      * to form a string-based graph representation in {@code current}.
      * @param prefix prefix all substrings with this prefix,
      *              so it aligns with previous nodes.
      * @param spacing the space to append to the prefix
-     *               for subsequent sub-virtuals
+     *               for subsequent sub-categories & commands
      * @param current the current graph
      * @param exampleInput an example input for NGram matching
      */
-    @Contract(mutates = "param3")
     public void getListing(
             @NotNull final String prefix,
             @NotNull final String spacing,
