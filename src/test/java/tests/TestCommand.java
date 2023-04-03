@@ -60,4 +60,33 @@ public class TestCommand {
         TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "multi", "5", "6")), TestUser.SUT);
         assertEquals(30, TestRoot.multiplicationResult);
     }
+
+    @Test
+    public void testTypoMultiplication() {
+        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "multiple", "4", "6")), TestUser.SUT);
+        assertEquals(24, TestRoot.multiplicationResult);
+    }
+
+    @Test
+    public void testWrongCommand() {
+        TestCenter.SUT.onCommand(new ArrayList<>(List.of("does-not-exist")), TestUser.SUT);
+        assertEquals("Could not find root command for: does-not-exist",
+                TestUser.SUT.messages.get(TestUser.SUT.messages.size() - 1));
+    }
+
+    @Test
+    public void testWrongSubCommand() {
+        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "potato")), TestUser.SUT);
+        assertEquals("test category had no command matching potato",
+                TestUser.SUT.messages.get(TestUser.SUT.messages.size() - 1));
+    }
+
+    @Test
+    public void testGetHelp() {
+        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test")), TestUser.SUT);
+        for (String message : TestUser.SUT.messages) {
+            System.out.println(message);
+        }
+        assertTrue(false);
+    }
 }
