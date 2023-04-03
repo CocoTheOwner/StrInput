@@ -21,6 +21,7 @@ import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.util.C;
+import nl.codevs.strinput.system.util.KyoriUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public class TestUser implements StrUser {
      */
     @Override
     public void sendMessage(@NotNull TextComponent message) {
-        String m = C.removeC(message.content());
-        System.out.println(m);
-        messages.add(m);
+        String messageString = KyoriUtil.componentToString(message);
+        messages.add(messageString);
+        StrCenter.DEFAULT_CONSOLE_USER.sendMessage(messageString);
     }
 
     /**
