@@ -19,7 +19,7 @@ package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import org.bukkit.entity.Player;
 
 /**
