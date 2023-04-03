@@ -205,10 +205,8 @@ public class StrCenter {
                 user.sendMessage(C.RED + "Could not find root command for: " + C.BLUE + mainCommand);
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else if (!root.run(arguments)) {
-                user.sendMessage(C.RED + "Failed to run your command!");
                 user.playSound(StrUser.StrSoundEffect.FAILED_COMMAND);
             } else {
-                Context.center().debug(C.GREEN + "Successfully ran your command!");
                 user.playSound(StrUser.StrSoundEffect.SUCCESSFUL_COMMAND);
             }
 
