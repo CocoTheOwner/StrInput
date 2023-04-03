@@ -63,8 +63,8 @@ public class TestUser implements StrUser {
      * @return whether this user supports clickable messages.
      */
     @Override
-    public boolean supportsClickable() {
-        return false;
+    public boolean replaceClickable() {
+        return true;
     }
 
     /**

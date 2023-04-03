@@ -19,6 +19,7 @@ package nl.codevs.strinput.system.virtual;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.Context;
@@ -210,9 +211,10 @@ public final class StrVirtualCategory implements StrVirtual {
 
         for (StrVirtualCategory subCat : getSubCats()) {
             user.sendMessage(Component.text()
+                    .content(center().getCommandPrefix() + subCat.getPath())
+                    .color(NamedTextColor.BLUE)
                     .clickEvent(ClickEvent.runCommand(center().getCommandPrefix() + subCat.getPath()))
-                    .content(C.BLUE + center().getCommandPrefix() + subCat.getPath()
-                            + C.GREEN + " - " + subCat.getAnnotation().description())
+                    .hoverEvent(Component.text(subCat.getAnnotation().description()))
                     .build()
             );
         }

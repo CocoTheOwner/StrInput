@@ -17,6 +17,7 @@
  */
 package nl.codevs.strinput.examples.spigotmc;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerContext;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotPlayerHandler;
 import nl.codevs.strinput.examples.spigotmc.extensions.SpigotWorldContext;
@@ -49,6 +50,11 @@ public class SpigotCenter extends StrCenter {
     private final Plugin instance;
 
     /**
+     * Audiences for Kyori.
+     */
+    private final BukkitAudiences audiences;
+
+    /**
      * Create a new spigot command center.
      *
      * @param plugin the plugin running this command system ({@code this})
@@ -76,6 +82,7 @@ public class SpigotCenter extends StrCenter {
                 rootCommands
         );
         instance = plugin;
+        audiences = BukkitAudiences.builder(plugin).build();
     }
 
     /**
@@ -109,5 +116,13 @@ public class SpigotCenter extends StrCenter {
     @Override
     public void runSync(@NotNull final Runnable runnable) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(instance, runnable);
+    }
+
+    /**
+     * Get the audiences for Kyori.
+     * @return the {@link BukkitAudiences}
+     */
+    public BukkitAudiences getAudiences() {
+        return audiences;
     }
 }

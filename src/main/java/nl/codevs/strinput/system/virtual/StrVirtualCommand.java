@@ -656,7 +656,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     keylessArgs.remove(keylessArg);
 
                     if (Context.settings().isPickFirstOnMultiple()
-                            || !user().supportsClickable()) {
+                            || user().replaceClickable()) {
                         params.put(option, e.getOptions().get(0));
                     } else {
                         Object result = pickValidOption(e.getOptions(), option);
@@ -1053,7 +1053,7 @@ public final class StrVirtualCommand implements StrVirtual {
             return true;
         } catch (StrParameterHandler.StrWhichException e) {
             if (Context.settings().isPickFirstOnMultiple()
-                    || !user().supportsClickable()) {
+                    || user().replaceClickable()) {
                 debug(C.GREEN + "Adding: " + C.BLUE + e.getOptions().get(0).toString());
                 params.put(option, e.getOptions().get(0));
             } else {

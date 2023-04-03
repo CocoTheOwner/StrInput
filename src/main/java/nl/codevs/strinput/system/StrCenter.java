@@ -567,8 +567,8 @@ public class StrCenter {
         }
 
         @Override
-        public boolean supportsClickable() {
-            return false;
+        public boolean replaceClickable() {
+            return true;
         }
 
         @Override

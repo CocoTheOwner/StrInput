@@ -18,6 +18,7 @@
 package nl.codevs.strinput.examples.spigotmc;
 
 import net.kyori.adventure.text.TextComponent;
+import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrUser;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -60,15 +61,19 @@ public record SpigotUser(Player player) implements StrUser {
      */
     @Override
     public void sendMessage(@NotNull TextComponent message) {
-        player.sendMessage(message.content());
+        if (Context.center() instanceof SpigotCenter spigotCenter) {
+            spigotCenter.getAudiences().player(player()).sendMessage(message);
+        } else {
+            throw new RuntimeException("Found non-SpigotCenter for SpigotUser!");
+        }
     }
 
     /**
      * @return whether this user supports clickable messages.
      */
     @Override
-    public boolean supportsClickable() {
-        return true;
+    public boolean replaceClickable() {
+        return false;
     }
 
     /**
