@@ -115,7 +115,6 @@ public final class NGram {
      * @return a list with the elements of
      * {@code strVirtualList}, in sorted order.
      */
-    @Contract(mutates = "param2")
     public static @NotNull List<StrVirtual> sortByNGram(
             @NotNull final String input,
             @NotNull final List<StrVirtual> strVirtualList,

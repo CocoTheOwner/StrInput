@@ -20,8 +20,6 @@ package tests;
 import environment.TestCenter;
 import environment.TestRoot;
 import environment.TestUser;
-import nl.codevs.strinput.system.StrInput;
-import nl.codevs.strinput.system.util.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

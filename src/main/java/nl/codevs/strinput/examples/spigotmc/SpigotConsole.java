@@ -20,7 +20,6 @@ package nl.codevs.strinput.examples.spigotmc;
 import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrUser;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 /**

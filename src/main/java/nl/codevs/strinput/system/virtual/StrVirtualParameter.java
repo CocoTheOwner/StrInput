@@ -22,7 +22,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.util.C;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;

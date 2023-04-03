@@ -502,7 +502,6 @@ public final class StrSettings implements StrCategory {
                 StrSettings newSettings = new StrSettings();
                 FileWriter f = new FileWriter(settingsFile);
                 GSON.toJson(newSettings, StrSettings.class, f);
-                //noinspection BlockingMethodInNonBlockingContext
                 f.close();
                 newSettings.lastChanged = settingsFile.lastModified();
                 center.debug(C.GREEN + "Made new StrInput config (" + C.BLUE + settingsFile.getParent().replace("\\", "/")
@@ -532,7 +531,6 @@ public final class StrSettings implements StrCategory {
         try {
             FileWriter f = new FileWriter(settingsFile);
             GSON.toJson(this, StrSettings.class, f);
-            //noinspection BlockingMethodInNonBlockingContext
             f.close();
             center.debug(C.GREEN + "Saved StrInput Settings");
             lastChanged = settingsFile.lastModified();

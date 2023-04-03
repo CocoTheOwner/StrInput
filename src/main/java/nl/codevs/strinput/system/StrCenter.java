@@ -17,7 +17,6 @@
  */
 package nl.codevs.strinput.system;
 
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.*;
@@ -26,12 +25,10 @@ import nl.codevs.strinput.system.util.KyoriUtil;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
 import org.apache.commons.lang3.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
