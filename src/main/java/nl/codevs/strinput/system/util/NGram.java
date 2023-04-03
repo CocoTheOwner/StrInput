@@ -18,7 +18,6 @@
 package nl.codevs.strinput.system.util;
 
 import nl.codevs.strinput.system.virtual.StrVirtual;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -121,17 +120,17 @@ public final class NGram {
             final double threshold
     ) {
 
-        // Get names and virtuals
+        // Get names and virtual elements
         int amount = strVirtualList.stream()
                 .mapToInt(v -> v.getNames().size()).sum();
 
-        StrVirtual[] virtuals = new StrVirtual[amount];
+        StrVirtual[] virtualElements = new StrVirtual[amount];
         String[] names = new String[amount];
 
         int index = 0;
         for (StrVirtual strVirtual : strVirtualList) {
             for (String name : strVirtual.getNames()) {
-                virtuals[index] = strVirtual;
+                virtualElements[index] = strVirtual;
                 names[index] = name;
                 index++;
             }
@@ -150,9 +149,9 @@ public final class NGram {
         ConcurrentHashMap<StrVirtual, Double> scores
                 = new ConcurrentHashMap<>();
         for (int i = 0; i < amount; i++) {
-            if (!scores.containsKey(virtuals[i])
-                    || scores.get(virtuals[i]) < results[i]) {
-                scores.put(virtuals[i], results[i]);
+            if (!scores.containsKey(virtualElements[i])
+                    || scores.get(virtualElements[i]) < results[i]) {
+                scores.put(virtualElements[i], results[i]);
             }
         }
 
