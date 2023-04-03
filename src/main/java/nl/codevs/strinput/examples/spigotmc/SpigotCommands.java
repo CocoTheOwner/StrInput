@@ -19,6 +19,7 @@ package nl.codevs.strinput.examples.spigotmc;
 
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.StrInput;
+import nl.codevs.strinput.system.text.C;
 import org.bukkit.entity.Player;
 
 /**
@@ -42,6 +43,7 @@ public final class SpigotCommands implements SpigotCommandCategory {
             )
             final Player player
     ) {
+        user().sendMessage(C.GREEN + "Killed " + C.BLUE + player.getName());
         player.setHealth(0);
     }
 
@@ -62,6 +64,7 @@ public final class SpigotCommands implements SpigotCommandCategory {
             )
             final Player player
     ) {
+        user().sendMessage(C.GREEN + "Healed " + C.BLUE + player.getName());
         player.setHealth(MAX_PLAYER_HEALTH);
     }
 }

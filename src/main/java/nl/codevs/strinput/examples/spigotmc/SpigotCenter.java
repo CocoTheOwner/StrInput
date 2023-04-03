@@ -96,7 +96,7 @@ public class SpigotCenter extends StrCenter {
         SpigotUser user = new SpigotUser(
                 sender.getServer().getPlayer(sender.getName())
         );
-        onCommand(cmd, user);
+        super.onCommand(cmd, user);
         return true;
     }
 
