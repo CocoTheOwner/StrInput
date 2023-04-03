@@ -63,6 +63,7 @@ public class SpigotCenter extends StrCenter {
     ) {
         super(
                 plugin.getDataFolder(),
+                "/",
                 consoleUser,
                 new StrParameterHandler<?>[]{
                         new SpigotPlayerHandler(),

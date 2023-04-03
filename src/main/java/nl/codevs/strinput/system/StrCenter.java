@@ -53,6 +53,11 @@ public class StrCenter {
     private final File settingsFile;
 
     /**
+     * The prefix for all commands, which is to be removed.
+     */
+    private final String commandPrefix;
+
+    /**
      * The console which receives messages (such as from {@link #debug(String)}).
      */
     private final StrUser console;
@@ -83,6 +88,8 @@ public class StrCenter {
      * Make sure to point command calls to {@link #onCommand(List, StrUser)}
      * @param settingsFolder the settings folder for this system
      *                      (settings file stored as {@code strconfig.json})
+     * @param commandPrefix the prefix for all commands.
+     *                      This is removed when the command is entered, and added to clickable text commands
      * @param consoleUser the console ({@link StrUser})
      * @param extraParameterHandlers additional parameter handlers
      * @param extraContextHandlers additional context handlers
@@ -91,6 +98,7 @@ public class StrCenter {
      */
     public StrCenter(
             @NotNull final File settingsFolder,
+            @NotNull final String commandPrefix,
             @NotNull final StrUser consoleUser,
             @NotNull final StrParameterHandler<?>[] extraParameterHandlers,
             @NotNull final StrContextHandler<?>[] extraContextHandlers,
@@ -98,6 +106,8 @@ public class StrCenter {
     ) {
         Context.touch(this);
         Context.touch(consoleUser);
+
+        this.commandPrefix = commandPrefix;
 
         settingsFile = new File(settingsFolder.getAbsolutePath()
                 + "/strsettings.json");
@@ -140,6 +150,7 @@ public class StrCenter {
     ) {
         this(
                 settingsFolder,
+                "",
                 consoleUser,
                 new StrParameterHandler<?>[0],
                 new StrContextHandler<?>[0],
@@ -196,6 +207,11 @@ public class StrCenter {
             List<String> arguments = command.stream().filter(
                     c -> !c.isBlank()
             ).collect(Collectors.toList());
+
+            // Fix first command argument if it has the command prefix
+            if (command.get(0).startsWith(commandPrefix)) {
+                command.set(0, command.get(0).substring(commandPrefix.length()));
+            }
 
             // Get main category
             String mainCommand = arguments.remove(0);
@@ -314,6 +330,14 @@ public class StrCenter {
         for (StackTraceElement el : e.getStackTrace()) {
             error(el.toString());
         }
+    }
+
+    /**
+     * Get the command prefix.
+     * @return the command prefix
+     */
+    public String getCommandPrefix() {
+        return commandPrefix;
     }
 
     /**
