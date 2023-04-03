@@ -188,6 +188,8 @@ public final class StrVirtualCategory implements StrVirtual {
         }
         error(C.RED + "Virtual " + C.BLUE + getName() + C.RED + " failed to find a matching option for " +
                 C.BLUE + next + C.RED + " and returns false");
+        help(user());
+        user().sendMessage(C.BLUE + getName() + C.YELLOW + " category had no command matching " + C.BLUE + next);
         return false;
     }
 
