@@ -20,6 +20,7 @@ package tests;
 import environment.TestCenter;
 import environment.TestRoot;
 import environment.TestUser;
+import nl.codevs.strinput.system.StrInput;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -77,16 +78,18 @@ public class TestCommand {
     @Test
     public void testWrongSubCommand() {
         TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "potato")), TestUser.SUT);
-        assertEquals("test category had no command matching potato",
-                TestUser.SUT.messages.get(TestUser.SUT.messages.size() - 1));
+        assertTrue(TestUser.SUT.messages.get(TestUser.SUT.messages.size() - 1)
+                .endsWith("test category had no command matching potato"));
     }
 
     @Test
     public void testGetHelp() {
         TestCenter.SUT.onCommand(new ArrayList<>(List.of("test")), TestUser.SUT);
-        for (String message : TestUser.SUT.messages) {
-            System.out.println(message);
-        }
-        assertTrue(false);
+        List<String> messages = TestUser.SUT.messages;
+        int l = messages.size() - 4;
+        assertTrue(messages.get(l++).contains(TestCommand.class.getAnnotation(StrInput.class).name()));
+        assertEquals("", messages.get(l++));
+        assertEquals("", messages.get(l++));
+        assertEquals("", messages.get(l));
     }
 }

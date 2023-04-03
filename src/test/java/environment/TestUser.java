@@ -17,10 +17,10 @@
  */
 package environment;
 
+import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.C;
-import nl.codevs.strinput.system.text.Str;
+import nl.codevs.strinput.system.util.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -53,25 +53,17 @@ public class TestUser implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(@NotNull String message) {
-        message = C.removeColor(message);
-        System.out.println(C.removeColor(message));
-        messages.add(message);
+    public void sendMessage(@NotNull TextComponent message) {
+        String m = C.removeC(message.content());
+        System.out.println(m);
+        messages.add(m);
     }
 
     /**
-     * @return whether this user supports clickable {@link Str}s.
+     * @return whether this user supports clickable messages.
      */
     @Override
     public boolean supportsClickable() {
-        return false;
-    }
-
-    /**
-     * Returns: whether this user supports hovering over {@link Str}s.
-     */
-    @Override
-    public boolean supportsHoverOver() {
         return false;
     }
 

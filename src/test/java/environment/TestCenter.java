@@ -17,8 +17,9 @@
  */
 package environment;
 
+import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.*;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -47,18 +48,18 @@ public class TestCenter extends StrCenter {
                         return "Console";
                     }
 
+                    /**
+                     * Send a message to the user.
+                     *
+                     * @param message the message to send
+                     */
                     @Override
-                    public void sendMessage(@NotNull String message) {
-                        System.out.println(C.removeColor(message));
+                    public void sendMessage(@NotNull TextComponent message) {
+                        System.out.println(C.removeC(message.content()));
                     }
 
                     @Override
                     public boolean supportsClickable() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean supportsHoverOver() {
                         return false;
                     }
 

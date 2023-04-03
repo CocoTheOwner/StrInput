@@ -17,9 +17,9 @@
  */
 package nl.codevs.strinput.system;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.jetbrains.annotations.NotNull;
-
-import nl.codevs.strinput.system.text.Str;
 
 /**
  * Instance of a user (the sender/receiver, end-user client).
@@ -39,17 +39,19 @@ public interface StrUser {
      * Send a message to the user.
      * @param message the message to send
      */
-    void sendMessage(@NotNull String message);
+    default void sendMessage(@NotNull String message) {
+        sendMessage(Component.text(message));
+    }
 
     /**
-     * @return whether this user supports clickable {@link Str}s.
+     * Send a message to the user.
+     */
+    void sendMessage(@NotNull TextComponent message);
+
+    /**
+     * @return whether this user supports clicking elements.
      */
     boolean supportsClickable();
-
-    /**
-     * Returns: whether this user supports hovering over {@link Str}s.
-     */
-    boolean supportsHoverOver();
 
     /**
      * Play a sound effect.

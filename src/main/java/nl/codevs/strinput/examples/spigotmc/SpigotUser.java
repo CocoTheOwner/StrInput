@@ -17,8 +17,8 @@
  */
 package nl.codevs.strinput.examples.spigotmc;
 
+import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.Str;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -59,24 +59,16 @@ public record SpigotUser(Player player) implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(@NotNull final String message) {
-        player.sendMessage(message);
+    public void sendMessage(@NotNull TextComponent message) {
+        player.sendMessage(message.content());
     }
 
     /**
-     * @return whether this user supports clickable {@link Str}s.
+     * @return whether this user supports clickable messages.
      */
     @Override
     public boolean supportsClickable() {
         return true;
-    }
-
-    /**
-     * Returns: whether this user supports hovering over {@link Str}s.
-     */
-    @Override
-    public boolean supportsHoverOver() {
-        return false;
     }
 
     /**

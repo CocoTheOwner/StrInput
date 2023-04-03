@@ -17,16 +17,19 @@
  */
 package nl.codevs.strinput.system.virtual;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrCategory;
 import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Field;
@@ -200,6 +203,15 @@ public final class StrVirtualCategory implements StrVirtual {
      */
     @Override
     public void help(final @NotNull StrUser user) {
+        TextComponent tc = Component.text().content("").build();
+        user.sendMessage(getName() + " (" + String.join(", ", getAliases()) + ")");
+        if (user.supportsClickable()) {
+            getSubCats().forEach(c -> user.sendMessage(c.getPath() + " - [Run] - " + c.getAnnotation().description()));
+            getCommands().forEach(c -> user.sendMessage(c.getPath() + " - [Run] - " + c.getAnnotation().description()));
+        } else {
+            getSubCats().forEach(c -> user.sendMessage(c.getPath() + " - " + c.getAnnotation().description()));
+            getCommands().forEach(c -> user.sendMessage(c.getPath() + " - " + c.getAnnotation().description()));
+        }
         // TODO: Write help implementation
         user.sendMessage("Help messages not implemented yet.");
     }

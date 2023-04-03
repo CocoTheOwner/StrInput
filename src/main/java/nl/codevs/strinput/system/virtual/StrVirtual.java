@@ -21,7 +21,7 @@ import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrInput;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -17,8 +17,8 @@
  */
 package nl.codevs.strinput.examples.spigotmc;
 
+import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.Str;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,23 +45,15 @@ public class SpigotConsole implements StrUser {
      * @param message the message to send
      */
     @Override
-    public void sendMessage(@NotNull final String message) {
-        Bukkit.getConsoleSender().sendMessage(message);
+    public void sendMessage(@NotNull TextComponent message) {
+        Bukkit.getConsoleSender().sendMessage(message.content());
     }
 
     /**
-     * @return whether this user supports clickable {@link Str}s.
+     * @return whether this user supports clickable messages.
      */
     @Override
     public boolean supportsClickable() {
-        return false;
-    }
-
-    /**
-     * Returns: whether this user supports hovering over {@link Str}s.
-     */
-    @Override
-    public boolean supportsHoverOver() {
         return false;
     }
 

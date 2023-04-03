@@ -19,7 +19,7 @@ package nl.codevs.strinput.system;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.NotNull;
 

@@ -17,9 +17,10 @@
  */
 package nl.codevs.strinput.system;
 
+import net.kyori.adventure.text.TextComponent;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.*;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import nl.codevs.strinput.system.virtual.StrVirtualCategory;
 import org.apache.commons.lang3.time.StopWatch;
 import org.jetbrains.annotations.NotNull;
@@ -530,18 +531,19 @@ public class StrCenter {
             return "Console";
         }
 
+        /**
+         * Send a message to the user.
+         *
+         * @param message the message to send
+         */
         @Override
-        public void sendMessage(@NotNull final String message) {
-            System.out.println(message);
+        public void sendMessage(@NotNull TextComponent message) {
+            System.out.println(C.removeC(message.content()));
+
         }
 
         @Override
         public boolean supportsClickable() {
-            return false;
-        }
-
-        @Override
-        public boolean supportsHoverOver() {
             return false;
         }
 

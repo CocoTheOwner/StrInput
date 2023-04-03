@@ -20,7 +20,7 @@ package nl.codevs.strinput.system.virtual;
 import nl.codevs.strinput.system.*;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import nl.codevs.strinput.system.util.NGram;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -559,8 +559,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     center().printException(e);
                 } catch (StrParameterHandler.StrWhichException e) {
                     options.remove(option);
-                    if (Context.settings().isPickFirstOnMultiple()
-                            || user().supportsClickable()) {
+                    if (Context.settings().isPickFirstOnMultiple()) {
                         debug(C.GREEN + "Adding the first option for parameter " + C.BLUE + option.getName());
                         params.put(option, e.getOptions().get(0));
                     } else {
@@ -657,7 +656,7 @@ public final class StrVirtualCommand implements StrVirtual {
                     keylessArgs.remove(keylessArg);
 
                     if (Context.settings().isPickFirstOnMultiple()
-                            || user().supportsClickable()) {
+                            || !user().supportsClickable()) {
                         params.put(option, e.getOptions().get(0));
                     } else {
                         Object result = pickValidOption(e.getOptions(), option);
@@ -954,21 +953,14 @@ public final class StrVirtualCommand implements StrVirtual {
         );
 
         while (tries-- > 0 && (result == null || !options.contains(result))) {
-            user().sendMessage(C.YELLOW + "Please pick a valid option.");
+            user().sendMessage(C.YELLOW + "Please pick a valid option (" + tries + " tries left)");
+            user().playSound(StrUser.StrSoundEffect.PICK_OPTION);
 
             CompletableFuture<Integer> future = new CompletableFuture<>();
             // TODO: Reimplement clickable after removing Str
-//            for (int i = 0; i < options.size(); i++) {
-//                int finalI = i;
-//                user().sendMessage(
-//                        "- " + options.get(i),
-//                        C.GREEN,
-//                        C.BLUE,
-//                        () -> future.complete(finalI),
-//                        options.get(i), C.GREEN, C.BLUE)
-//                ));
-//            }
-            user().playSound(StrUser.StrSoundEffect.PICK_OPTION);
+            for (int i = 0; i < options.size(); i++) {
+                user().sendMessage("" + C.GREEN + i + ". " + C.BLUE + options.get(i));
+            }
 
             try {
                 //noinspection BlockingMethodInNonBlockingContext
@@ -1061,7 +1053,7 @@ public final class StrVirtualCommand implements StrVirtual {
             return true;
         } catch (StrParameterHandler.StrWhichException e) {
             if (Context.settings().isPickFirstOnMultiple()
-                    || user().supportsClickable()) {
+                    || !user().supportsClickable()) {
                 debug(C.GREEN + "Adding: " + C.BLUE + e.getOptions().get(0).toString());
                 params.put(option, e.getOptions().get(0));
             } else {

@@ -19,7 +19,7 @@ package nl.codevs.strinput.system.virtual;
 
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
-import nl.codevs.strinput.system.text.C;
+import nl.codevs.strinput.system.util.C;
 import nl.codevs.strinput.system.util.AtomicCache;
 import nl.codevs.strinput.system.Param;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
