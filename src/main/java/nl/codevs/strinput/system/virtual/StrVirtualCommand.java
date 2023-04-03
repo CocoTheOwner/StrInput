@@ -17,6 +17,10 @@
  */
 package nl.codevs.strinput.system.virtual;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import nl.codevs.strinput.system.*;
 import nl.codevs.strinput.system.context.StrContextHandler;
 import nl.codevs.strinput.system.parameter.StrParameterHandler;
@@ -236,8 +240,15 @@ public final class StrVirtualCommand implements StrVirtual {
      */
     @Override
     public void help(@NotNull final StrUser user) {
-        // TODO: Implement help properly
-        user.sendMessage(C.GREEN + getName() + " " + parameters.size());
+        TextComponent.Builder component = Component.text()
+                .content(center().getCommandPrefix() + getPath())
+                .color(NamedTextColor.BLUE)
+                .clickEvent(ClickEvent.runCommand(getPath()))
+                .hoverEvent(Component.text(getAnnotation().description()));
+        for (StrVirtualParameter parameter : parameters) {
+            component.append(Component.text(" ")).append(parameter.help(user));
+        }
+        user.sendMessage(component.build());
     }
 
 
@@ -963,7 +974,6 @@ public final class StrVirtualCommand implements StrVirtual {
             }
 
             try {
-                //noinspection BlockingMethodInNonBlockingContext
                 result = options.get(
                         future.get(
                                 Context.settings().getPickingTimeout(),

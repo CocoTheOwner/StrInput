@@ -17,6 +17,9 @@
  */
 package nl.codevs.strinput.system.virtual;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import nl.codevs.strinput.system.StrCenter;
 import nl.codevs.strinput.system.StrUser;
 import nl.codevs.strinput.system.util.C;
@@ -221,8 +224,11 @@ public final class StrVirtualParameter {
      * @return the help
      */
     @Contract("_ -> new")
-    public @NotNull String help(@NotNull final StrUser user) {
-        return C.GREEN + "Node help of " + C.BLUE + getName() + C.GREEN + " for " + C.BLUE + user.getName();
+    public @NotNull TextComponent help(@NotNull final StrUser user) {
+        return Component.text("Node help of ").color(NamedTextColor.GREEN)
+                .append(Component.text(getName()).color(NamedTextColor.BLUE))
+                .append(Component.text(" for ").color(NamedTextColor.GREEN))
+                .append(Component.text(user.getName()).color(NamedTextColor.BLUE));
     }
 
     /**

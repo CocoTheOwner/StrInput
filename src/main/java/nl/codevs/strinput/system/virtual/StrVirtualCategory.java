@@ -219,12 +219,7 @@ public final class StrVirtualCategory implements StrVirtual {
             );
         }
         for (StrVirtualCommand command : getCommands()) {
-            user.sendMessage(Component.text()
-                    .clickEvent(ClickEvent.runCommand(command.getPath()))
-                    .content(C.BLUE + center().getCommandPrefix() + command.getPath()
-                            + C.GREEN + " - " + command.getAnnotation().description())
-                    .build()
-            );
+            command.help(user);
         }
     }
 
