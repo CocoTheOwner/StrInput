@@ -58,6 +58,11 @@ public class TestCenter extends StrCenter {
                     }
 
                     @Override
+                    public boolean supportsHoverOver() {
+                        return false;
+                    }
+
+                    @Override
                     public void playSound(@NotNull StrSoundEffect sfx) {
 
                     }

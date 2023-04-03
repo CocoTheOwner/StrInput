@@ -47,6 +47,11 @@ public interface StrUser {
     boolean supportsClickable();
 
     /**
+     * Returns: whether this user supports hovering over {@link Str}s.
+     */
+    boolean supportsHoverOver();
+
+    /**
      * Play a sound effect.
      * @param sfx the sound effect type
      */

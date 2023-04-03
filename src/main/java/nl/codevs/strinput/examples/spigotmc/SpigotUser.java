@@ -72,6 +72,14 @@ public record SpigotUser(Player player) implements StrUser {
     }
 
     /**
+     * Returns: whether this user supports hovering over {@link Str}s.
+     */
+    @Override
+    public boolean supportsHoverOver() {
+        return false;
+    }
+
+    /**
      * Play a sound effect.
      *
      * @param sfx the sound effect type
