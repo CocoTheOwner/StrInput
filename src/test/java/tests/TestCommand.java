@@ -44,45 +44,45 @@ public class TestCommand {
 
     @Test
     public void testSimpleStringAddition() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "add", "apple", "Pear")), TestUser.SUT);
+        tc("test", "add", "apple", "Pear");
         assertEquals("applePear", TestRoot.stringAddResult);
     }
 
     @Test
     public void testSimpleStringAdditionDefault() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "add", "apple")), TestUser.SUT);
+        tc("test", "add", "apple");
         assertEquals("appleYeet", TestRoot.stringAddResult);
     }
 
     @Test
     public void testSimpleMultiplication() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "multi", "5", "6")), TestUser.SUT);
+        tc("test", "multi", "5", "6");
         assertEquals(30, TestRoot.multiplicationResult);
     }
 
     @Test
     public void testTypoMultiplication() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "multiple", "4", "6")), TestUser.SUT);
+        tc("test", "multiple", "4", "6");
         assertEquals(24, TestRoot.multiplicationResult);
     }
 
     @Test
     public void testWrongCommand() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("does-not-exist")), TestUser.SUT);
+        tc("does-not-exist");
         assertEquals("Could not find root command for: does-not-exist",
                 TestUser.SUT.messages.get(TestUser.SUT.messages.size() - 1));
     }
 
     @Test
     public void testWrongSubCommand() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test", "potato")), TestUser.SUT);
+        tc("test", "potato");
         assertTrue(TestUser.SUT.messages.get(TestUser.SUT.messages.size() - 1)
                 .endsWith("test category had no command matching potato"));
     }
 
     @Test
     public void testGetHelp() {
-        TestCenter.SUT.onCommand(new ArrayList<>(List.of("test")), TestUser.SUT);
+        tc("test");
         List.of(
                 "===== test - Test category =====",
                 "test add (Add two strings)",
@@ -97,5 +97,31 @@ public class TestCommand {
             }
             fail("Logs above are output, but this message was not found: " + m);
         });
+    }
+
+    @Test
+    public void testComplicatedMultiplicationSimple() {
+        tc("test", "compmut", "4");
+        assertEquals(4, TestRoot.multiplicationResult);
+    }
+
+    @Test
+    public void testComplicatedMultiplicationFull() {
+        tc("test", "compmut", "3", "2", "2");
+        assertEquals(3, TestRoot.multiplicationResult);
+    }
+
+    @Test
+    public void testComplicatedMultiplicationFlags() {
+        tc("test", "compmut", "3", "2", "2", "-1", "-2", "in3on=false");
+        assertEquals(6, TestRoot.multiplicationResult);
+    }
+
+    /**
+     * Test a command
+     * @param input the input command
+     */
+    private void tc(String... input) {
+        TestCenter.SUT.onCommand(new ArrayList<>(List.of(input)), TestUser.SUT);
     }
 }

@@ -76,4 +76,33 @@ public class TestRoot implements StrCategory {
     ) {
         multiplicationResult = i1 * i2 + 1;
     }
+
+    @StrInput(description = "Complicated multiplication")
+    public void complicatedMultiplication(
+            @Param (
+                    description = "The first value in the multiplication"
+            ) int i1,
+            @Param (
+                    description = "The second value in the multiplication",
+                    defaultValue = "3"
+            ) int i2,
+            @Param (
+                    description = "The third value in the multiplication",
+                    defaultValue = "3"
+            ) int i3,
+            @Param (
+                    description = "Whether to use i1 in the multiplication",
+                    defaultValue = "true"
+            ) boolean i1on,
+            @Param (
+                    description = "Whether to use i2 in the multiplication",
+                    defaultValue = "false"
+            ) boolean i2on,
+            @Param (
+                    description = "Whether to use i3 in the multiplication",
+                    defaultValue = "false"
+            ) boolean i3on
+    ) {
+        multiplicationResult = (i1on ? i1 : 1) * (i2on ? i2 : 1) * (i3on ? i3 : 1);
+    }
 }
