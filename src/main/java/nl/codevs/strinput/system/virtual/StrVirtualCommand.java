@@ -1019,13 +1019,18 @@ public final class StrVirtualCommand implements StrVirtual {
         for (StrVirtualParameter parameter : getParameters()) {
             if (!params.containsKey(parameter)) {
                 error(C.RED + "Parameter: " + C.BLUE + parameter.getName() + C.RED + " not in mapping!");
-                String message = C.RED + "Parameter: " + C.BLUE + parameter.help(user());
+                TextComponent message = Component.text("Parameter: ").color(NamedTextColor.RED)
+                        .append(parameter.help(user()));
                 if (parseExceptions.containsKey(parameter)) {
                     StrParameterHandler.StrParseException e = parseExceptions.get(parameter);
-                    message += " (" + C.BLUE + e.getType().getSimpleName() + C.RED + ") failed for "
-                            + C.BLUE + e.getInput() + C.RED + ". Reason: " + C.BLUE + e.getReason();
+                    message = message.append(Component.text(" (").color(NamedTextColor.RED))
+                            .append(Component.text(e.getType().getSimpleName()).color(NamedTextColor.BLUE))
+                            .append(Component.text(") failed for ").color(NamedTextColor.RED))
+                            .append(Component.text(e.getInput()).color(NamedTextColor.BLUE))
+                            .append(Component.text(". Reason: ").color(NamedTextColor.RED))
+                            .append(Component.text(e.getReason()).color(NamedTextColor.BLUE));
                 } else {
-                    message += " not specified. Please add.";
+                    message = message.append(Component.text(" not specified. Please add.").color(NamedTextColor.RED));
                 }
                 user().sendMessage(message);
                 valid = false;
