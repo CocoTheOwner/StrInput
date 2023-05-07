@@ -100,6 +100,23 @@ public class TestCommand {
     }
 
     @Test
+    public void testGetHelpMissingParams() {
+        tc("test", "add");
+        List.of(
+                "Parameter: Node help of string1 for testUser not specified. Please add.",
+                "test add (Add two strings) Node help of string1 for testUser Node help of string2 for testUser"
+        ).forEach(m -> {
+            for (String message : TestUser.SUT.messages) {
+                System.out.println("Comparing '" + m + "' with '" + message + "': " + message.startsWith(m));
+                if (message.startsWith(m)) {
+                    return;
+                }
+            }
+            fail("Logs above are output, but this message was not found: " + m);
+        });
+    }
+
+    @Test
     public void testComplicatedMultiplicationSimple() {
         tc("test", "compmut", "4");
         assertEquals(4, TestRoot.multiplicationResult);
