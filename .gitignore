@@ -8,3 +8,5 @@ token.txt
 
 # Do not gitignore /gradle/
 # We need gradle-wrapper.properties!
+
+src/test/java/Quick.java
