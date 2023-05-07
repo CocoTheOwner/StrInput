@@ -26,10 +26,10 @@ class CTest {
 
     @Test
     void splitByC() {
-        assertStringListEqual(new ArrayList<>(List.of("" + C.BLUE, "B", "" + C.RED, "R")),
-                C.splitByC("" + C.BLUE + "B" + C.RED + "R"));
-        assertStringListEqual(new ArrayList<>(List.of("" + C.RESET, "")), C.splitByC(""));
-        assertStringListEqual(new ArrayList<>(List.of("" + C.RED, "ok")), C.splitByC("" + C.BLUE + C.BLUE + C.BLUE + C.RED + "ok"));
+        assertStringListEqual(new ArrayList<>(List.of(String.valueOf(C.BLUE), "B", String.valueOf(C.RED), "R")),
+                C.splitByC(C.BLUE + "B" + C.RED + "R"));
+        assertStringListEqual(new ArrayList<>(List.of(String.valueOf(C.RESET), "")), C.splitByC(""));
+        assertStringListEqual(new ArrayList<>(List.of(String.valueOf(C.RED), "ok")), C.splitByC(String.valueOf(C.BLUE) + C.BLUE + C.BLUE + C.RED + "ok"));
     }
 
     /**
