@@ -17,13 +17,17 @@
  */
 package nl.codevs.strinput.examples.spigotmc;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import nl.codevs.strinput.system.Context;
 import nl.codevs.strinput.system.StrUser;
+import nl.codevs.strinput.system.util.C;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -66,6 +70,31 @@ public record SpigotUser(Player player) implements StrUser {
         } else {
             throw new RuntimeException("Found non-SpigotCenter for SpigotUser!");
         }
+    }
+
+    /**
+     * Send a message to the user.
+     *
+     * @param message the message to send
+     */
+    @Override
+    public void sendMessage(@NotNull String message) {
+        List<String> colorSplit = C.splitByC(message);
+        TextComponent tMessage = Component.text("");
+        for (int i = 0; i < colorSplit.size(); i += 2) {
+            C color = C.fromCode(colorSplit.get(i).charAt(0));
+            if (color == null) {
+                color = C.RESET;
+            }
+            tMessage = tMessage.append(Component.text(colorSplit.get(i + 1)).color(switch (color) {
+                case RED -> NamedTextColor.RED;
+                case GREEN -> NamedTextColor.GREEN;
+                case BLUE -> NamedTextColor.BLUE;
+                case YELLOW -> NamedTextColor.YELLOW;
+                case RESET -> NamedTextColor.GRAY;
+            }));
+        }
+        sendMessage(tMessage);
     }
 
     /**
