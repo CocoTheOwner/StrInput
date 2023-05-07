@@ -81,6 +81,7 @@ public final class StrVirtualParameter {
     public StrParameterHandler<?> getHandler() {
         return handlerCache.acquire(() -> {
             try {
+                // TODO: Implement lists to types (List.class.isAssignableFrom(parameter.getType()))
                 return StrCenter.ParameterHandling
                         .getHandler(parameter.getType());
             } catch (StrCenter.ParameterHandling
