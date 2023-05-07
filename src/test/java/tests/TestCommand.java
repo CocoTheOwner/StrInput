@@ -117,6 +117,12 @@ public class TestCommand {
         assertEquals(6, TestRoot.multiplicationResult);
     }
 
+    @Test
+    public void testComplicatedMultiplicationFlagsRandomNull() {
+        tc("test", "compmut", "3", "null", "2", "2", "null", "-1", "-2", "in3on=false");
+        assertEquals(6, TestRoot.multiplicationResult);
+    }
+
     /**
      * Test a command
      * @param input the input command
